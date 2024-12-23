@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "outDir": "dist",
+        "target": "ES6", //Cho phép biên dịch code typescript sang kiểu ES6
+        "module": "commonjs", //
+        "removeComments": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "esModuleInterop": true,
+    },
+}   

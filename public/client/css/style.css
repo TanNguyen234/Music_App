@@ -1,0 +1,97 @@
+:root {
+    --light-purple: #BB70AD;
+    --dark-purple: #310623;
+}
+
+body {
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding-top: 200px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: white;
+    position: fixed;
+    width: 100%;
+    top: -20px;
+    z-index: 1000;
+}
+
+.header__logo {
+    width: 180px;
+    height: 180px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.header__nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header__nav ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
+    list-style: none;
+    color: white;
+}
+
+.header__nav ul li a {
+    color: gray;
+    margin-left: 60px;
+    text-decoration: none;
+    text-decoration: none;
+    transition: transform 0.5s ease; /* Hiệu ứng cuộn mượt */
+}
+
+.header__nav ul li:hover {
+}
+
+.header__nav ul li:hover a {
+    color: white;
+}
+
+.header__login {
+    padding-right: 15px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.header__login a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.header__icon {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--light-purple);
+}
+
+.header__icon i {
+    color: #000;
+    font-size: 12px;
+}
+/* End Header  */

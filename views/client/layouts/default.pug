@@ -1,0 +1,38 @@
+doctype html
+html 
+  head
+    title=pageTitle
+
+    //-Nhúng Bootstrap 4
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css")
+
+    //-Nhúng link font awesome cho icon
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer")
+
+    //-Nhúng link aplayer
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css")
+    
+    link(rel="stylesheet", href="client/css/style.css")
+    block css
+  body
+    include ../partials/header.pug
+    //Vì chứa nhiều thứ nên phải dùng include để tách nhỏ ra
+
+    block main 
+
+    include ../partials/footer.pug
+    
+    script(src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js")
+
+    script(src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js") 
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js")
+
+    script(src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js")
+
+    script(type='module' src="client/js/animation.js")
+
+    script(type='module' src="client/js/script.js")
+    
+    block script
