@@ -3,22 +3,31 @@
     --dark-purple: #310623;
 }
 
+* {
+    scrollbar-width: none;
+}
+
 body {
     background-color: #000;
     color: white;
     font-family: Arial, sans-serif;
     padding-top: 200px;
+    scrollbar-width:none;
 }
 
 /* Header */
+.header .row {
+    height: 100px;
+}
 .header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     color: white;
-    position: fixed;
+    position: fixed !important;
     width: 100%;
-    top: -20px;
+    padding-bottom: 10px;
+    top: -10px;
     z-index: 1000;
 }
 
@@ -48,21 +57,18 @@ body {
     align-items: flex-start;
     list-style: none;
     color: white;
+    overflow: hidden;
+}
+
+.header__nav ul li {
+    padding: 7px;
 }
 
 .header__nav ul li a {
     color: gray;
+    font-weight: 500;
     margin-left: 60px;
     text-decoration: none;
-    text-decoration: none;
-    transition: transform 0.5s ease; /* Hiệu ứng cuộn mượt */
-}
-
-.header__nav ul li:hover {
-}
-
-.header__nav ul li:hover a {
-    color: white;
 }
 
 .header__login {
@@ -77,6 +83,8 @@ body {
     text-decoration: none;
     margin-left: 20px;
     cursor: pointer;
+    font-weight: 500;
+    font-size: 18px;
 }
 
 .header__icon {
@@ -95,3 +103,80 @@ body {
     font-size: 12px;
 }
 /* End Header  */
+/* Dashboard  */
+.dashboard {
+    min-height: 1080px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.dashboard__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    flex-direction: column;
+}
+.dashboard__content p {
+    float: right;
+    z-index: 2;
+}
+
+.dashboard__content p span {
+    text-transform: uppercase;
+    font-size: 85px;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.dashboard__content p span i {
+    font-family: "Workhorse", cursive;
+    font-weight: 400;
+    line-height: 0.8;
+}
+
+.dashboard__desc {
+    z-index: 2;
+}
+
+.dashboard__animation {
+    position: absolute;
+    z-index: 1;
+}
+
+.dashboard__animation div {
+    width: 50px;
+    height: 50px;
+    background-color: var(--light-purple);
+    margin: 5px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+}
+
+
+.dashboard__animation div i {
+    color: var(--dark-purple);
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 1200px) {
+    .dashboard__content p span {
+        font-size: 65px;
+    } 
+}
+
+@media (max-width: 992px) {
+    .dashboard__content p span {
+        font-size: 55px;
+    } 
+}
+/* End Dashboard  */
