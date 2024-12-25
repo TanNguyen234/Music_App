@@ -96,3 +96,21 @@ if(dashboardContent.length > 0) {
   })
 }
 //End Dashboard Content
+//Introduction
+const items = document.querySelectorAll('.introduction__desc--in')
+
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show'); // Thêm class 'show' khi phần tử vào viewport
+      // observer.unobserve(entry.target); // Ngừng quan sát sau khi đã hiện
+    } else {
+      entry.target.classList.remove('show'); // Xóa class 'show' khi phần tử không còn trong viewport
+    }
+  });
+}, {
+  threshold: 0.99 // Kích hoạt khi 50% phần tử xuất hiện trong viewport
+});
+
+items.forEach(item => observer.observe(item));
+//End Introduction
