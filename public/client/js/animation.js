@@ -98,6 +98,7 @@ if(dashboardContent.length > 0) {
 //End Dashboard Content
 //Introduction
 const items = document.querySelectorAll('.introduction__desc--in')
+const windows = document.querySelectorAll('.introduction__desc--img .window')
 
 const observer = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
@@ -109,8 +110,36 @@ const observer = new IntersectionObserver((entries, observer) => {
     }
   });
 }, {
-  threshold: 0.99 // Kích hoạt khi 50% phần tử xuất hiện trong viewport
+  threshold: 0.99
 });
 
-items.forEach(item => observer.observe(item));
+if(items.length > 0) {
+  items.forEach(item => observer.observe(item));
+}
+
+if(windows.length > 0) {
+  windows.forEach(window => observer.observe(window));
+}
 //End Introduction
+//Feature horizontal-scroll
+const feature = document.querySelector('.feature')
+const horizontalScroll = feature.querySelector('.feature__scroll');
+const observerFeture = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      windows.addEventListener('scroll', (e) => {
+        e.preventDefault();
+        const el = entry.target
+        if(observer(entry)) {
+
+        }
+      })
+    } else {
+      console.log('out')
+    }
+  });
+})
+if(feature && horizontalScroll) {
+  observerFeture.observe(feature);
+}
+//End Feature horizontal-scroll
