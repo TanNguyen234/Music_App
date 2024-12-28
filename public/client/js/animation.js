@@ -1,145 +1,137 @@
 //Header Nav
 const headerNav = document.querySelectorAll(".header__nav ul li");
 
-if(headerNav.length > 0) {
-  headerNav.forEach((item)=> {
+if (headerNav.length > 0) {
+  headerNav.forEach((item) => {
     item.addEventListener("mouseenter", () => {
-      item.querySelector('a').style.color = '#fff'; 
+      item.querySelector("a").style.color = "#fff";
       anime({
         targets: item,
         translateY: [-10, 0, 10, 0],
         opacity: [1, 0, 0, 1],
         duration: 600,
-        easing: 'linear',
-        easing: 'easeInOutQuad'
+        easing: "linear",
+        easing: "easeInOutQuad",
       });
-    })
+    });
     item.addEventListener("mouseout", () => {
       anime({
         targets: item,
         translateY: 0,
         duration: 100,
-        easing: 'linear'
+        easing: "linear",
       });
     });
-    item.addEventListener('mouseleave', () => {
-      item.querySelector('a').style.color = 'gray'; 
-    })
-  })
+    item.addEventListener("mouseleave", () => {
+      item.querySelector("a").style.color = "gray";
+    });
+  });
 }
 //End Header Nav
 //Header Login
-const headerLogin = document.querySelector('.header__login')
+const headerLogin = document.querySelector(".header__login");
 
-if(headerLogin) {
-  const icon = headerLogin.querySelector('i')
-  const text = headerLogin.querySelector('a')
-  if(text && icon) {
+if (headerLogin) {
+  const icon = headerLogin.querySelector("i");
+  const text = headerLogin.querySelector("a");
+  if (text && icon) {
     headerLogin.addEventListener("mouseenter", () => {
       anime({
         targets: text,
         translateY: [-10, 0, 10, 0],
         opacity: [1, 0, 0, 1],
         duration: 600,
-        easing: 'linear',
-        easing: 'easeInOutQuad'
+        easing: "linear",
+        easing: "easeInOutQuad",
       });
       anime({
         targets: icon,
         translateX: [-10, 0, 10, 0],
         opacity: [1, 0, 0, 1],
         duration: 600,
-        easing: 'linear',
-        easing: 'easeInOutQuad'
+        easing: "linear",
+        easing: "easeInOutQuad",
       });
-    })
+    });
     headerLogin.addEventListener("mouseout", () => {
       anime({
         targets: text,
         translateY: 0,
         duration: 100,
-        easing: 'linear'
+        easing: "linear",
       });
       anime({
         targets: icon,
         translateX: 0,
         duration: 100,
-        easing: 'linear'
+        easing: "linear",
       });
     });
   }
 }
 // End Header Login
-//Dashboard Content 
-const dashboardContent = document.querySelectorAll('.dashboard__animation div')
+//Dashboard Content
+const dashboardContent = document.querySelectorAll(".dashboard__animation div");
 
-if(dashboardContent.length > 0) {
+if (dashboardContent.length > 0) {
   dashboardContent.forEach((item) => {
     anime({
       targets: item,
-      translateX: function(el) {
-        return anime.random(-250, 250)
+      translateX: function (el) {
+        return anime.random(-250, 250);
       },
-      translateY: function(el, i) {
-        return (anime.random(-250, 250) + anime.random(-250, 250) * i);
+      translateY: function (el, i) {
+        return anime.random(-250, 250) + anime.random(-250, 250) * i;
       },
-      scale: function(el, i, l) {
-        return (l - i) + .25;
+      scale: function (el, i, l) {
+        return l - i + 0.25;
       },
-      rotate: function() { return anime.random(-360, 360); },
-      borderRadius: function() { return ['50%', anime.random(10, 35) + '%']; },
-      duration: function() { return anime.random(1200, 1800); },
-      delay: function() { return anime.random(0, 400); },
-      direction: 'alternate',
-      loop: true
-    })
-  })
+      rotate: function () {
+        return anime.random(-360, 360);
+      },
+      borderRadius: function () {
+        return ["50%", anime.random(10, 35) + "%"];
+      },
+      duration: function () {
+        return anime.random(1200, 1800);
+      },
+      delay: function () {
+        return anime.random(0, 400);
+      },
+      direction: "alternate",
+      loop: true,
+    });
+  });
 }
 //End Dashboard Content
 //Introduction
-const items = document.querySelectorAll('.introduction__desc--in')
-const windows = document.querySelectorAll('.introduction__desc--img .window')
+const items = document.querySelectorAll(".introduction__desc--in");
+const windows = document.querySelectorAll(".introduction__desc--img .window");
 
-const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('show'); // Thêm class 'show' khi phần tử vào viewport
-      // observer.unobserve(entry.target); // Ngừng quan sát sau khi đã hiện
-    } else {
-      entry.target.classList.remove('show'); // Xóa class 'show' khi phần tử không còn trong viewport
-    }
-  });
-}, {
-  threshold: 0.99
-});
+const observer = new IntersectionObserver(
+  (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show"); // Thêm class 'show' khi phần tử vào viewport
+        // observer.unobserve(entry.target); // Ngừng quan sát sau khi đã hiện
+      } else {
+        entry.target.classList.remove("show"); // Xóa class 'show' khi phần tử không còn trong viewport
+      }
+    });
+  },
+  {
+    threshold: 0.99,
+  }
+);
 
-if(items.length > 0) {
-  items.forEach(item => observer.observe(item));
+if (items.length > 0) {
+  items.forEach((item) => observer.observe(item));
 }
 
-if(windows.length > 0) {
-  windows.forEach(window => observer.observe(window));
+if (windows.length > 0) {
+  windows.forEach((window) => observer.observe(window));
 }
 //End Introduction
 //Feature horizontal-scroll
-const feature = document.querySelector('.feature')
-const horizontalScroll = feature.querySelector('.feature__scroll');
-const observerFeture = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      windows.addEventListener('scroll', (e) => {
-        e.preventDefault();
-        const el = entry.target
-        if(observer(entry)) {
 
-        }
-      })
-    } else {
-      console.log('out')
-    }
-  });
-})
-if(feature && horizontalScroll) {
-  observerFeture.observe(feature);
-}
 //End Feature horizontal-scroll

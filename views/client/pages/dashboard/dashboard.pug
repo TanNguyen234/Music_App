@@ -50,7 +50,7 @@ block main
                         span.introduction__desc--in From 
                         span.introduction__desc--img
                             span.window 
-                                img(src="https://tse3.mm.bing.net/th?id=OIP.LjUcc4y_6J45awmB5wYNFgHaEK&pid=Api&P=0&h=220", alt="brand")
+                                img(src="client/images/phonk.png", alt="brand")
                         span.introduction__desc--in  Phonk +
 
                     p.introduction__desc
@@ -59,14 +59,14 @@ block main
                         span.introduction__desc--in Soundtracks 
                         span.introduction__desc--img
                             span.window 
-                                img(src="https://tse1.mm.bing.net/th?id=OIP.ISF2lKxh9jN78ZP46xtlOgHaEK&pid=Api&P=0&h=220", alt="brand")
+                                img(src="client/images/ori.png", alt="brand")
                         span.introduction__desc--in  to
 
                     p.introduction__desc
                         span.introduction__desc--in Iconic 
                         span.introduction__desc--img
                             span.window 
-                                img(src="https://tse4.mm.bing.net/th?id=OIP.hBsSRobe-odDsLoAdQjoeAHaEJ&pid=Api&P=0&h=220", alt="brand")
+                                img(src="client/images/asuka.png", alt="brand")
                         span.introduction__desc--in  Anime
 
                     p.introduction__desc
@@ -80,7 +80,7 @@ block main
                         span.introduction__desc--in the 
                         span.introduction__desc--img
                             span.window 
-                                img(src="https://tse4.mm.bing.net/th?id=OIP.THxZfTFd_8TJdXDniTOiyQHaE7&pid=Api&P=0&h=220", alt="brand")
+                                img(src="client/images/flowerOfEvil.png", alt="brand")
                         span.introduction__desc--in  <i>m</i>ost
 
                     p.introduction__desc
@@ -99,7 +99,7 @@ block main
                         span.introduction__desc--in your 
                         span.introduction__desc--img
                             span.window 
-                                img(src="https://tse4.mm.bing.net/th?id=OIP.-j8KnK70jW0wafMtbgvcPQHaFO&pid=Api&P=0&h=220", alt="brand")            
+                                img(src="client/images/rei.png", alt="brand")            
                         span.introduction__desc--in  <i>B</i>rand
         .row 
             .col-12.col-lg-12.col-md-12
@@ -107,79 +107,11 @@ block main
                     .feature__title
                         span Feature Songs 
                     .feature__scroll
-                        .feature__box
-                            .feature__thumbnail 
-                                img(src="https://tse1.mm.bing.net/th?id=OIP.7Z6Q6Z6Z6Z6Z6Z6Z6Z6Z6QHaE8&pid=Api&P=0&h=220", alt="brand")
-                            .feature__name 
-                                span 
-                                    i T
-                                span he 
-                                span S
-                                span tory 
-                                span o
-                                span f 
-                                span M
-                                span y 
-                                span L
-                                span ife
-                        .feature__box
-                            .feature__thumbnail 
-                                img(src="https://tse1.mm.bing.net/th?id=OIP.7Z6Q6Z6Z6Z6Z6Z6Z6Z6Z6QHaE8&pid=Api&P=0&h=220", alt="brand")
-                            .feature__name
-                                span 
-                                    i B
-                                span a
-                                span n
-                                span d
-                                span e
-                                span s
-                                span t
-                                span s
-                                span i
-                                span n
-                        .feature__box 
-                            .feature__thumbnail 
-                                img(src="https://tse1.mm.bing.net/th?id=OIP.7Z6Q6Z6Z6Z6Z6Z6Z6Z6Z6QHaE8&pid=Api&P=0&h=220", alt="brand")
-                            .feature__name 
-                                span 
-                                    i T
-                                span he 
-                                span S
-                                span tory 
-                                span o
-                                span f 
-                                span M
-                                span y 
-                                span L
-                                span ife
-                        .feature__box 
-                            .feature__thumbnail 
-                                img(src="https://tse1.mm.bing.net/th?id=OIP.7Z6Q6Z6Z6Z6Z6Z6Z6Z6Z6QHaE8&pid=Api&P=0&h=220", alt="brand")
-                            .feature__name 
-                                span 
-                                    i T
-                                span he 
-                                span S
-                                span tory 
-                                span o
-                                span f 
-                                span M
-                                span y 
-                                span L
-                                span ife
-                        .feature__box 
-                            .feature__thumbnail 
-                                img(src="https://tse1.mm.bing.net/th?id=OIP.7Z6Q6Z6Z6Z6Z6Z6Z6Z6Z6QHaE8&pid=Api&P=0&h=220", alt="brand")
-                            .feature__name 
-                                span 
-                                    i T
-                                span he 
-                                span S
-                                span tory 
-                                span o
-                                span f 
-                                span M
-                                span y 
-                                span L
-                                span ife
-                            
+                        if(songs)
+                         each song in songs
+                            a(href=`/song/${song.id}` class='feature__box') 
+                                .feature__img 
+                                    img(src=`${song.avatar ? song.avatar : ''}`, alt="song")
+                                .feature__desc 
+                                    h4 #{song.title}
+                                    p #{song.singer ? song.singer : ''}
