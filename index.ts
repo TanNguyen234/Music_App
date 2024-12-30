@@ -4,6 +4,7 @@ import path from 'path';
 import * as database from './config/database'
 import { systemConfig } from './config/config';
 import clientRoutes from './routes/client/index.route';
+import adminRoutes from './routes/admin/index.route';
 
 dotenv.config();
 database.connect();
@@ -26,6 +27,10 @@ app.use(express.urlencoded({ extended: true }))
 
 // Import routes
 clientRoutes(app);
+adminRoutes(app);
+
+//App Local Variables
+app.locals.prefixAdmin = systemConfig.prefixAmin
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

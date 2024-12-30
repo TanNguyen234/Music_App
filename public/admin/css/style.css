@@ -1,0 +1,99 @@
+:root {
+    --light-purple: #bb70ad;
+    --dark-purple: #310623;
+    --text: #1a1a1a;
+  }
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.fix-size {
+  width: 90%;
+}
+
+/* Header  */
+body {
+  overflow-x: hidden;
+}
+
+.header {
+  background-color: var(--text);
+  padding: 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.header .inner-logo a {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.header .admin {
+    text-align: right;
+}
+
+.header .admin a:first-child{
+    margin-right: 10px;
+}
+/* End Header  */
+
+/* Body  */
+
+.body .nav {
+  width: 170px;
+  background-color: #323232;
+  color: #fff;
+  height: calc(100vh - 56px);
+  position: fixed;
+  top: 56px;
+  left: 0;
+}
+
+.body .nav .inner-menu {
+    width: 100%;
+}
+
+.body .main {
+  margin: 15px;
+  position: relative;
+  left: 150px;
+  width: calc(100% - 130px);
+}
+
+/* End Body  */
+
+/* Sider  */
+.nav .inner-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav .inner-menu ul li a {
+  color: white;
+  display: block;
+  padding: 6xp 10px;
+  border-bottom: 1px solid #515151;
+  padding: 10px;
+}
+
+.nav .inner-menu ul li a i {
+    font-size: 16px;
+    color: #fff;
+}
+
+.nav .inner-menu ul li a:hover {
+    background-color: #414141;
+}
+
+.nav .inner-menu ul li a.active {
+    background: var(--dark-purple);
+}
+/* End Sider  */

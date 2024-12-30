@@ -1,0 +1,12 @@
+header.header 
+    .container-fluid
+        .row.align-items-center 
+           .col-3 
+             .inner-logo
+               a(href=`/${prefixAdmin}/dashboard`)
+                img(src="admin/images/logo.png", alt="logo")
+           
+           .col-9 
+             .admin 
+               a(href=`${prefixAdmin}/my-account` class="btn btn-primary btn-sm mr-2") Foxy
+               a(href=`${prefixAdmin}/auth/logout` class="btn btn-danger btn-sm") Đăng xuất
