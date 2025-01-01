@@ -1,0 +1,28 @@
+extends ../../layouts/default.pug
+
+block main 
+    .container-fluid
+     .row 
+        .col-12 
+            h1 Danh sách chủ đề
+            a.btn.btn-primary(href="/admin/topics/create") Thêm chủ đề
+            table.table.table-striped.table-bordered.table-hover
+                thead
+                    tr
+                        th Stt
+                        th Ảnh
+                        th Tiêu đề
+                        th Hành động
+                tbody
+                    each topic, index in topics
+                        tr  
+                            td= index + 1
+                            td
+                                if topic.avatar
+                                    img.img-fluid(src=`${topic.avatar}`, alt=`${topic.title}`)
+                                else
+                                    | No Image
+                            td= topic.title
+                            td
+                                a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/topics/edit/${topic._id}`) Chỉnh sửa
+                                button.btn-delete.btn.btn-danger Xóa
