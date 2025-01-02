@@ -1,15 +1,15 @@
 :root {
-    --light-purple: #bb70ad;
-    --dark-purple: #310623;
-    --text: #1a1a1a;
-  }
+  --light-purple: #bb70ad;
+  --dark-purple: #310623;
+  --text: #1a1a1a;
+}
 
 * {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .fix-size {
@@ -33,11 +33,11 @@ body {
 }
 
 .header .admin {
-    text-align: right;
+  text-align: right;
 }
 
-.header .admin a:first-child{
-    margin-right: 10px;
+.header .admin a:first-child {
+  margin-right: 10px;
 }
 
 .header .row {
@@ -92,7 +92,7 @@ body {
 }
 
 .body .nav .inner-menu {
-    width: 100%;
+  width: 100%;
 }
 
 .body .main {
@@ -119,15 +119,15 @@ body {
 }
 
 .nav .inner-menu ul li a i {
-    font-size: 16px;
-    color: #fff;
+  font-size: 16px;
+  color: #fff;
 }
 
 .nav .inner-menu ul li a:hover {
-    background-color: #414141;
+  background-color: #414141;
 }
 
 .nav .inner-menu ul li a.active {
-    background: #1d1c1c;
+  background: #1d1c1c;
 }
 /* End Sider  */

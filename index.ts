@@ -1,6 +1,13 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+
+//Tạo thông báo
+const flash = require('express-flash');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+//End Tạo thông báo
+
 import * as database from './config/database'
 import { systemConfig } from './config/config';
 import clientRoutes from './routes/client/index.route';
@@ -11,6 +18,13 @@ database.connect();
 
 const app: Express = express();
 const port: number | string = process.env.PORT || 3000;
+
+//TinyMCE
+app.use(
+    "/tinymce",
+    express.static(path.join(__dirname, "node_modules", "tinymce"))
+)
+//End TinyMCE
 
 // Thiết lập thư mục public cho file tĩnh
 app.use(express.static(path.join(__dirname, 'public')));
@@ -24,6 +38,11 @@ app.locals.prefixAdmin = systemConfig.prefixAmin
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+
+//Flash thư viện cho thông báo cho express js
+app.use(cookieParser("YSUDGSGDJSGDJ")); //key ngâu nhiên cho tăng tính bảo mật
+app.use(session({ cookie: { maxAge: 60000 } })); //Thời gian cookie tồn tại 60000 ml giây
+app.use(flash());
 
 // Import routes
 clientRoutes(app);

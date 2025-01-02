@@ -1,6 +1,8 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
-block main 
+block main
+    +success-alert(5000)
     .container-fluid
      .row 
         .col-12 
