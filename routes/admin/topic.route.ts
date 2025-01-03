@@ -31,4 +31,23 @@ router.post(
 
 router.get("/edit/:id", handler(controller.edit));
 
+router.patch(
+  "/edit/:id",
+  upload.single("avatar"),
+  handler(middleware.uploadToCloud),
+  handler(controller.editPatch)
+);
+
+router.patch(
+  "/edit/:id",
+  upload.single("avatar"),
+  handler(middleware.uploadToCloud),
+  handler(controller.editPatch)
+);
+
+router.delete(
+  "/delete/:id",
+  handler(controller.deleteTopic)
+);
+
 export const topicRoutes: Router = router;

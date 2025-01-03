@@ -7,8 +7,8 @@ block main
     .container-fluid
      .row 
         .col-12 
-            h1 Danh sách chủ đề
-            a.btn.btn-primary(href="/admin/topics/create") Thêm chủ đề
+            h1 Danh sách bài hát
+            a.btn.btn-primary(href="/admin/songs/create") Thêm bài hát
             table.table.table-striped.table-bordered.table-hover
                 thead
                     tr
@@ -20,34 +20,34 @@ block main
                         th Ngày cập nhật mới nhất
                         th Hành động
                 tbody
-                  if(topics.length > 0)
-                    each topic, index in topics
+                 if(songs.length > 0)
+                    each song, index in songs
                         tr  
                             td= index + 1
                             td
-                                if topic.avatar
-                                    img.img-fluid(src=`${topic.avatar}`, alt=`${topic.title}`)
+                                if song.avatar
+                                    img.img-fluid(src=`${song.avatar}`, alt=`${song.title}`)
                                 else
                                     | No Image
-                            td= topic.title
+                            td= song.title
                             td
-                                if(topic.status === 'active')
+                                if(song.status === 'active')
                                     span.badge.bg-success.text-white Hoạt động
                                 else
                                     span.badge.bg-danger.text-white Dừng hoạt động
                             td 
-                                if(topic.createdAt)
-                                    +formatDay(topic.createdAt)
+                                if(song.createdAt)
+                                    +formatDay(song.createdAt)
                                 else
                                     | No Data
                             td 
-                                if(topic.updatedAt)
-                                    +formatDay(topic.updatedAt)
+                                if(song.updatedAt)
+                                    +formatDay(song.updatedAt)
                                 else
                                     | No Data
 
                             td
-                                a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/topics/edit/${topic._id}`) Chỉnh sửa
-                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/topics/${topic._id}`) Xem chi tiết
-                                button.btn-delete.btn.btn-danger(btn-delete=topic._id) Xóa
-                                form(method="POST" action=`/admin/topics/delete/${topic._id}?_method=DELETE` id=`form-delete-${topic._id}`) 
+                                a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/songs/edit/${song._id}`) Chỉnh sửa
+                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/songs/${song._id}`) Xem chi tiết
+                                button.btn-delete.btn.btn-danger(btn-delete=song._id) Xóa
+                                form(method="POST" action=`/admin/songs/delete/${song._id}?_method=DELETE` id=`form-delete-${song._id}`) 

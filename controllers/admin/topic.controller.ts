@@ -44,13 +44,55 @@ export const createPost = async (req: CustomRequest, res: Response): Promise<voi
 export const edit = async (req: CustomRequest, res: Response): Promise<void> => {
     if(req.params.id) {
         const topic = await Topic.findById(req.params.id);
-        console.log(topic)
         res.render('admin/pages/topics/edit', {
             pageTitle: 'Chỉnh sửa chủ đề',
             topic: topic || {}
         })
     } else {
         req.flash('error', 'Không tìm thấy chủ đề')
+        res.redirect('back')
+    }
+}
+
+//[PATCH] /admin/topics/edit/:id
+export const editPatch = async (req: CustomRequest, res: Response): Promise<void> => {
+    const id = req.params.id
+    console.log(id, req.body)
+    if(validateTopic(req.body) && id) {
+        try {
+            await Topic.updateOne({
+                _id: id
+            }, req.body)
+            req.flash('success', 'Chỉnh sửa chủ đề thành công')
+            res.redirect('back')
+        } catch (error) {
+            req.flash('error', 'Không tìm thấy chủ đề')
+            res.redirect('back')
+        }
+    } else {
+        req.flash('error', 'Dữ liệu không hợp lệ')
+        res.redirect('back')
+    }
+}
+
+//[DELETE] /admin/topics/delete/:id
+export const deleteTopic = async (req: CustomRequest, res: Response): Promise<void> => {
+    const id = req.params.id
+    if(id) {
+        try {
+            await Topic.updateOne({
+                _id: id
+            }, {
+                deleted: true
+            })
+            req.flash('success', 'Xóa chủ đề thành công')
+            res.redirect('back')
+        } catch (error) {
+            req.flash('error', 'Xóa chủ đề thất bại')
+            res.redirect('back')
+        }
+    } else {
+        req.flash('error', 'id không hợp lệ')
         res.redirect('back')
     }
 }

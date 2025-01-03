@@ -30,14 +30,14 @@ if(breadcrumb && pathArray.length > 0) {
     for (let i = 1; i < pathArray.length; i++) {
         var htmlItem = ''
         var item = null;
-        const url ='/' + pathArray[0] + '/' + pathArray[i]
+        var url ='/' + pathArray[0] + '/' + pathArray[i]
         const index = pathArray[i]
 
         if(dictionary[index]) {
             item = dictionary[index]
         }
 
-        if(pathArray[i + 1].length === 24) {
+        if(pathArray[i + 1] && pathArray[i + 1].length === 24) {
             url += '/' + pathArray[i + 1]
         }
 
@@ -65,7 +65,6 @@ if(uploadImage) {
     const uploadImagePreview = uploadImage.querySelector('[upload-image-preview]');
 
     uploadImageInput.addEventListener('change', (e) => {
-
         uploadImage.children[2].style.display = 'flex';
         let file = e.target.files[0];
         
@@ -82,3 +81,37 @@ if(uploadImage) {
     })
 }
 //End Upload Image
+//Close Alert
+const showAleart = document.querySelector('[show-alert]');
+if(showAleart) {
+    const closeAlert = showAleart.querySelector('[close-alert]');
+    if(closeAlert) {
+        clearTimeout();
+        const timeAlert = showAleart.getAttribute('data-time');
+        setTimeout(() => {
+            showAleart.classList.add('alert-hidden');
+
+        }, timeAlert);
+    
+        closeAlert.addEventListener('click', (e) => {
+            showAleart.classList.add('alert-hidden');
+        })
+    }
+}
+//End Close Alert
+//Btn Xóa
+const btns = document.querySelectorAll('[btn-delete]');
+if(btns && btns.length > 0) {
+    btns.forEach(btn => {
+        const id = btn.getAttribute('btn-delete');
+        if(id) {
+            const form = document.querySelector(`#form-delete-${id}`);
+            if(form) {
+                btn.addEventListener('click', (e) => {
+                    form.submit();
+                })
+            }
+        }
+    })
+}
+//End Btn Xóa

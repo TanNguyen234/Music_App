@@ -6,6 +6,7 @@ interface TypeData {
 }
 
 export const validateTopic = (Data: TypeData): Boolean => {
+    console.log(Data.title, Data.status)
     if (!Data.title) {
         return false;
     }

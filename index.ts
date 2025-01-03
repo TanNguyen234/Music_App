@@ -1,6 +1,8 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+const methodOverride = require('method-override');
+import moment from 'moment';
 
 //Tạo thông báo
 const flash = require('express-flash');
@@ -38,6 +40,8 @@ app.locals.prefixAdmin = systemConfig.prefixAmin
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride("_method"))
+
 
 //Flash thư viện cho thông báo cho express js
 app.use(cookieParser("YSUDGSGDJSGDJ")); //key ngâu nhiên cho tăng tính bảo mật
@@ -50,6 +54,7 @@ adminRoutes(app);
 
 //App Local Variables
 app.locals.prefixAdmin = systemConfig.prefixAmin
+app.locals.moment = moment
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

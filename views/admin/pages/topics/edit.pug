@@ -3,18 +3,24 @@ include ../../mixins/alert.pug
 
 block main
   +error-alert(5000)
+  +success-alert(5000)
   h1.text-center #{pageTitle}
 
-  form(id="form-create" method="POST" action=`/${prefixAdmin}/topics/create` enctype="multipart/form-data")-// Thư viện upload multer
+  form(id="form-create" method="POST" action=`/${prefixAdmin}/topics/edit/${topic._id}?_method=PATCH` enctype="multipart/form-data")-// Thư viện upload multer
     .form-group.mb-3
       label(for="title") Tiêu đề 
       input(type="text" class="form-control" id="title" name="title" required value=topic.title)
     div(class="form-group mb-3" upload-image)
       label(for="avatar") Ảnh
       input(type="file" class="form-control-file" upload-image-input id="avatar" name="avatar" accept="image/*")
-      div(update)
-        img(src=topic.avatar class="upload-image-preview" upload-image-preview alt="")
-        span x
+      if(topic.avatar)
+        div(update)
+          img(src=topic.avatar class="upload-image-preview" upload-image-preview alt="")
+          span x
+      else 
+        div
+          img(src="" class="upload-image-preview" upload-image-preview alt="")
+          span x
 
       //-type="file" and accept="image/* và class="form-control-file" của boostrap để css
     .form-group.fix-size.mb-3
