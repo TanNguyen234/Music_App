@@ -48,6 +48,6 @@ block main
 
                             td
                                 a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/songs/edit/${song._id}`) Chỉnh sửa
-                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/songs/${song._id}`) Xem chi tiết
+                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/songs/detail/${song._id}`) Xem chi tiết
                                 button.btn-delete.btn.btn-danger(btn-delete=song._id) Xóa
                                 form(method="POST" action=`/admin/songs/delete/${song._id}?_method=DELETE` id=`form-delete-${song._id}`) 

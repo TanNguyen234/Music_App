@@ -16,7 +16,8 @@ const dictionary = {
     "settings": "Cài đặt",
     
     "create": "Tạo mới",
-    "edit": "Chỉnh sửa"
+    "edit": "Chỉnh sửa",
+    "detail": "Chi tiết",
 }
 const navItems = document.querySelectorAll('.nav .inner-menu ul li a');
 if(navItems.length > 0) {
@@ -30,7 +31,7 @@ if(breadcrumb && pathArray.length > 0) {
     for (let i = 1; i < pathArray.length; i++) {
         var htmlItem = ''
         var item = null;
-        var url ='/' + pathArray[0] + '/' + pathArray[i]
+        var url = '/' + pathArray[0]
         const index = pathArray[i]
 
         if(dictionary[index]) {
@@ -38,10 +39,12 @@ if(breadcrumb && pathArray.length > 0) {
         }
 
         if(pathArray[i + 1] && pathArray[i + 1].length === 24) {
-            url += '/' + pathArray[i + 1]
+            url = url +  '/' + pathArray[i - 1] + '/' + pathArray[i] + '/' + pathArray[i + 1]
+        } else {
+            url += '/' + pathArray[i]
         }
 
-        if(i === pathArray.length - 1) {
+        if(i === pathArray.length - 1 || (pathArray[i + 1] && pathArray[i + 1].length === 24)) {
             htmlItem = `
                 <li class="breadcrumb-item active" aria-current="page">${item ? item : index}</li>
             `
@@ -54,6 +57,9 @@ if(breadcrumb && pathArray.length > 0) {
         }
         
         breadcrumb.insertAdjacentHTML('beforeend', htmlItem);
+        if(pathArray[i + 1] && pathArray[i + 1].length === 24) {
+            break;
+        }
     }
 }
 //End Breadcrumb

@@ -96,3 +96,19 @@ export const deleteTopic = async (req: CustomRequest, res: Response): Promise<vo
         res.redirect('back')
     }
 }
+
+//[GET] /admin/topics/detail/:id
+export const detail = async (req: Request, res: Response): Promise<void> => {
+    const topic = await Topic.findOne({
+        _id: req.params.id,
+        deleted: false
+    })
+    if(topic) {
+        res.render('admin/pages/topics/detail', {
+            pageTitle: 'Chi tiết chủ đề',
+            topic: topic
+        })   
+    } else {
+        res.redirect('back')
+    }
+}

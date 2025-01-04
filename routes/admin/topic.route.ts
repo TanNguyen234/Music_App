@@ -50,4 +50,6 @@ router.delete(
   handler(controller.deleteTopic)
 );
 
+router.get("/detail/:id", controller.detail);
+
 export const topicRoutes: Router = router;

@@ -48,6 +48,6 @@ block main
 
                             td
                                 a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/topics/edit/${topic._id}`) Chỉnh sửa
-                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/topics/${topic._id}`) Xem chi tiết
+                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/topics/detail/${topic._id}`) Xem chi tiết
                                 button.btn-delete.btn.btn-danger(btn-delete=topic._id) Xóa
                                 form(method="POST" action=`/admin/topics/delete/${topic._id}?_method=DELETE` id=`form-delete-${topic._id}`) 
