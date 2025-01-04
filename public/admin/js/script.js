@@ -121,3 +121,33 @@ if(btns && btns.length > 0) {
     })
 }
 //End Btn Xóa
+//Upload Audio
+const uploadAudio = document.querySelector('[upload-audio]');
+
+if(uploadAudio) {
+    const uploadAudioInput = uploadAudio.querySelector('[upload-audio-input]');
+    const uploadAudioPlay = uploadAudio.querySelector('audio[upload-audio-play]');
+    const source = uploadAudioPlay.querySelector('source');
+    const update = uploadAudio.querySelector('[update]');
+
+    uploadAudioInput.addEventListener('change', (e) => {
+        uploadAudio.children[2].style.display = 'flex';
+        let file = e.target.files[0];
+
+        if(file) {
+            source.src = URL.createObjectURL(file)//Hàm tạo đường dẫn
+            uploadAudioPlay.load()
+        }        
+    })
+
+    const x = uploadAudio.querySelector('span')
+
+    x.addEventListener('click', () => {
+        update.style.display = 'none';
+        source.src = ""
+        uploadAudioInput.value = "";
+        uploadAudioPlay.pause(); // Pause the audio if it's playing
+        uploadAudioPlay.currentTime = 0; // Reset playback to the beginning
+    })
+}
+//End Upload Audio

@@ -36,7 +36,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 //App Local Variables
-app.locals.prefixAdmin = systemConfig.prefixAmin
+app.locals.prefixAdmin = systemConfig.prefixAdmin
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -53,7 +53,7 @@ clientRoutes(app);
 adminRoutes(app);
 
 //App Local Variables
-app.locals.prefixAdmin = systemConfig.prefixAmin
+app.locals.prefixAdmin = systemConfig.prefixAdmin
 app.locals.moment = moment
 
 app.listen(port, () => {

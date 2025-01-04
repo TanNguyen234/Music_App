@@ -16,6 +16,10 @@ let streamUpload = (buffer: any, mimetype: string) => {
     // Xác định resource_type dựa vào mimetype
     let resourceType: 'image' | 'video' | 'raw' | 'auto' = 'image';
 
+    if (mimetype.startsWith('audio/') || mimetype.startsWith('video/')) {
+      resourceType = 'video'; // Nếu là âm thanh hoặc video
+    }
+
     // Tạo một PassThrough stream để xử lý buffer
     const passthrough = new stream.PassThrough();
     passthrough.end(buffer);

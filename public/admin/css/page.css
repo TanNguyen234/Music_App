@@ -98,7 +98,7 @@ img[upload-image-preview] + span {
   margin: 10px;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 10px var(--text);
 }
 .topic-detail .inner-title {
   font-size: 28px;
@@ -137,7 +137,51 @@ img[upload-image-preview] + span {
 
 .topic-detail .inner-desc .inner-text {
   font-size: 14px;
-  white-space: pre;
+  white-space: wrap;
+  text-overflow: clip;
 }
 /* End Topic Detail */
 /* End Topic  */
+
+/* Song  */
+/* Play Audio  */
+div[upload-audio] div {
+  position: relative;
+  width: 300px;
+  height: auto;
+  margin: 4px;
+  display: none;
+}
+
+div[upload-audio] div.hadValue {
+  display: block;
+}
+
+div[upload-audio] div[update] {
+  display: block;
+}
+
+audio[upload-audio-play] {
+  display: inline-block;
+}
+
+audio[upload-audio-play] + span {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  color: #ffffff;
+  background-color: #000;
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  top: 10px;
+  right: -10%;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+}
+
+/* End Play Audio */
+/* End Song  */

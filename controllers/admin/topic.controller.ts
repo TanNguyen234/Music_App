@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import Topic from "../../model/topic.model"
 import { validateTopic } from "../../validates/validate-topic.validate"
+import { systemConfig } from "../../config/config"
 
 //[GET] /admin/topics
 export const index = async (req: Request, res: Response): Promise<void> => {
@@ -23,6 +24,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 
 export interface CustomRequest extends Request {
     file: any;
+    files: any;
     flash: (type: string, message: string) => void;
 }
 
@@ -33,7 +35,7 @@ export const createPost = async (req: CustomRequest, res: Response): Promise<voi
         const newTopic = new Topic(req.body)
         await newTopic.save()
         req.flash('success', 'Tạo chủ đề mới thành công')
-        res.redirect('/admin/topics')
+        res.redirect(`/${systemConfig.prefixAdmin}/topics`)
     } else {
         req.flash('error', 'Dữ liệu không hợp lệ')
         res.redirect('back')
