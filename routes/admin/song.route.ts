@@ -32,25 +32,21 @@ router.post(
   handler(controller.createPost)
 );
 
-// router.get("/edit/:id", handler(controller.edit));
+router.get("/edit/:id", handler(controller.edit));
 
-// router.patch(
-//   "/edit/:id",
-//   upload.single("avatar"),
-//   handler(middleware.uploadToCloud),
-//   handler(controller.editPatch)
-// );
+router.patch(
+  "/edit/:id",
+  upload.fields([
+    { name: "avatar", maxCount: 1 },
+    { name: "audio", maxCount: 1 },
+  ]),
+  handler(middleware.uploadToCloud),
+  handler(controller.editPatch)
+);
 
-// router.patch(
-//   "/edit/:id",
-//   upload.single("avatar"),
-//   handler(middleware.uploadToCloud),
-//   handler(controller.editPatch)
-// );
-
-// router.delete(
-//   "/delete/:id",
-//   handler(controller.deleteTopic)
-// );
+router.delete(
+  "/delete/:id",
+  handler(controller.deleteSong)
+);
 
 export const songRoutes: Router = router;
