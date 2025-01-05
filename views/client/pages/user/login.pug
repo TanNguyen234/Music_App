@@ -1,0 +1,20 @@
+extends ../../layouts/formUser.pug
+include ../../mixins/alert.pug
+
+block main 
+    +error-alert(5000)
+    
+    .container-fluid.d-flex.justify-content-center.align-items-center
+      .form
+        h1(class='text-center') Đăng nhập 
+        form(action=`/user/login` method="POST")
+          div
+            label(for="email") Email
+            input(type="email" id="email" name="email" required)
+          div
+            label(for="password") Mật khẩu
+            input(type="password" id="password" name="password" required)
+          div
+            button(type="submit") Đăng nhập
+          .text-center
+            a(href='/user/password/forgot' class='text-center') Quên mật khẩu?

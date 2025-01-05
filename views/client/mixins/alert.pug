@@ -1,0 +1,9 @@
+mixin success-alert(time)
+ - if (messages.success)//- message là có sẵn còn success là key mình định nghĩa bên controller
+    .message.info
+      div(class="alert alert-success" show-alert data-time=time) #{messages.success} <span close-alert>x</span>
+
+mixin error-alert(time)
+ - if (messages.error)//- message là có sẵn còn success là key mình định nghĩa bên controller
+    .message.info
+      div(class="alert alert-danger" show-alert data-time=time) #{messages.error} <span close-alert>x</span>

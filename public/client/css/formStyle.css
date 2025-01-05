@@ -1,0 +1,104 @@
+:root {
+  --light-purple: #bb70ad;
+  --dark-purple: #310623;
+  --text: #1a1a1a;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+body {
+  background: linear-gradient(
+    to right,
+    #080710,
+    var(--text));
+  font-family: Arial, sans-serif;
+  padding-top: 130px;
+  scrollbar-width: none;
+}
+
+.form {
+  width: 400px;
+  height: auto;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.1);
+  padding: 50px 35px;
+  position: relative;
+  border: 2px solid;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.form * {
+  z-index: 100;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+.form::before {
+  content: "";
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  background: linear-gradient(
+        #1845ad,
+        #23a2f6
+    );
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  z-index: 1;
+}
+
+.form::after {
+  content: "";
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+    background: linear-gradient(
+        to right,
+        #ff512f,
+        #f09819
+    );
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  z-index: 1;
+}
+
+.form input {
+  display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07) !important;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+.form h1,
+.form label,
+.form input::placeholder {
+  color: #fff;
+}
+
+.form button{
+  margin-top: 50px;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+}
