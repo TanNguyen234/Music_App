@@ -5,16 +5,19 @@ block main
     +error-alert(5000)
     
     .container-fluid.d-flex.justify-content-center.align-items-center
-      .form
-        h1(class='text-center') Đăng nhập 
-        form(action=`/user/login` method="POST")
+       .containerForm
+         .ballon-top           
+         form(action=`/user/login` method="POST" autocomplete="off" class="form")
+          h1(class='text-center') Đăng nhập
           div
             label(for="email") Email
-            input(type="email" id="email" name="email" required)
+            input(type="text" id="email" name="email" required)
           div
             label(for="password") Mật khẩu
-            input(type="password" id="password" name="password" required)
+            input(type="text" id="password" name="password" minlength="8" maxlength="20" required)
           div
             button(type="submit") Đăng nhập
-          .text-center
-            a(href='/user/password/forgot' class='text-center') Quên mật khẩu?
+          .button-sub
+            a(href='/user/register') Tạo tài khoản mới?
+            a(href='/user/password/forgot') Quên mật khẩu?
+         .ballon-bottom 
