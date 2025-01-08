@@ -14,3 +14,18 @@ export const login = (req: Request, res: Response) => {
         pageTitle: 'Trang đăng nhập',
     })
 }
+
+//[GET] /user/password/forgot
+export const forgot = (req: Request, res: Response) => {
+    res.render('client/pages/user/forgotPassword', {
+        pageTitle: 'Trang gửi otp',
+    })
+}
+
+
+//[GET] /user/password/change
+export const change = (req: Request, res: Response) => {
+    res.render('client/pages/user/changePassword', {
+        pageTitle: 'Trang đổi mật khẩu',
+    })
+}
