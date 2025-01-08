@@ -8,6 +8,14 @@ export const register = (req: Request, res: Response) => {
     })
 }
 
+//[POST] /user/register
+export const registerPost = (req: Request, res: Response) => {
+    
+    res.render('client/pages/user/register', {
+        pageTitle: 'Trang đăng ký',
+    })
+}
+
 //[GET] /user/login
 export const login = (req: Request, res: Response) => {
     res.render('client/pages/user/login', {

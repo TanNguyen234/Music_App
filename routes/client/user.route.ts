@@ -4,6 +4,8 @@ import * as controller from '../../controllers/client/user.controller'
 
 router.get("/register", controller.register);
 
+router.post("/register", controller.registerPost);
+
 router.get("/login", controller.login);
 
 router.get("/password/forgot", controller.forgot);
