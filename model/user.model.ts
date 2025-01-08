@@ -1,7 +1,10 @@
 import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({//Thiết lập schema
+  fullName: String,
   email: String,
+  password: String,
+  avatar: String,
   otp: String,
   status: String,
   slug: {
