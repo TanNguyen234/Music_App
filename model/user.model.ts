@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({//Thiết lập schema
   password: String,
   avatar: String,
   otp: String,
+  token: String,
   status: String,
   slug: {
     type: String,

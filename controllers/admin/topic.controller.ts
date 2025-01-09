@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Topic from "../../model/topic.model";
 import { validateTopic } from "../../validates/validate-topic.validate";
 import { systemConfig } from "../../config/config";
+import { CustomRequest } from "../../interface/CustomRequest";
 
 //[GET] /admin/topics
 export const index = async (req: Request, res: Response): Promise<void> => {
@@ -21,12 +22,6 @@ export const create = async (req: Request, res: Response): Promise<void> => {
     pageTitle: "Tạo chủ đề mới",
   });
 };
-
-export interface CustomRequest extends Request {
-  file: any;
-  files: any;
-  flash: (type: string, message: string) => void;
-}
 
 //[POST] /admin/topics/create
 export const createPost = async (

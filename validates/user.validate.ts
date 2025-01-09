@@ -14,25 +14,50 @@ interface Data {
 export const valideRegiter = async (data: Data): Promise<Boolean> => {
   try {
     const { fullName, email, password } = data;
-    if (!fullName || !email || !password || isValidEmail(email)) {
-      throw new Error("invalid")
+    if (!fullName || !email || !password || !isValidEmail(email)) {
+      throw new Error("invalid");
     }
 
     if (
       fullName.length < 8 ||
-      fullName.length > 12 ||
+      fullName.length > 20 ||
       password.length < 8 ||
-      password.length > 12
+      password.length > 20
     ) {
-        throw new Error("invalid")
+      throw new Error("invalid");
     }
 
     const emailExist = await User.findOne({
       email: email,
     });
 
-    if(emailExist) {
-        throw new Error("invalid")
+    if (emailExist) {
+      throw new Error("invalid");
+    } else {
+      return true;
+    }
+  } catch (err) {
+    return false;
+  }
+};
+
+interface Data2 {
+  email: string;
+  password: string;
+}
+
+export const validateLogin = async (data: Data2): Promise<Boolean> => {
+  try {
+    const { email, password } = data;
+    if (!email || !password || !isValidEmail(email)) {
+      throw new Error("invalid");
+    }
+
+    if (
+      password.length < 8 ||
+      password.length > 20
+    ) {
+      throw new Error("invalid");
     }
 
     return true;

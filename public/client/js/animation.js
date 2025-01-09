@@ -1,3 +1,22 @@
+//Close Alert
+const showAleart = document.querySelector('[show-alert]');
+if(showAleart) {
+    const closeAlert = showAleart.querySelector('[close-alert]');
+    if(closeAlert) {
+        clearTimeout();
+        const timeAlert = showAleart.getAttribute('data-time');
+        setTimeout(() => {
+            showAleart.classList.add('alert-hidden');
+
+        }, timeAlert);
+    
+        closeAlert.addEventListener('click', (e) => {
+            showAleart.classList.add('alert-hidden');
+        })
+    }
+}
+//End Close Alert
+
 //Header Nav
 const headerNav = document.querySelectorAll(".header__nav ul li");
 

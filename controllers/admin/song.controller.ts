@@ -3,6 +3,7 @@ import Topic from "../../model/topic.model";
 import Song from "../../model/song.model";
 import { validateSong } from "../../validates/song.validate";
 import { systemConfig } from "../../config/config";
+import { CustomRequest } from "../../interface/CustomRequest";
 
 //[GET] /admin/songs
 export const index = async (req: Request, res: Response): Promise<void> => {
@@ -26,12 +27,6 @@ export const create = async (req: Request, res: Response): Promise<void> => {
     topics: topics || [],
   });
 };
-
-export interface CustomRequest extends Request {
-  files: any;
-  file: any;
-  flash: (type: string, message: string) => void;
-}
 
 //[POST] /admin/songs/createPost
 export const createPost = async (

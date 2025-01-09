@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express"
 import { uploadToCloudinary } from "../helpers/uploadToCloudinary";
-import { CustomRequest } from "../controllers/admin/topic.controller";
+import { CustomRequest } from "../interface/CustomRequest";
 
 export const uploadToCloud = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
     if (req.file) {
