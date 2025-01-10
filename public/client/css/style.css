@@ -1,65 +1,14 @@
-
-/* Alert  */
-[show-alert] {
-  position: fixed;
-  top: 70px;
-  right: 15px;
-  z-index: 9999;
-}
-
-[show-alert].alert-hidden {
-  animation: alert-hidden 0.5s both;
-}
-
-@keyframes alert-hidden {
-  from {
-    right: 15px;
-  }
-
-  to {
-    right: -100%;
-  }
-}
-
-[show-alert] [close-alert] {
-  background: #ffffc4;
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  text-align: center;
-  font-weight: 600;
-  border-radius: 50%;
-  cursor: pointer;
-}
-/* End Alert  */
-
 :root {
   --light-purple: #bb70ad;
   --dark-purple: #310623;
   --text: #1a1a1a;
 }
 
-* {
-  scrollbar-width: none;
-}
-
-a, a:hover, a:focus {
-  text-decoration: none;
-}
-
-body {
-  background-color: #000;
-  color: white;
-  font-family: Arial, sans-serif;
-  padding-top: 200px;
-  scrollbar-width: none;
-}
-
 /* Header */
 .header .row {
   height: 100px;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -175,33 +124,33 @@ body {
 }
 /* Hiệu ứng cho đoạn p thứ nhất */
 
-.dashboard__content p:nth-of-type(1) span:first-child {
+body.loaded .dashboard__content p:nth-of-type(1) span:first-child {
   animation: textFill 0.5s ease-in-out forwards;
   animation-delay: 0s;
 }
 
-.dashboard__content p:nth-of-type(1) span:nth-child(2) {
+body.loaded .dashboard__content p:nth-of-type(1) span:nth-child(2) {
   animation: textFill 0.7s ease-in-out forwards;
   animation-delay: 0.2s;
 }
 
-.dashboard__content p:nth-of-type(1) span:last-child {
+body.loaded .dashboard__content p:nth-of-type(1) span:last-child {
   animation: textFill 0.9s ease-in-out forwards;
   animation-delay: 0.4s;
 }
 
 /* Hiệu ứng cho đoạn p thứ hai */
-.dashboard__content p:nth-of-type(2) span:first-child {
+body.loaded .dashboard__content p:nth-of-type(2) span:first-child {
   animation: textFill 0.5s ease-in-out forwards;
   animation-delay: 0.8s; /* Bắt đầu sau khi p1 hoàn tất */
 }
 
-.dashboard__content p:nth-of-type(2) span:nth-child(2) {
+body.loaded .dashboard__content p:nth-of-type(2) span:nth-child(2) {
   animation: textFill 0.7s ease-in-out forwards;
   animation-delay: 1s;
 }
 
-.dashboard__content p:nth-of-type(2) span:last-child {
+body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
   animation: textFill 0.9s ease-in-out forwards;
   animation-delay: 1.2s;
 }

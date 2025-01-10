@@ -1,10 +1,7 @@
 //Lazy loading
-function loadDelayed() {
-    const tag = "<script src='delayed.js'></script>";
-    document.querySelector("head").insertAdjacentHTML("beforeend", tag);
-  }
-  // E.g. trigger via timeout after 5 seconds
-  setTimeout(loadDelayed, 5000);
+window.addEventListener("load", () => {
+ document.body.classList.add("loaded");
+}); 
 //End Lazy loading
 const inputs = document.querySelectorAll("input");
 window.addEventListener('DOMContentLoaded', () => {

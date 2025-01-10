@@ -1,60 +1,11 @@
-
-/* Alert  */
-[show-alert] {
-  position: fixed;
-  top: 70px;
-  right: 15px;
-  z-index: 9999;
-}
-
-[show-alert].alert-hidden {
-  animation: alert-hidden 0.5s both;
-}
-
-@keyframes alert-hidden {
-  from {
-    right: 15px;
-  }
-
-  to {
-    right: -100%;
-  }
-}
-
-[show-alert] [close-alert] {
-  background: #ffffc4;
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  text-align: center;
-  font-weight: 600;
-  border-radius: 50%;
-  cursor: pointer;
-}
-/* End Alert  */
-
 :root {
   --light-purple: #bb70ad;
   --dark-purple: #310623;
   --text: #1a1a1a;
 }
 
-* {
-  scrollbar-width: none;
-}
-
-a,
-a:hover,
-a:focus {
-  text-decoration: none;
-}
-
 body {
-  background: linear-gradient(to right, #080710, var(--text));
-  font-family: Arial, sans-serif;
   padding-top: 0;
-  scrollbar-width: none;
 }
 
 .containerForm {

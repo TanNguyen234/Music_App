@@ -1,3 +1,5 @@
+
+
 // li.breadcrumb-item.active(aria-current="page") Quản lý chủ đề
 //Breadcrumb
 const breadcrumb = document.querySelector('.breadcrumb');

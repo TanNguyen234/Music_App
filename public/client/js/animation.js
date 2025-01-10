@@ -1,19 +1,18 @@
 //Close Alert
-const showAleart = document.querySelector('[show-alert]');
-if(showAleart) {
-    const closeAlert = showAleart.querySelector('[close-alert]');
-    if(closeAlert) {
-        clearTimeout();
-        const timeAlert = showAleart.getAttribute('data-time');
-        setTimeout(() => {
-            showAleart.classList.add('alert-hidden');
+const showAleart = document.querySelector("[show-alert]");
+if (showAleart) {
+  const closeAlert = showAleart.querySelector("[close-alert]");
+  if (closeAlert) {
+    clearTimeout();
+    const timeAlert = showAleart.getAttribute("data-time");
+    setTimeout(() => {
+      showAleart.classList.add("alert-hidden");
+    }, timeAlert);
 
-        }, timeAlert);
-    
-        closeAlert.addEventListener('click', (e) => {
-            showAleart.classList.add('alert-hidden');
-        })
-    }
+    closeAlert.addEventListener("click", (e) => {
+      showAleart.classList.add("alert-hidden");
+    });
+  }
 }
 //End Close Alert
 
@@ -91,37 +90,50 @@ if (headerLogin) {
 // End Header Login
 //Dashboard Content
 const dashboardContent = document.querySelectorAll(".dashboard__animation div");
-
-if (dashboardContent.length > 0) {
-  dashboardContent.forEach((item) => {
-    anime({
-      targets: item,
-      translateX: function (el) {
-        return anime.random(-250, 250);
-      },
-      translateY: function (el, i) {
-        return anime.random(-250, 250) + anime.random(-250, 250) * i;
-      },
-      scale: function (el, i, l) {
-        return l - i + 0.25;
-      },
-      rotate: function () {
-        return anime.random(-360, 360);
-      },
-      borderRadius: function () {
-        return ["50%", anime.random(10, 35) + "%"];
-      },
-      duration: function () {
-        return anime.random(1200, 1800);
-      },
-      delay: function () {
-        return anime.random(0, 400);
-      },
-      direction: "alternate",
-      loop: true,
-    });
-  });
+const lazytime = 1100;
+function runAnimation() {
+  setTimeout(() => {
+    if (dashboardContent.length > 0) {
+      dashboardContent.forEach((item) => {
+        anime({
+          targets: item,
+          translateX: function (el) {
+            return anime.random(-250, 250);
+          },
+          translateY: function (el, i) {
+            return anime.random(-250, 250) + anime.random(-250, 250) * i;
+          },
+          scale: function (el, i, l) {
+            return l - i + 0.25;
+          },
+          rotate: function () {
+            return anime.random(-360, 360);
+          },
+          borderRadius: function () {
+            return ["50%", anime.random(10, 35) + "%"];
+          },
+          duration: function () {
+            return anime.random(1200, 1800);
+          },
+          delay: function () {
+            return anime.random(0, 400);
+          },
+          direction: "alternate",
+          loop: true,
+        });
+      });
+    }
+  }, lazytime);
 }
+
+if (document.readyState === "complete") {
+  // Nếu trạng thái đã là "complete", chạy luôn
+  runAnimation();
+} else {
+  // Nếu chưa, đợi sự kiện load
+  window.addEventListener("load", runAnimation);
+}
+
 //End Dashboard Content
 //Introduction
 const items = document.querySelectorAll(".introduction__desc--in");
