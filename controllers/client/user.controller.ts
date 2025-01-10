@@ -24,10 +24,14 @@ export const registerPost = async (req: CustomRequest, res: Response, next: Next
                 email: req.body.email,
                 token: generateRandomString(20),
                 password: hashedPassword,
+                status: "active"                
             }
 
             const user = new User(data)
             await user.save()
+
+            res.cookie("tokenUser", user.token);
+
             req.flash("success", "Chúc mừng bạn đã đăng ký thành công")
             res.redirect("/")
         } catch(err) {
@@ -60,6 +64,7 @@ export const loginPost = async (req: CustomRequest, res: Response): Promise<void
                 throw new Error(`User ${email} does not exist`);
             } else {
                 if(await argon2.verify(userExist.password as string, password)) {
+                    res.cookie("tokenUser", userExist.token);
                     req.flash("success", "Chúc mừng bạn đã đăng ký thành công")
                     res.redirect("/")
                 } else {
@@ -74,6 +79,12 @@ export const loginPost = async (req: CustomRequest, res: Response): Promise<void
         req.flash("error", "Dữ liệu nhập vào không hợp lệ!")
         res.redirect(req.get("Referrer") || "/")
     }
+}
+
+//[GET] /user/logout
+export const logout = (req: Request, res: Response) => {
+    res.clearCookie("tokenUser");
+    res.redirect(req.get("Referrer") || "/")
 }
 
 //[GET] /user/password/forgot
