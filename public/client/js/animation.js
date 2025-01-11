@@ -21,28 +21,34 @@ const headerNav = document.querySelectorAll(".header__nav ul li");
 
 if (headerNav.length > 0) {
   headerNav.forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      item.querySelector("a").style.color = "#fff";
-      anime({
-        targets: item,
-        translateY: [-10, 0, 10, 0],
-        opacity: [1, 0, 0, 1],
-        duration: 600,
-        easing: "linear",
-        easing: "easeInOutQuad",
+    const nextItem = item.querySelector('a');
+    if(nextItem.getAttribute('href') === window.location.pathname) {
+      nextItem.classList.add('active')
+    }
+    if(!nextItem.classList.contains('active')) {
+      item.addEventListener("mouseenter", () => {
+        item.querySelector("a").style.color = "#fff";
+        anime({
+          targets: item,
+          translateY: [-10, 0, 10, 0],
+          opacity: [1, 0, 0, 1],
+          duration: 600,
+          easing: "linear",
+          easing: "easeInOutQuad",
+        });
       });
-    });
-    item.addEventListener("mouseout", () => {
-      anime({
-        targets: item,
-        translateY: 0,
-        duration: 100,
-        easing: "linear",
+      item.addEventListener("mouseout", () => {
+        anime({
+          targets: item,
+          translateY: 0,
+          duration: 100,
+          easing: "linear",
+        });
       });
-    });
-    item.addEventListener("mouseleave", () => {
-      item.querySelector("a").style.color = "gray";
-    });
+      item.addEventListener("mouseleave", () => {
+        item.querySelector("a").style.color = "gray";
+      });
+    }
   });
 }
 //End Header Nav
@@ -164,5 +170,4 @@ if (windows.length > 0) {
 }
 //End Introduction
 //Feature horizontal-scroll
-
 //End Feature horizontal-scroll

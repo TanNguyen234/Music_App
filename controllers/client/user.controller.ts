@@ -65,18 +65,18 @@ export const loginPost = async (req: CustomRequest, res: Response): Promise<void
             } else {
                 if(await argon2.verify(userExist.password as string, password)) {
                     res.cookie("tokenUser", userExist.token);
-                    req.flash("success", "Chúc mừng bạn đã đăng ký thành công")
+                    req.flash("success", "Chúc mừng bạn đã đăng nhập thành công")
                     res.redirect("/")
                 } else {
                     throw new Error("invalid");
                 }
             }
         } catch(err) {
-            req.flash("error", "Dữ liệu nhập vào không hợp lệ!")
+            req.flash("error", "Vui lòng nhập lại!")
             res.redirect(req.get("Referrer") || "/")
         }
     } else {
-        req.flash("error", "Dữ liệu nhập vào không hợp lệ!")
+        req.flash("error", "Vui lòng nhập lại!")
         res.redirect(req.get("Referrer") || "/")
     }
 }

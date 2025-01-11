@@ -3,4 +3,21 @@ include ../../mixins/alert.pug
 
 block main 
     +success-alert(5000)
-    .container Trang topic
+    .topic__container 
+        .topic__title 
+            p 
+                span 
+                    i C
+                span ontent 
+                span That 
+            p   
+                span 
+                    i I
+                span nspires
+                span action
+        .topic__content
+            if(topics.length > 0)
+                each topic in topics
+                    a(class="topic__card" href=`/topics/${topic._id}`)
+                        h3=topic.title
+                        img(width="100px", height="" src=topic.avatar)
