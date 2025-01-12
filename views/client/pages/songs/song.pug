@@ -7,18 +7,14 @@ block main
     .topic__container 
         .topic__title 
             p 
-                span 
-                    i C
-                span ontent 
-                span That 
+                span with 
+                span <i>p</i>assion 
+
             p   
-                span 
-                    i I
-                span nspires
-                span action
+                span and 
+                span <i>p</i>urpose
         .topic__content
-            if(topics.length > 0)
-                each topic in topics
-                    a(class="topic__card" href=`/songs?id=${topic._id}`)
+            if(topic)
+                    a(class="topic__card" href=`/songs/${topic._id}`)
                         img(class="topic_img" src=topic.avatar)
                         div(class="topic__title--small")=topic.title
