@@ -19,3 +19,20 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 //End Chặn auto fill
+//Aplayer 
+const aplayer = document.getElementById('aplayer');
+if(aplayer) {
+  const dataSong = JSON.parse(aplayer.getAttribute('data-song'));
+  console.log(dataSong);
+  const ap = new APlayer({
+  container: document.getElementById('aplayer'),
+  audio: [{
+      name: dataSong.title,
+      artist: 'artist',
+      url: dataSong.audio,
+      cover: dataSong.avatar,
+      lrcType: 3,
+  }]
+});
+}
+//End Aplayer

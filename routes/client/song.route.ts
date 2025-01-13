@@ -5,4 +5,6 @@ import { returnCustomRequest } from "../../interface/CustomRequest";
 
 router.get("/", returnCustomRequest(controller.index));
 
+router.get("/:id", returnCustomRequest(controller.listen));
+
 export const songRoutes: Router = router;

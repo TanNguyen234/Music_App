@@ -1,0 +1,15 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+    +success-alert(5000)
+    +error-alert(5000)
+    .container
+        if(song)
+            .box-listen
+                .box-listen__content
+                    h2 #{song.title}
+                    p #{song.artist}
+                    img(src=song.avatar, alt=song.title)
+                .box-listen__listening
+                    div(id="aplayer" data-song=song data-singer=singer)
