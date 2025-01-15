@@ -401,35 +401,56 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
   border-radius: 10px;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  text-overflow: ellipsis;
 }
 
-.topic__card img {
-  border-radius: 10px 10px 0 0;
+.topic__card .topic__img {
   width: 100%;
   height: 50%;
+  transition: 0.6s;
+}
+
+.topic__card:hover .topic__img {
+ height: 100%;
+}
+
+.topic__img img {
+  border-radius: 10px 10px 0 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  position: absolute;
 }
 
 .topic__card:hover img {
-  height: 100%;
+  border-radius: 10px;
   transition: 0.6s;
-  border-radius: 10px 10px 10px 10px;
+}
+
+.topic__card--content {
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.topic__card:hover .topic__card--content {
+  transition: 0.6s;
+  font-weight: 600;
+  font-size: 18px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
 }
 
 .topic__card:hover .topic__title--small {
-  top: 49%;
-  font-weight: 600;
-  font-size: 18px;
+ text-shadow: #1a1a1a;
 }
 
-.topic__card .topic__title--small {
-  position: absolute;
-  text-overflow: ellipsis;
+.topic__card .topic__card--content .topic__title--small {
   color: #fff;
-  bottom: 0;
-  white-space: nowrap;
-  display: inline-block;
 }
 /* End Topic  */
 /* Song  */
@@ -496,3 +517,49 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
   margin-top: 20px;
 }
 /* End Song  */
+
+/* Listen Page  */
+.box-listen__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-listen__content .box-listen__img {
+  width: 400px;
+  height: 200px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border: 3px solid #ccc;
+}
+
+.box-listen__img img {
+  width: 100%;
+  height: 100%;
+}
+
+.box-listen__like, .box-listen__visit , .box-listen__singer {
+  font-size: 16px;
+  color: #6d6565;
+}
+
+.box-listen__like {
+  cursor: pointer;
+}
+
+.box-listen__like i {
+  color: rgb(170, 13, 13);
+}
+
+.box-listen__visit i {
+  color: rgb(28, 28, 137);
+}
+
+button[button-add-playlist] {
+  transition: 0.6s;
+  padding: 5px;
+  border: 0;
+  border-radius: 5px;
+  background: var(--light-purple);
+}
+/* End Listen Page  */

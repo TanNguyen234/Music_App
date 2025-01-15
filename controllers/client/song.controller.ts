@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Topic from "../../model/topic.model";
 import Song from "../../model/song.model";
 import { CustomRequest } from "../../interface/CustomRequest";
+import User from "../../model/user.model";
 
 //[GET] /songs
 export const index = async (req: CustomRequest, res: Response): Promise<void> => {
@@ -55,9 +56,15 @@ export const listen = async (req: CustomRequest, res: Response): Promise<void> =
       req.flash('error', "id bài hát không hợp lệ!")
       res.redirect("/songs");
     } else {
+      var inPlayList = false;
+      const checkInPlayList = await User.find({
+        playlist: {$in: [id]}
+      })
+      if(inPlayList) inPlayList = true;
       res.render('client/pages/songs/listen', {
         pageTitle: "Nghe bài hát",
         song: song,
+        inPlayList: inPlayList
       })
     }
   } else {

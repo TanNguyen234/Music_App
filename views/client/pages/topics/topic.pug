@@ -20,5 +20,7 @@ block main
             if(topics.length > 0)
                 each topic in topics
                     a(class="topic__card" href=`/songs?id=${topic._id}`)
-                        img(class="topic_img" src=topic.avatar)
-                        div(class="topic__title--small")=topic.title
+                        .topic__img
+                            img(src=topic.avatar)
+                        .topic__card--content
+                             div(class="topic__title--small")=topic.title
