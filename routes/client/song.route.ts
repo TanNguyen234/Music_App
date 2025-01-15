@@ -7,4 +7,6 @@ router.get("/", returnCustomRequest(controller.index));
 
 router.get("/:id", returnCustomRequest(controller.listen));
 
+router.get("/:id/eventSong", controller.eventSong);
+
 export const songRoutes: Router = router;

@@ -45,3 +45,15 @@ if (aplayer) {
   });
 }
 //End Aplayer
+
+//Nút yêu thích 
+const buttonLove = document.querySelector('.box-listen__like i');
+
+if (buttonLove) {
+  buttonLove.addEventListener('click', () => {
+    buttonLove.classList.toggle('fa-solid');
+    
+  });
+}
+
+//End Nút yêu thích

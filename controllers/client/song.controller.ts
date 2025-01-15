@@ -35,7 +35,6 @@ export const index = async (req: CustomRequest, res: Response): Promise<void> =>
     status: "active",
     deleted: false
   }).select("title")
-  console.log(id, topic, songs)
   res.render("client/pages/songs/song", {
     pageTitle: "Trang bài hát",
     topics: topics || [],
@@ -57,10 +56,14 @@ export const listen = async (req: CustomRequest, res: Response): Promise<void> =
       res.redirect("/songs");
     } else {
       var inPlayList = false;
+
       const checkInPlayList = await User.find({
+        token: req.cookies.tokenUser,
         playlist: {$in: [id]}
       })
-      if(inPlayList) inPlayList = true;
+
+      if(checkInPlayList) inPlayList = true;
+
       res.render('client/pages/songs/listen', {
         pageTitle: "Nghe bài hát",
         song: song,
@@ -70,4 +73,8 @@ export const listen = async (req: CustomRequest, res: Response): Promise<void> =
   } else {
     res.redirect('/topics')
   }
+}
+
+export const eventSong = async (req: Request, res: Response): Promise<void> => {
+  
 }

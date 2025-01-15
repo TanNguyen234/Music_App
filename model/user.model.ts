@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({//Thiết lập schema
   otp: String,
   token: String,
   status: String,
+  playlist: Array,
   slug: {
     type: String,
     slug: "fullName",

@@ -12,7 +12,7 @@ const clientRoutes = (app: Express): void => {
   app.use('/', dashboardRoutes)
   app.use('/user', userRoutes)
   app.use('/topics', topicRoutes)
-  app.use('/songs', songRoutes)
+  app.use('/songs', requireAuth, songRoutes)
 }
 
 export default clientRoutes;
