@@ -42,6 +42,17 @@ if (aplayer) {
       },
     ],
   });
+
+  //Spin
+  const avatar = document.querySelector('.aplayer-pic');
+
+  ap.on('play', () => {
+      avatar.style.animationPlayState = "running"
+  })
+
+  ap.on('pause', () => {
+      avatar.style.animationPlayState = "paused"
+  })
 }
 //End Aplayer
 

@@ -534,6 +534,31 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
   border: 3px solid #ccc;
 }
 
+.aplayer-pic {
+  animation: animation-spin 12s linear infinite paused;
+  border-radius: 50%;
+  border: 0;
+}
+
+@keyframes animation-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.box-listen__content--small {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.aplayer-title {
+  color: #000;
+  font-size: 17px;
+}
+
 .box-listen__img img {
   width: 100%;
   height: 100%;

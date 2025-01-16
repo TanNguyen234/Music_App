@@ -10,7 +10,7 @@ block main
                 .box-listen__content
                     .box-listen__img
                         img(src=song.avatar, alt=song.title)
-                    .bos-listen__content--small
+                    .box-listen__content--small
                         span !{song.description}
                         .box-listen__singer Ca sĩ: #{song.singer ? song.singer : "N/A"}
                         .box-listen__like(favorite=favorite?"yes":"no") Số lượt yêu thích: <i class="fa-regular fa-heart"> #{song.like ? song.like : 0}</i>

@@ -169,5 +169,3 @@ if (windows.length > 0) {
   windows.forEach((window) => observer.observe(window));
 }
 //End Introduction
-//Feature horizontal-scroll
-//End Feature horizontal-scroll
