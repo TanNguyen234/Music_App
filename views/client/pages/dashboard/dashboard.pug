@@ -103,17 +103,4 @@ block main
                             span.window 
                                 img(src="client/images/rei.png", alt="brand")            
                         span.introduction__desc--in  <i>B</i>rand
-        .row 
-            .col-12.col-lg-12.col-md-12
-                .feature 
-                    .feature__title
-                        span Feature Songs 
-                    .feature__scroll
-                        if(songs)
-                         each song in songs
-                            a(href=`/song/${song.id}` class='feature__box') 
-                                .feature__img 
-                                    img(src=`${song.avatar ? song.avatar : ''}`, alt="song")
-                                .feature__desc 
-                                    h4 #{song.title}
-                                    p #{song.singer ? song.singer : ''}
+    

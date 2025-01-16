@@ -13,11 +13,11 @@ block main
                     .bos-listen__content--small
                         span !{song.description}
                         .box-listen__singer Ca sĩ: #{song.singer ? song.singer : "N/A"}
-                        .box-listen__like Số lượt yêu thích: <i class="fa-regular fa-heart"> #{song.like ? song.like : 0}</i>
-                        .box-listen__visit Số lượt nghe: <i class="fa-solid fa-music"> #{song.visit ? song.visit : 0}</i> 
-                        button(button-add-playlist)
+                        .box-listen__like(favorite=favorite?"yes":"no") Số lượt yêu thích: <i class="fa-regular fa-heart"> #{song.like ? song.like : 0}</i>
+                        .box-listen__visit Số lượt nghe: <i class="fa-solid fa-music"> #{song.listen ? song.listen : 0}</i> 
+                        button(button-add-playlist type=inPlayList ? "del" : "push")
                             if(inPlayList)
-                                <i class="fa-solid fa-plus"></i>
+                                <i class="fa-solid fa-check"></i>
                             else 
                                 <i class="fa-solid fa-plus"></i>
                             span #{inPlayList ? "Đã thêm vào danh sách phát" : "Thêm vào danh sách phát"} 

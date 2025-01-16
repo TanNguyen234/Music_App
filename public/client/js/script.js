@@ -23,7 +23,6 @@ window.addEventListener("DOMContentLoaded", () => {
 const aplayer = document.getElementById("aplayer");
 if (aplayer) {
   const dataSong = JSON.parse(aplayer.getAttribute("data-song"));
-  console.log(dataSong);
   const ap = new APlayer({
     container: document.getElementById("aplayer"),
     audio: [
@@ -32,7 +31,7 @@ if (aplayer) {
         artist: dataSong.singer || "",
         url: dataSong.audio,
         cover: dataSong.avatar,
-        theme: "#000",
+        theme: "#7676",
         loop: "all",
         preload: "auto",
         volume: 0.7,
@@ -46,14 +45,74 @@ if (aplayer) {
 }
 //End Aplayer
 
-//Nút yêu thích 
-const buttonLove = document.querySelector('.box-listen__like i');
-
+//Nút yêu thích
+const buttonLove = document.querySelector(".box-listen__like i");
+const buttonLoveOut = document.querySelector(".box-listen__like");
+if(buttonLoveOut) {
+  const value = buttonLoveOut.getAttribute("favorite");
+  if(value==="yes") {
+    buttonLove.classList.add("fa-solid");
+  }
+}
 if (buttonLove) {
-  buttonLove.addEventListener('click', () => {
-    buttonLove.classList.toggle('fa-solid');
-    
+  buttonLove.addEventListener("click", () => {
+    const isActive = buttonLove.classList.contains("fa-solid");
+    const type = !isActive ? "favorite" : "unfavorite";
+
+    const id = window.location.pathname.split("/")[2];
+    const link = `/songs/eventSong/${id}?type=like&&value=${type}`;
+
+    fetch(link, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.code === 200) {
+          buttonLove.innerHTML = data.like;
+          buttonLove.classList.toggle("fa-solid");
+        }
+      });
   });
 }
-
 //End Nút yêu thích
+
+//Button Playlist
+const buttonPlayList = document.querySelector('[button-add-playlist]')
+if(buttonPlayList) {
+  buttonPlayList.addEventListener('click', (e) => {
+    const type = buttonPlayList.getAttribute('type');
+    const id = window.location.pathname.split("/")[2];
+    const link = `/songs/eventSong/${id}?type=playlist&&value=${type}`;
+
+    const span = buttonPlayList.querySelector('span');
+    const i = buttonPlayList.querySelector('i');
+
+    fetch(link, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.code === 200) {
+          if(i && span) {
+            buttonPlayList.setAttribute("type", type === "push" ? "del" : "push")
+            const className = i.classList.contains("fa-check");
+            if(className) {
+              i.classList.remove("fa-check");
+              i.classList.add("fa-plus");
+            } else {
+              i.classList.remove("fa-plus");
+              i.classList.add("fa-check");
+            }
+            span.innerHTML = type === "del" ? "Thêm vào danh sách phát" : "Đã thêm vào danh sách phát";
+          }
+        }
+      });
+  });
+}
+//End Button Playlist

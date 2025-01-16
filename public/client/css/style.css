@@ -403,6 +403,7 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
   justify-content: center;
   flex-direction: column;
   text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .topic__card .topic__img {
