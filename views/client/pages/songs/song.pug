@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/pagination.pug
 
 block main 
     +success-alert(5000)
@@ -31,4 +32,5 @@ block main
                         .topic__card--content
                              div(class="topic__title--small")=song.title
             else 
-                h1 Ops. Hiện tại chưa tìm thấy bài hát nào.
+                h1 Ops. Hiện tại chưa tìm thấy bài hát nào!
+        +pagination(objectPagination)

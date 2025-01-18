@@ -156,21 +156,42 @@ if(filterForm) {
       .then((data) => {
         if (data.code === 200 && container) {
           var div = "";
-          data.songs.map((song) => {
-            div += `
-              <a class="topic__card song__card" href="/songs/${song._id}">
-                <div class="topic__img">
-                  <img src=${song.avatar} alt=${song.title}>
-                </div>
-                <div class="topic__card--content">
-                  <div class="topic__title--small">${song.title}</div>
-                </div>
-              </a>
-            `
-          })
+          if(data.songs.length > 0) {
+            data.songs.map((song) => {
+              div += `
+                <a class="topic__card song__card" href="/songs/${song._id}">
+                  <div class="topic__img">
+                    <img src=${song.avatar} alt=${song.title}>
+                  </div>
+                  <div class="topic__card--content">
+                    <div class="topic__title--small">${song.title}</div>
+                  </div>
+                </a>
+              `
+            })
+          } else {
+            div = `<h1 class="text-center">Ops. Hiện tại chưa tìm thấy bài hát nào!</h1>`;
+          }
           container.innerHTML = div;
         }
       });
   })
 }
 //End Filter Song
+//Pagination
+const buttonsPagination = document.querySelectorAll("[button-pagination]");
+if(buttonsPagination) {
+    let url = new URL(window.location.href);
+
+    buttonsPagination.forEach(button => {
+        button.addEventListener("click", () => {
+            const page = button.getAttribute("button-pagination");
+            console.log(page);
+
+            url.searchParams.set("page", page);
+
+            window.location.href = url.href;  //Chuyển trang hiện tại đến đường dẫn mới
+        })
+    })
+}
+//End Pagination
