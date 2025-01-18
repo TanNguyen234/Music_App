@@ -6,6 +6,7 @@ import { topicRoutes } from "./topic.route";
 import { userInfo } from "../../middlewares/user.middleware";
 import { requireAuth } from "../../middlewares/auth.middleware";
 import { songRoutes } from "./song.route";
+import { resultRoutes } from "./result.route";
 
 const clientRoutes = (app: Express): void => {
   app.use(userInfo)
@@ -13,6 +14,7 @@ const clientRoutes = (app: Express): void => {
   app.use('/user', userRoutes)
   app.use('/topics', topicRoutes)
   app.use('/songs', requireAuth, songRoutes)
+  app.use('/result', requireAuth, resultRoutes)
 }
 
 export default clientRoutes;

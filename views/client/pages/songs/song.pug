@@ -14,10 +14,10 @@ block main
                 span and 
                 span <i>p</i>urpose
         .topic__content.song__filter
-            form(action="/songs" method="POST")
-                input(type="text" placeholder="Bài hát hôm nay?")
+            form(action="/songs" method="GET" filter-form)
+                input(type="text" name="keyword" placeholder="Bài hát hôm nay?")
                 select(name="id")
-                    option() -- Chọn chủ đề mà bạn mong muốn --
+                    option(value="") -- Chọn chủ đề mà bạn mong muốn --
                     if(topics.length > 0)
                         each item in topics
                             option(value=item._id selected=(topic ? item._id ==  topic._id ? true : false : false))=item.title
@@ -30,3 +30,5 @@ block main
                             img(src=song.avatar)
                         .topic__card--content
                              div(class="topic__title--small")=song.title
+            else 
+                h1 Ops. Hiện tại chưa tìm thấy bài hát nào.

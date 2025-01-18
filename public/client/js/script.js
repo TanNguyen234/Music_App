@@ -127,3 +127,50 @@ if(buttonPlayList) {
   });
 }
 //End Button Playlist
+//Filter Song
+const filterForm = document.querySelector('form[filter-form]');
+if(filterForm) {
+  filterForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const keyword = filterForm.querySelector('input[name=keyword]').value;
+    const topic = filterForm.querySelector('select[name=id]').value;
+    var link = '/result';
+    const container = document.querySelector('.container.topic__content');
+
+    if (keyword) {
+      link += '?keyword=' + keyword;
+    }
+    if (topic) {
+      if(link.length > 8) link += '&';
+      else link += '?';
+      link += 'id=' + topic;
+    } 
+
+    fetch(link, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.code === 200 && container) {
+          var div = "";
+          data.songs.map((song) => {
+            div += `
+              <a class="topic__card song__card" href="/songs/${song._id}">
+                <div class="topic__img">
+                  <img src=${song.avatar} alt=${song.title}>
+                </div>
+                <div class="topic__card--content">
+                  <div class="topic__title--small">${song.title}</div>
+                </div>
+              </a>
+            `
+          })
+          container.innerHTML = div;
+        }
+      });
+  })
+}
+//End Filter Song

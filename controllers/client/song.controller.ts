@@ -7,24 +7,26 @@ import FavoriteSong from "../../model/favorite-song.model";
 
 //[GET] /songs
 export const index = async (req: CustomRequest, res: Response): Promise<void> => {
-  const id: String | unknown = req.query.id;
+  const id: String | unknown = req.query.id || "";
   var songs = null, topic = null;
+
   if (id) {
     topic = await Topic.findOne({
       _id: id,
       status: "active",
       deleted: false,
     });
-    if (!topic) {
-        req.flash('error', "id chủ đề không hợp lệ!")
-        res.redirect("/topics");
-    } else {
-      songs = await Song.find({
-        topicId: id,
-        status: "active",
-        deleted: false,
-      });
-    }
+
+      if (!topic) {
+          req.flash('error', "id chủ đề không hợp lệ!")
+          res.redirect("/topics");
+      } else {
+        songs = await Song.find({
+          status: "active",
+          topicId: id,
+          deleted: false
+        });
+      }
   } else {
     songs = await Song.find({
       status: "active",
@@ -36,9 +38,10 @@ export const index = async (req: CustomRequest, res: Response): Promise<void> =>
     status: "active",
     deleted: false
   }).select("title")
+  
   res.render("client/pages/songs/song", {
     pageTitle: "Trang bài hát",
-    topics: topics || [],
+    topics: topics,
     topic: topic || null,
     songs: songs || [],
   });
