@@ -4,6 +4,7 @@ import { CustomRequest } from "../../interface/CustomRequest"
 import User from "../../model/user.model";
 import argon2 from 'argon2';
 import { generateRandomString } from "../../helpers/generate";
+import FavoriteSong from "../../model/favorite-song.model";
 
 //[GET] /user/register
 export const register = (req: Request, res: Response) => {
@@ -110,3 +111,26 @@ export const change = (req: Request, res: Response) => {
         pageTitle: 'Trang đổi mật khẩu',
     })
 }
+
+//[GET] /user/info
+export const info = async (
+    req: CustomRequest,
+    res: Response
+  ): Promise<void> => {
+  
+    const user = await User.findOne({
+      status: "active",
+      deleted: false,
+      token: req.cookies.tokenUser,
+    }).select("-password");
+  
+    const favorite = await FavoriteSong.find({
+      userId: user?._id,
+    })
+  
+    res.render("client/pages/user/profile", {
+      pageTitle: "My profile",
+      user: user,
+      favorite: favorite.length || 0
+    });
+  };

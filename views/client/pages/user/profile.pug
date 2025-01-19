@@ -1,0 +1,30 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+    +success-alert(5000)
+    +error-alert(5000)
+    .container
+        .row.d-flex.justify-center
+            .profile
+                .profile__header
+                    h1 Profile 
+                    .profile__img
+                        img(src='/client/images/avatar-user.jpg', alt='User')
+                        .add-avatar(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Cập nhật ảnh đại diện") +
+                    .profile__info--details 
+                        p #{user.fullName}
+                        p #{user.email}
+                .profile__info--action 
+                        a(href='/user/edit') 
+                            <i class="fa-solid fa-pen"></i> 
+                            span Edit Profile
+                        a(href='/user/passwordChange') 
+                            <i class="fa-solid fa-user-shield"></i> 
+                            span Change Password
+                        a(href='/user/delete') 
+                            <i class="fa-solid fa-eraser"></i> 
+                            span Delete Account
+                .profile__info--stats
+                    p Total Likes: #{favorite}
+                    p Total Song in playlist: #{user.playlist.length || 0}

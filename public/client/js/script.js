@@ -195,3 +195,8 @@ if(buttonsPagination) {
     })
 }
 //End Pagination
+
+//Tooltip bootstrap
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+//End Tooltip bootstrap
