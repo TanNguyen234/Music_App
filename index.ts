@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 const methodOverride = require('method-override');
@@ -55,6 +55,13 @@ adminRoutes(app);
 //App Local Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin
 app.locals.moment = moment
+
+//Page 404
+app.get('*', (req: Request, res: Response) => {
+    res.render('client/pages/errors/404', {
+        titlePage: '404 Not Found',
+    })
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
