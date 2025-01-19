@@ -5,13 +5,7 @@ import { CustomRequest } from "../../interface/CustomRequest";
 import User from "../../model/user.model";
 import FavoriteSong from "../../model/favorite-song.model";
 import pagination from "../../helpers/pagination";
-
-interface objectPage {
-  currentPage: number;
-  limitItem: number;
-  skip?: any;
-  totalPage?: Number;
-}
+import { objectPage } from "../../interface/objectPage";
 
 //[GET] /songs
 export const index = async (
@@ -146,7 +140,7 @@ export const listen = async (
   }
 };
 //[PATCH] /songs/eventSong/:id
-export const eventSong = async (req: Request, res: Response): Promise<void> => {
+export const eventSong = async (req: CustomRequest, res: Response): Promise<void> => {
   try {
     const songId = req.params.id;
     const { type, value } = req.query;
@@ -219,7 +213,7 @@ export const eventSong = async (req: Request, res: Response): Promise<void> => {
     }
     res.json({
       code: 200,
-      like: like + 1,
+      like: value === "favorite" ? like + 1 : like - 1 < 0 ? 0 : like - 1
     });
   } catch (err) {
     res.json({

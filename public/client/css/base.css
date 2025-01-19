@@ -1,59 +1,61 @@
 /* Alert  */
 [show-alert] {
-    position: fixed;
-    top: 70px;
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  z-index: 9999;
+}
+
+[show-alert].alert-hidden {
+  animation: alert-hidden 0.5s both;
+}
+
+@keyframes alert-hidden {
+  from {
     right: 15px;
-    z-index: 9999;
   }
-  
-  [show-alert].alert-hidden {
-    animation: alert-hidden 0.5s both;
+
+  to {
+    right: -100%;
   }
-  
-  @keyframes alert-hidden {
-    from {
-      right: 15px;
-    }
-  
-    to {
-      right: -100%;
-    }
-  }
-  
-  [show-alert] [close-alert] {
-    background: #ffffc4;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    text-align: center;
-    font-weight: 600;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  /* End Alert  */
-  
-  * {
-    scrollbar-width: none;
-  }
-  
-  a, a:hover, a:focus {
-    text-decoration: none;
-  }
-  
-  body {
-    background-color: #000;
-    color: white;
-    font-family: Arial, sans-serif;
-    padding-top: 200px;
-    scrollbar-width: none;
-  }
-  
-  body {
-    opacity: 0;
-    transition: opacity 1.5s ease-in-out; /* 1.5s là thời gian hiệu ứng */
-  }
-  
-  body.loaded {
-    opacity: 1;
-  }
+}
+
+[show-alert] [close-alert] {
+  background: #ffffc4;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* End Alert  */
+
+* {
+  scrollbar-width: none;
+}
+
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+body {
+  background-color: #000;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding-top: 200px;
+  scrollbar-width: none;
+}
+
+body {
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out; /* 1.5s là thời gian hiệu ứng */
+}
+
+body.loaded {
+  opacity: 1;
+}

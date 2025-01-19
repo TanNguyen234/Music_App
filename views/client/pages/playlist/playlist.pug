@@ -1,0 +1,35 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/pagination.pug
+
+block main 
+    +success-alert(5000)
+    +error-alert(5000)
+    .topic__container 
+        .topic__title.song__title
+            p 
+                span <i>M</i>usic 
+                span can
+                span change
+            p
+                span The 
+                span <i>w</i>orld
+            p 
+                span <i>b</i>ecause 
+                span it
+                span can
+                span change
+            p   
+                span <i>p</i>eople
+        .container.topic__content
+            if(songs.length > 0)
+                each song in songs
+                    a(class="topic__card song__card" href=`/songs/${song._id}`)
+                        .topic__img
+                            img(src=song.avatar)
+                        .topic__card--content
+                             div(class="topic__title--small")=song.title
+            else 
+                h1 Ops. Hiện tại chưa tìm thấy bài hát nào!
+        if(pagination.currentPage > 1)
+            +pagination(objectPagination)

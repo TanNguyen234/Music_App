@@ -629,7 +629,11 @@ nav > .pagination {
 /* End Pagination */
 /* Page 404  */
 .page404 {
-  padding-bottom: 25vh;
+  height: 45vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .page404 h1 {
   font-family: "Workhorse", cursive;
