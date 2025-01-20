@@ -13,13 +13,13 @@ block main
                         img(src='/client/images/avatar-user.jpg', alt='User')
                         .add-avatar(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Cập nhật ảnh đại diện") +
                     .profile__info--details 
-                        p #{user.fullName}
-                        p #{user.email}
+                        p(fullName) #{user.fullName}
+                        p(email) #{user.email}
                 .profile__info--action 
-                        a(href='/user/edit') 
+                        a(data-bs-toggle="modal" data-bs-target="#popup") 
                             <i class="fa-solid fa-pen"></i> 
                             span Edit Profile
-                        a(href='/user/passwordChange') 
+                        a(href='/user/password/forgot') 
                             <i class="fa-solid fa-user-shield"></i> 
                             span Change Password
                         a(href='/user/delete') 
@@ -28,3 +28,20 @@ block main
                 .profile__info--stats
                     p Total Likes: #{favorite}
                     p Total Song in playlist: #{user.playlist.length || 0}
+        #popup.modal.fade(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
+            .modal-dialog.modal-dialog-centered
+              .modal-content
+                .modal-header.d-flex.justify-center
+                    h1#exampleModalLabel.modal-title.fs-5.text-dark Cập nhật thông tin
+                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                .modal-body
+                  form
+                    .mb-3
+                        label.text-dark.col-form-label(for='email-name') Full Name:
+                        input#fullName.form-control(type='text' value=user.fullName)
+                    .mb-3
+                        label.text-dark.col-form-label(for='password-name') Email:
+                        input#email.form-control(type='email' value=user.email)
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                    button.btn.btn-primary(type='button' btn-form) Cập nhật

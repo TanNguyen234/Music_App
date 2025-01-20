@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { validateLogin, valideRegiter } from "../../validates/user.validate"
+import { isValidEmail, validateLogin, valideRegiter } from "../../validates/user.validate"
 import { CustomRequest } from "../../interface/CustomRequest"
 import User from "../../model/user.model";
 import argon2 from 'argon2';
@@ -134,3 +134,35 @@ export const info = async (
       favorite: favorite.length || 0
     });
   };
+
+//[POST] /user/edit
+export const edit = async (req: Request, res: Response): Promise<void> => {
+    const { fullName, email } = req.body;
+    console.log(fullName, email)
+    if(fullName) {
+        if(fullName.length < 8 && fullName.length > 30) {
+            res.json({
+                code: 400,
+                message: "Tên phải từ 8 đến 30 kí tự"
+            })
+        }
+    }
+
+    if(email) {
+        if(!isValidEmail(email)) {
+            res.json({
+                code: 400,
+                message: "Email không hợp lệ"
+            })
+        }
+    }
+
+    await User.updateOne({
+        token: req.cookies.tokenUser
+    }, req.body);
+
+    res.json({
+        code: 200,
+        message: "Thành công"
+    })
+}

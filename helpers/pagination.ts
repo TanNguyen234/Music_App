@@ -1,9 +1,5 @@
-interface objectPage {
-    currentPage: number;
-    limitItem: number;
-    skip?: number;
-    totalPage?: Number;
-}
+import { objectPage } from "../interface/objectPage";
+
 
 const pagination = (objectPagination: objectPage, query: any, countProducts: number): objectPage => {
     if(query.page) {

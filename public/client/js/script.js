@@ -200,3 +200,53 @@ if(buttonsPagination) {
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 //End Tooltip bootstrap
+
+// Popup Bootstrap 
+const popUpInfo = document.getElementById('popup')
+if (popUpInfo) {
+  popUpInfo.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+  })
+
+  const myModal = new bootstrap.Modal(popUpInfo)
+
+  const btnSubmit = popUpInfo.querySelector('[btn-form]');
+  btnSubmit.addEventListener('click', (e) => {
+    const fullName = popUpInfo.querySelector('.modal-body #fullName').value;
+    const email = popUpInfo.querySelector('.modal-body #email').value;
+    var dataPost = {};
+    if(fullName) dataPost.fullName = fullName;
+    if(email) dataPost.email = email;
+    if(dataPost.fullName || dataPost.email) {
+      fetch('/user/edit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataPost)
+      })
+     .then(response => response.json())
+     .then(data => {
+      console.log(data)
+      if(data.code === 200) {
+        if(fullName) {
+          const fullName = document.querySelector("p[fullName]");
+          fullName.innerHTML = dataPost.fullName;
+        }
+        if(email) {
+          const email = document.querySelector("p[email]");
+          email.innerHTML = dataPost.email;
+        }
+        myModal.hide();
+      } else {
+
+      }
+      console.log(data);
+     })
+    }
+  })
+
+}
+// End Popup Boostrap 

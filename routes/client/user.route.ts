@@ -20,4 +20,6 @@ router.get("/password/change", controller.change);
 
 router.get("/info", requireAuth, returnCustomRequest(controller.info));
 
+router.post("/edit", controller.edit);
+
 export const userRoutes: Router = router;
