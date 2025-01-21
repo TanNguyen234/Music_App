@@ -229,7 +229,6 @@ if (popUpInfo) {
       })
      .then(response => response.json())
      .then(data => {
-      console.log(data)
       if(data.code === 200) {
         if(fullName) {
           const fullName = document.querySelector("p[fullName]");
@@ -243,10 +242,85 @@ if (popUpInfo) {
       } else {
 
       }
-      console.log(data);
      })
     }
   })
-
 }
-// End Popup Boostrap 
+// End Popup Boostrap
+
+// Change Avatar 
+//Upload Image //Tạo preview ảnh trước khí upload [(google search)]
+const uploadImage = document.querySelector('[upload-image]');
+
+if(uploadImage) {
+    const uploadImageInput = uploadImage.querySelector('[upload-image-input]');
+    const uploadImagePreview = uploadImage.querySelector('[upload-image-preview]');
+
+    uploadImageInput.addEventListener('change', (e) => {
+        if(uploadImageInput.value) {
+          uploadImage.children[4].style.display = 'block';
+          uploadImage.children[2].style.display = 'none';
+        }
+        let file = e.target.files[0];
+        
+        if(file) {
+            uploadImagePreview.src = URL.createObjectURL(file)//Hàm tạo đường dẫn ảnh
+        }
+    })
+    
+    const x = uploadImage.children[4].querySelector('span');
+    x.addEventListener('click', (e) => {
+        uploadImagePreview.src = ""
+        console.log('ok')
+        uploadImage.children[4].style.display = 'none';
+        uploadImage.children[2].style.display = 'block';
+        uploadImageInput.value = "";
+    })
+    const popUpAvatar = document.getElementById('uploadAvatar');
+    if (popUpInfo) {
+      popUpInfo.addEventListener('show.bs.modal', event => {
+        // Button that triggered the modal
+        const button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+      })
+    
+      const myModal2 = new bootstrap.Modal(popUpAvatar)
+    
+      const btnSubmit = popUpAvatar.querySelector('[btn-form]');
+      btnSubmit.addEventListener('click', (e) => {
+        const formData = new FormData();
+        const inputFile = document.querySelector('input[name="avatar"]');
+
+        const file = inputFile.files[0]; // Lấy tệp đầu tiên trong danh sách tệp được chọn
+        if (file) {
+            formData.append('avatar', file); // Thêm tệp vào FormData
+            if(dataPost.avatar) {
+              fetch('/user/edit', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+              })
+             .then(response => response.json())
+             .then(data => {
+              if(data.code === 200) {
+                if(fullName) {
+                  const fullName = document.querySelector("p[fullName]");
+                  fullName.innerHTML = dataPost.fullName;
+                }
+                if(email) {
+                  const email = document.querySelector("p[email]");
+                  email.innerHTML = dataPost.email;
+                }
+                myModal.hide();
+              } else {
+        
+              }
+             })
+            }
+        }
+      })
+    }
+}
+// End Change Avatar 
