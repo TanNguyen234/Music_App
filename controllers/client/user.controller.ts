@@ -138,7 +138,7 @@ export const info = async (
 //[POST] /user/edit
 export const edit = async (req: Request, res: Response): Promise<void> => {
     const { fullName, email } = req.body;
-    console.log(fullName, email)
+
     if(fullName) {
         if(fullName.length < 8 && fullName.length > 30) {
             res.json({
@@ -163,6 +163,7 @@ export const edit = async (req: Request, res: Response): Promise<void> => {
 
     res.json({
         code: 200,
-        message: "Thành công"
+        message: "Thành công",
+        data: req.body
     })
 }

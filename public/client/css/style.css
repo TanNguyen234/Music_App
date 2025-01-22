@@ -702,12 +702,27 @@ nav > .pagination {
 }
 
 .add-avatar {
-  color: var(--dark-purple);
+  color: #fff;
   position: absolute;
   bottom: -30px;
   cursor: pointer;
   right: 0;
   font-size: 50px;
+  transition: 0.6s;
+}
+
+.add-avatar:hover {
+  color: var(--dark-purple);
+}
+
+div[upload-image] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div[upload-image] label {
+  width: 0;
 }
 
 .profile__info--action {

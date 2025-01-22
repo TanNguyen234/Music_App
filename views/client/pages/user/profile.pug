@@ -10,7 +10,7 @@ block main
                 .profile__header
                     h1 Profile 
                     .profile__img
-                        img(src='/client/images/avatar-user.jpg', alt='User')
+                        img(src=(user.avatar ? user.avatar : '/client/images/avatar-user.jpg'), alt='User')
                         a.add-avatar(type="button" data-bs-toggle="modal" data-bs-target="#uploadAvatar" data-bs-placement="bottom" data-bs-title="Cập nhật ảnh đại diện") +
                     .profile__info--details 
                         p(fullName) #{user.fullName}
@@ -22,9 +22,9 @@ block main
                         a(href='/user/password/forgot') 
                             <i class="fa-solid fa-user-shield"></i> 
                             span Change Password
-                        a(href='/user/delete') 
+                        a() 
                             <i class="fa-solid fa-eraser"></i> 
-                            span Delete Account
+                            span Coming soon
                 .profile__info--stats
                     p Total Likes: #{favorite}
                     p Total Song in playlist: #{user.playlist.length || 0}
@@ -59,14 +59,9 @@ block main
                         input#avatar(type="file" name="avatar" upload-image-input accept="image/*" style="display: none;")
                         button.btn.btn-primary(button-upload type="button" onclick="document.getElementById('avatar').click()") Chọn Tệp
                         span#file-name.none
-                        if(user.avatar)
-                            div(update)
-                                img(src=topic.avatar class="upload-image-preview" upload-image-preview alt="")
-                                span x
-                        else 
-                            div(update-delay)
-                                img(src="" class="upload-image-preview" upload-image-preview alt="")
-                                span x
+                        div(update-delay)
+                            img(src="" class="upload-image-preview" upload-image-preview alt="")
+                            span x
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
                     button.btn.btn-primary(type='button' btn-form) Cập nhật
