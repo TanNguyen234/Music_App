@@ -338,3 +338,85 @@ if (uploadImage) {
   }
 }
 // End Change Avatar
+//Send OTP
+function alertFunc(type, message) {
+  const alert = document.querySelector(`.alert-user-${type}`);
+  if (alert) {
+    alert.innerText = message;
+    const span = document.createElement("span");
+    span.setAttribute("close-alert", "");
+    span.innerHTML = 'x';
+    alert.appendChild(span);
+    alert.toggleAttribute("show-alert")
+    clearTimeout();
+    // Hiển thị thông báo
+    alert.classList.remove("alert-hidden"); // Đảm bảo thông báo hiển thị
+
+    // Đặt thời gian ẩn thông báo
+    const timeAlert = alert.getAttribute("data-time");
+
+    setTimeout(() => {
+      alert.classList.add("alert-hidden");  // Ẩn thông báo sau thời gian chờ
+    }, timeAlert);
+
+    // Ẩn thông báo khi nhấn vào
+    alert.addEventListener("click", () => {
+      alert.classList.add("alert-hidden");
+    });
+  }
+}
+// Gửi OTP và kiểm tra thời gian chờ
+var time = 30000;  // Thời gian chờ là 30 giây
+let isWaiting = false;  // Kiểm tra xem có đang chờ không
+
+const formForgot = document.querySelector(".form-forgot-password");
+if (formForgot) {
+  const btnOtp = formForgot.querySelector("button[btn-otp]");
+  if (btnOtp) {
+    btnOtp.onclick = function handleClick(e) {
+      e.preventDefault();
+      if (isWaiting) {
+        alertFunc("error", `Vui lòng đợi ${Math.ceil(time / 1000)} giây để gửi lại OTP.`);
+        return;  // Dừng hành động gửi OTP
+      }
+      isWaiting = true;
+      const email = formForgot.querySelector('input[name="email"]').value;
+      if (email) {
+        fetch('/user/password/otp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({email}),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.code !== 200) {
+            alertFunc("error", data.message);
+          } else {
+            alertFunc("success","Đã gửi OTP đến email của bạn. Vui lòng kiểm tra email!");
+          }
+        })
+        // Đếm ngược thời gian
+        const countdownInterval = setInterval(() => {
+          time -= 1000;  // Giảm 1 giây mỗi lần
+          if (time <= 0) {
+            clearInterval(countdownInterval);
+            isWaiting = false;
+            time = 30000;  // Reset thời gian về 30 giây
+            alertFunc("success", "Bạn có thể gửi lại OTP.");
+          }
+        }, 1000);
+      } else {
+        alertFunc("error", "Vui lòng nhập email của bạn!");
+      }
+    };
+  }
+  const btnSubmit = formForgot.querySelector('button[type="submit"]');
+  if (btnSubmit) {
+    btnSubmit.onclick = function handleClick() {
+      e.preventDefault();
+    };
+  }
+}
+//End Send OTP

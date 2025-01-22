@@ -22,9 +22,9 @@ block main
                         a(href='/user/password/forgot') 
                             <i class="fa-solid fa-user-shield"></i> 
                             span Change Password
-                        a() 
+                        a(href='/user/logout') 
                             <i class="fa-solid fa-eraser"></i> 
-                            span Coming soon
+                            span Đăng xuất
                 .profile__info--stats
                     p Total Likes: #{favorite}
                     p Total Song in playlist: #{user.playlist.length || 0}

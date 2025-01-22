@@ -21,7 +21,11 @@ router.get("/logout", controller.logout);
 
 router.get("/password/forgot", controller.forgot);
 
-router.get("/password/change", controller.change);
+router.post("/password/forgot", returnCustomRequest(controller.forgotPost));
+
+router.post("/password/otp", controller.otp);
+
+router.patch("/password/change", returnCustomRequest(controller.change));
 
 router.get("/info", requireAuth, returnCustomRequest(controller.info));
 
