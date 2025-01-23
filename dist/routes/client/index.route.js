@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const dashboard_route_1 = require("./dashboard.route");
+const user_route_1 = require("./user.route");
+const topic_route_1 = require("./topic.route");
+const user_middleware_1 = require("../../middlewares/user.middleware");
+const auth_middleware_1 = require("../../middlewares/auth.middleware");
+const song_route_1 = require("./song.route");
+const result_route_1 = require("./result.route");
+const playlist_route_1 = require("./playlist.route");
+const clientRoutes = (app) => {
+    app.use(user_middleware_1.userInfo);
+    app.use('/', dashboard_route_1.dashboardRoutes);
+    app.use('/user', user_route_1.userRoutes);
+    app.use('/topics', topic_route_1.topicRoutes);
+    app.use('/songs', auth_middleware_1.requireAuth, song_route_1.songRoutes);
+    app.use('/result', auth_middleware_1.requireAuth, result_route_1.resultRoutes);
+    app.use('/playlist', auth_middleware_1.requireAuth, playlist_route_1.playlistRoutes);
+};
+exports.default = clientRoutes;
