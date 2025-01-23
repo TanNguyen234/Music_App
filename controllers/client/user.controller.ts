@@ -143,11 +143,13 @@ export const otp = async (req: Request, res: Response): Promise<void> => {
             await Forgot.deleteMany({
                 email: email
             })
+
             const otp = generateRandomNumber(8);
             const forgotPassword = new Forgot({
                 email,
                 otp
             })
+
             forgotPassword.save()
             const subject = "Mã xác minh lấy lại mật khẩu";
             const html = `
@@ -174,7 +176,7 @@ export const otp = async (req: Request, res: Response): Promise<void> => {
             } else {
                 res.json({
                     code: 400,
-                    message: "OTP sent failed"
+                    message: "Mã OTP đã gửi không thành công vui lòng gửi lại!"
                 })
             }
         }
@@ -199,7 +201,7 @@ export const change = async (req: CustomRequest, res: Response): Promise<void> =
         res.redirect(req.get("Referrer") || "/")
     }
     
-    if(isValidEmail(email)) {
+    if(!isValidEmail(email)) {
         await User.updateOne({
             email: email
         }, {

@@ -128,3 +128,7 @@ body {
 .form-forgot-password {
   height: 500px;
 }
+
+.form-forgot-password h1 {
+  margin-bottom: 35px;
+}

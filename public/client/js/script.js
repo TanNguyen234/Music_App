@@ -9,7 +9,9 @@ window.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       const attribute = input.getAttribute("id");
       input.addEventListener("focus", () => {
-        input.setAttribute("type", attribute);
+        if(input.getAttribute("type") !== "password") {
+          input.setAttribute("type", attribute);
+        }
         // input.addEventListener('invalid', () => {
         //   // Đảm bảo rằng thông báo lỗi được cập nhật khi trường không hợp lệ
         //   input.setCustomValidity("Vui lòng nhập " + attribute);
