@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/pagination.pug
+
+block main 
+    +success-alert(5000)
+    +error-alert(5000)
+    .topic__container 
+        .topic__title.song__title
+            p 
+                span with 
+                span <i>p</i>assion 
+
+            p   
+                span and 
+                span <i>p</i>urpose
+        .topic__content.song__filter
+            form(action="/songs" method="GET" filter-form)
+                input(type="text" name="keyword" placeholder="Bài hát hôm nay?")
+                select(name="id")
+                    option(value="") -- Chọn chủ đề mà bạn mong muốn --
+                    if(topics.length > 0)
+                        each item in topics
+                            option(value=item._id selected=(topic ? item._id ==  topic._id ? true : false : false))=item.title
+                button Search
+        .container.topic__content
+            if(songs.length > 0)
+                each song in songs
+                    a(class="topic__card song__card" href=`/songs/${song._id}`)
+                        .topic__img
+                            img(src=song.avatar)
+                        .topic__card--content
+                             div(class="topic__title--small")=song.title
+            else 
+                h1 Ops. Hiện tại chưa tìm thấy bài hát nào!
+        +pagination(objectPagination)

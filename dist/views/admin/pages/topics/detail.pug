@@ -1,0 +1,22 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/moment.pug
+
+block main 
+    .topic-detail
+      .container.my-3
+        .row
+          .col-12
+            .inner-title #{topic.title}
+            .inner-actions
+              .inner-action.inner-time 
+                <i class="fa-regular fa-clock"></i> 
+                +formatDay(topic.updatedAt !== null ? topic.updatedAt : topic.createdAt)
+            .inner-play
+              .inner-avatar
+                img(src=topic.avatar, alt=topic.title)
+                
+            .inner-desc
+              .inner-label Mô tả
+              .inner-text 
+               | !{topic.description}

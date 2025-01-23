@@ -1,0 +1,67 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+    +success-alert(5000)
+    +error-alert(5000)
+    .container
+        .row.d-flex.justify-center
+            .profile
+                .profile__header
+                    h1 Profile 
+                    .profile__img
+                        img(src=(user.avatar ? user.avatar : '/client/images/avatar-user.jpg'), alt='User')
+                        a.add-avatar(type="button" data-bs-toggle="modal" data-bs-target="#uploadAvatar" data-bs-placement="bottom" data-bs-title="Cập nhật ảnh đại diện") +
+                    .profile__info--details 
+                        p(fullName) #{user.fullName}
+                        p(email) #{user.email}
+                .profile__info--action 
+                        a(data-bs-toggle="modal" data-bs-target="#popup") 
+                            <i class="fa-solid fa-pen"></i> 
+                            span Edit Profile
+                        a(href='/user/password/forgot') 
+                            <i class="fa-solid fa-user-shield"></i> 
+                            span Change Password
+                        a(href='/user/logout') 
+                            <i class="fa-solid fa-eraser"></i> 
+                            span Đăng xuất
+                .profile__info--stats
+                    p Total Likes: #{favorite}
+                    p Total Song in playlist: #{user.playlist.length || 0}
+
+        #popup.modal.fade(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
+            .modal-dialog.modal-dialog-centered
+              .modal-content
+                .modal-header.d-flex.justify-center
+                    h1#exampleModalLabel.modal-title.fs-5.text-dark Cập nhật thông tin
+                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                .modal-body
+                  form
+                    .mb-3
+                        label.text-dark.col-form-label(for='email-name') Full Name:
+                        input#fullName.form-control(type='text' value=user.fullName)
+                    .mb-3
+                        label.text-dark.col-form-label(for='password-name') Email:
+                        input#email.form-control(type='email' value=user.email)
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                    button.btn.btn-primary(type='button' btn-form) Cập nhật
+        #uploadAvatar.modal.fade(tabindex='-1' aria-labelledby='avatarLabel' aria-hidden='true')
+            .modal-dialog.modal-dialog-centered
+              .modal-content
+                .modal-header.d-flex.justify-center
+                    h1#avatarLabel.modal-title.fs-5.text-dark Cập nhật avatar
+                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                .modal-body
+                  form
+                    div(class="form-group mb-3" upload-image)
+                        label(for="avatar") Upload Avatar
+                        input#avatar(type="file" name="avatar" upload-image-input accept="image/*" style="display: none;")
+                        button.btn.btn-primary(button-upload type="button" onclick="document.getElementById('avatar').click()") Chọn Tệp
+                        span#file-name.none
+                        div(update-delay)
+                            img(src="" class="upload-image-preview" upload-image-preview alt="")
+                            span x
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                    button.btn.btn-primary(type='button' btn-form) Cập nhật

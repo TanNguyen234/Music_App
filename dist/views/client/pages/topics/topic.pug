@@ -1,0 +1,26 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+    +success-alert(5000)
+    +error-alert(5000)
+    .topic__container 
+        .topic__title 
+            p 
+                span 
+                    i C
+                span ontent 
+                span That 
+            p   
+                span 
+                    i I
+                span nspires
+                span action
+        .topic__content
+            if(topics.length > 0)
+                each topic in topics
+                    a(class="topic__card" href=`/songs?id=${topic._id}`)
+                        .topic__img
+                            img(src=topic.avatar)
+                        .topic__card--content
+                             div(class="topic__title--small")=topic.title

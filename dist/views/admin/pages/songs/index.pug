@@ -1,0 +1,53 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/moment.pug
+
+block main
+    +success-alert(5000)
+    .container-fluid
+     .row 
+        .col-12 
+            h1 Danh sách bài hát
+            a.btn.btn-primary(href="/admin/songs/create") Thêm bài hát
+            table.table.table-striped.table-bordered.table-hover
+                thead
+                    tr
+                        th Stt
+                        th Ảnh
+                        th Tiêu đề
+                        th Trạng thái
+                        th Ngày tạo
+                        th Ngày cập nhật mới nhất
+                        th Hành động
+                tbody
+                 if(songs.length > 0)
+                    each song, index in songs
+                        tr  
+                            td= index + 1
+                            td
+                                if song.avatar
+                                    img.img-fluid(src=`${song.avatar}`, alt=`${song.title}`)
+                                else
+                                    | No Image
+                            td= song.title
+                            td
+                                if(song.status === 'active')
+                                    span.badge.bg-success.text-white Hoạt động
+                                else
+                                    span.badge.bg-danger.text-white Dừng hoạt động
+                            td 
+                                if(song.createdAt)
+                                    +formatDay(song.createdAt)
+                                else
+                                    | No Data
+                            td 
+                                if(song.updatedAt)
+                                    +formatDay(song.updatedAt)
+                                else
+                                    | No Data
+
+                            td
+                                a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/songs/edit/${song._id}`) Chỉnh sửa
+                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/songs/detail/${song._id}`) Xem chi tiết
+                                button.btn-delete.btn.btn-danger(btn-delete=song._id) Xóa
+                                form(method="POST" action=`/admin/songs/delete/${song._id}?_method=DELETE` id=`form-delete-${song._id}`) 

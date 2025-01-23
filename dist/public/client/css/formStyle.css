@@ -1,0 +1,134 @@
+:root {
+  --light-purple: #bb70ad;
+  --dark-purple: #310623;
+  --text: #1a1a1a;
+}
+
+body {
+  padding-top: 0;
+}
+
+.containerForm {
+  width: 400px;
+  height: 450px;
+}
+
+.containerForm.register {
+  height: 520px;
+}
+
+.form {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 50px 35px;
+  position: relative;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  color: #fff;
+}
+
+.form * {
+  z-index: 100;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+.ballon-top {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  background: linear-gradient(#1845ad, #23a2f6);
+  top: 50px;
+  left: -50px;
+  z-index: 1;
+  position: relative;
+}
+
+.ballon-bottom {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  background: linear-gradient(to right, #ff512f, #f09819);
+  bottom: 50px;
+  right: -350px;
+  z-index: 1;
+  position: relative;
+}
+
+.form input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+.form input.w-7 {
+  width: 70%;
+  display: inline-block;
+}
+
+.form button {
+  margin-top: 50px;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form button.w-3 {
+  width: 30%;
+  font-size: 16px;
+  padding: 13px 0;
+  margin-top: 10px;
+}
+
+.button-sub {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.button-sub a {
+  color: var(--text);
+  text-decoration: none;
+  width: 48%;
+  text-align: center;
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 500;
+  background-color: white;
+}
+
+
+.form button:hover,
+.button-sub a:hover {
+  background-color: var(--light-purple);
+  color: #fff;
+  transition: 0.4s;
+}
+
+.form-forgot-password {
+  height: 500px;
+}
+
+.form-forgot-password h1 {
+  margin-bottom: 35px;
+}
