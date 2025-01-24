@@ -43,12 +43,11 @@
 
 .header__nav ul {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   align-items: flex-start;
   list-style: none;
   color: white;
-  overflow: hidden;
+  margin: 0;
 }
 
 .header__nav ul li {
@@ -94,6 +93,30 @@
 .header__icon i {
   color: #000;
   font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .header__logo {
+    width: 150px;
+    height: 150px;
+  }
+
+  .header__nav ul li {
+    padding: 0;
+  }
+
+  .header__nav ul li a {
+    margin-left: 30px;
+  }
+
+  .header__icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  
 }
 /* End Header  */
 /* Footer  */
@@ -216,6 +239,12 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
     font-size: 55px;
   }
 }
+
+@media (max-width: 768px) {
+  .dashboard__content {
+    text-align: center;
+  }
+}
 /* End Dashboard  */
 /* Introduction  */
 .introduction {
@@ -288,7 +317,6 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
 }
 
 .introduction__desc--img .window {
-  width: 198.4px;
   height: 140.8px;
   position: relative;
   display: inline-block;
@@ -311,6 +339,58 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
 
 .split {
   width: 20px;
+}
+
+@media (max-width: 1200px) {
+  .introduction__desc--in {
+    font-size: 70px;
+  }
+}
+
+@media (max-width: 1070px) {
+  .introduction__desc--in {
+    font-size: 60px;
+  }
+}
+
+@media (max-width: 992px) {
+  .introduction__desc--in {
+    font-size: 50px;
+  }
+
+  .introduction__desc--img .window.show {
+    width: 188.4px;
+    height: 130.8px;
+  }
+}
+
+@media (max-width: 845px) {
+  .introduction__desc--in {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 707px) {
+  .introduction__desc--in {
+    font-size: 35px;
+  }
+
+  .introduction__desc--img .window.show {
+    width: 158.4px;
+    height: 100.8px;
+  }
+}
+
+
+@media (max-width: 620px) {
+  .introduction__desc--in {
+    font-size: 33px;
+  }
+
+  .introduction__desc--img .window.show {
+    width: 148.4px;
+    height: 90.8px;
+  }
 }
 /* End Introduction  */
 /* Topic */
