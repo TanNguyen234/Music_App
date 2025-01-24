@@ -541,6 +541,34 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
 .topic__card .topic__card--content .topic__title--small {
   color: #fff;
 }
+
+@media (max-width: 992px) {
+  .topic__title p span {
+    font-size: 80px;
+  }
+
+  .topic__card {
+    width: 280px;
+    height: 330px;
+  }
+}
+
+@media (max-width: 768px) {
+  .topic__title p span {
+    font-size: 60px;
+  }
+
+  .topic__card {
+    width: 250px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .topic__title p span {
+    font-size: 50px;
+  }
+}
 /* End Topic  */
 /* Song  */
 .song__title p:first-child {

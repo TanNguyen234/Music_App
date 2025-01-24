@@ -126,9 +126,81 @@ body {
 }
 
 .form-forgot-password {
-  height: 500px;
+  height: 480px;
 }
 
 .form-forgot-password h1 {
   margin-bottom: 35px;
+}
+@media (max-width: 1200px) {
+  .containerForm.register:has(.form-change-password) {
+    height: 510px;
+  }
+
+  .containerForm.register:has(.form-change-password) input {
+    height: 44px;
+  }
+
+  .containerForm.register:has(.form-change-password) button {
+    height: 44px;
+  }
+}
+
+@media (max-width: 992px) {
+  .containerForm {
+    width: 380px;
+    height: 420px;
+  }
+
+  .containerForm form {
+    padding: 35px 35px;
+  }
+
+  .form-forgot-password {
+    height: 450px;
+  }
+
+  .containerForm.register:has(.form-change-password) {
+    height: 490px;
+  }
+
+  .containerForm.register:has(.form-change-password) button {
+    padding: 12px 0;
+  }
+
+  .ballon-bottom {
+    right: -340px;
+  }
+}
+
+@media (max-width: 768px) {
+  .containerForm {
+    width: 350px;
+    height: 390px;
+  }
+
+  .containerForm form {
+    padding: 35px 25px;
+  }
+
+  .form-forgot-password {
+    height: 430px;
+  } 
+
+  .register form {
+    height: 470px;
+  }
+
+  .containerForm form input {
+    height: 45px;
+  }
+
+  .form button {
+    margin-top: 35px;
+    padding: 10px 0;
+  }
+
+  .ballon-bottom {
+    right: -305px;
+  }
 }
