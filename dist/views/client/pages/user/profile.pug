@@ -10,7 +10,7 @@ block main
                 .profile__header
                     h1 Profile 
                     .profile__img
-                        img(src=(user.avatar ? user.avatar : '/client/images/avatar-user.jpg'), alt='User')
+                        img(src=(user.avatar ? user.avatar : '/client/images/avatar-user.jpg'), alt='User' data-bs-toggle="modal"  data-bs-target="#reviewAvatar" data-bs-placement="bottom" data-bs-title="")
                         a.add-avatar(type="button" data-bs-toggle="modal" data-bs-target="#uploadAvatar" data-bs-placement="bottom" data-bs-title="Cập nhật ảnh đại diện") +
                     .profile__info--details 
                         p(fullName) #{user.fullName}
@@ -65,3 +65,7 @@ block main
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
                     button.btn.btn-primary(type='button' btn-form) Cập nhật
+        #reviewAvatar.modal.fade(tabindex='-1' aria-labelledby='avatarLabel' aria-hidden='true')
+            .modal-dialog.modal-dialog-centered.modal-lg
+              .modal-content
+                img(src=(user.avatar ? user.avatar : '/client/images/avatar-user.jpg'), alt='User')

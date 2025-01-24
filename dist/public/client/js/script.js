@@ -422,3 +422,14 @@ if (formForgot) {
   }
 }
 //End Send OTP
+//Preview Image
+const popUpPreview = document.getElementById("reviewAvatar");
+if (popUpPreview) {
+  popUpPreview.addEventListener("show.bs.modal", (event) => {
+    // Button that triggered the modal
+    const button = event.relatedTarget;
+    // Extract info from data-bs-* attributes
+  });
+  const myModal3 = new bootstrap.Modal(popUpPreview);
+}
+//End Preview Image
