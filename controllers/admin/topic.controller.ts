@@ -3,16 +3,36 @@ import Topic from "../../model/topic.model";
 import { validateTopic } from "../../validates/validate-topic.validate";
 import { systemConfig } from "../../config/config";
 import { CustomRequest } from "../../interface/CustomRequest";
+import { objectPage } from "../../interface/objectPage";
+import pagination from "../../helpers/pagination";
 
 //[GET] /admin/topics
 export const index = async (req: Request, res: Response): Promise<void> => {
+  let find = {
+    deleted: false
+  }
+
+  //Pagination
+  const totalTopic: number = await Topic.countDocuments(find);
+
+  let objectPagination: objectPage = pagination(
+    {
+      currentPage: 1,
+      limitItem: 5,
+    },
+    req.query,
+    totalTopic
+  );
+  //End Paginatio
+
   const topics = await Topic.find({
     deleted: false,
-  });
+  }).skip(objectPagination.skip).limit(objectPagination.limitItem);
 
   res.render("admin/pages/topics/index", {
     pageTitle: "Trang chủ đề",
     topics: topics || [],
+    pagination: objectPagination,
   });
 };
 

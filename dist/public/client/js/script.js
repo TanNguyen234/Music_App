@@ -194,7 +194,6 @@ if (buttonsPagination) {
   buttonsPagination.forEach((button) => {
     button.addEventListener("click", () => {
       const page = button.getAttribute("button-pagination");
-      console.log(page);
 
       url.searchParams.set("page", page);
 
@@ -284,7 +283,6 @@ if (uploadImage) {
   const x = uploadImage.children[4].querySelector("span");
   x.addEventListener("click", (e) => {
     uploadImagePreview.src = "";
-    console.log("ok");
     uploadImage.children[4].style.display = "none";
     uploadImage.children[2].style.display = "block";
     uploadImageInput.value = "";

@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/moment.pug
+include ../../mixins/pagination.pug
 
 block main
     +success-alert(5000)
@@ -23,7 +24,7 @@ block main
                   if(topics.length > 0)
                     each topic, index in topics
                         tr  
-                            td= index + 1
+                            td= index + 1 + pagination.limitItem * (pagination.currentPage - 1)
                             td
                                 if topic.avatar
                                     img.img-fluid(src=`${topic.avatar}`, alt=`${topic.title}`)
@@ -50,4 +51,5 @@ block main
                                 a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/topics/edit/${topic._id}`) Chỉnh sửa
                                 a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/topics/detail/${topic._id}`) Xem chi tiết
                                 button.btn-delete.btn.btn-danger(btn-delete=topic._id) Xóa
-                                form(method="POST" action=`/admin/topics/delete/${topic._id}?_method=DELETE` id=`form-delete-${topic._id}`) 
+                                form(method="POST" action=`/admin/topics/delete/${topic._id}?_method=DELETE` id=`form-delete-${topic._id}`)
+            +pagination(pagination)

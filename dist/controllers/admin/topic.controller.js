@@ -16,13 +16,23 @@ exports.detail = exports.deleteTopic = exports.editPatch = exports.edit = export
 const topic_model_1 = __importDefault(require("../../model/topic.model"));
 const validate_topic_validate_1 = require("../../validates/validate-topic.validate");
 const config_1 = require("../../config/config");
+const pagination_1 = __importDefault(require("../../helpers/pagination"));
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let find = {
+        deleted: false
+    };
+    const totalTopic = yield topic_model_1.default.countDocuments(find);
+    let objectPagination = (0, pagination_1.default)({
+        currentPage: 1,
+        limitItem: 5,
+    }, req.query, totalTopic);
     const topics = yield topic_model_1.default.find({
         deleted: false,
-    });
+    }).skip(objectPagination.skip).limit(objectPagination.limitItem);
     res.render("admin/pages/topics/index", {
         pageTitle: "Trang chủ đề",
         topics: topics || [],
+        pagination: objectPagination,
     });
 });
 exports.index = index;

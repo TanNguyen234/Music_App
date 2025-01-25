@@ -17,13 +17,23 @@ const topic_model_1 = __importDefault(require("../../model/topic.model"));
 const song_model_1 = __importDefault(require("../../model/song.model"));
 const song_validate_1 = require("../../validates/song.validate");
 const config_1 = require("../../config/config");
+const pagination_1 = __importDefault(require("../../helpers/pagination"));
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let find = {
+        deleted: false
+    };
+    const totalTopic = yield song_model_1.default.countDocuments(find);
+    let objectPagination = (0, pagination_1.default)({
+        currentPage: 1,
+        limitItem: 5,
+    }, req.query, totalTopic);
     const songs = yield song_model_1.default.find({
         deleted: false,
-    });
+    }).skip(objectPagination.skip).limit(objectPagination.limitItem);
     res.render("admin/pages/songs/index", {
         pageTitle: "Trang bài hát",
         songs: songs || [],
+        pagination: objectPagination,
     });
 });
 exports.index = index;
