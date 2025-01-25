@@ -2,17 +2,42 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/moment.pug
 include ../../mixins/pagination.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/search.pug
+include ../../mixins/form-change-multi.pug
+include ../../mixins/sort.pug
 
 block main
     +success-alert(5000)
     .container-fluid
-     .row 
-        .col-12 
-            h1 Danh sách chủ đề
-            a.btn.btn-primary(href="/admin/topics/create") Thêm chủ đề
+     .card.mb-3
+       .card-header Bộ lộc và Tìm kiếm
+       .card-body
+        .row
+         .col-6 
+          +filterStatus(filterStatus)
+         .col-6
+          +search(keyword)
+     .card.mb-3
+       .card-header Sắp xếp 
+       .card-body
+        .row
+        .col-4 
+          +sort()
+
+     .card.mb-3 
+       .card-header Danh sách
+       .card-body
+        .row
+         .col-12
+            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+            a(href=`/${prefixAdmin}/topics/create` class="btn btn-outline-success") + Thêm mới
+         .col-12
             table.table.table-striped.table-bordered.table-hover
                 thead
-                    tr
+                    tr  
+                        th
+                            input(type="checkbox" name="checkall") 
                         th Stt
                         th Ảnh
                         th Tiêu đề
@@ -24,6 +49,8 @@ block main
                   if(topics.length > 0)
                     each topic, index in topics
                         tr  
+                            td 
+                                input(type="checkbox" name="ids" value=topic.id) 
                             td= index + 1 + pagination.limitItem * (pagination.currentPage - 1)
                             td
                                 if topic.avatar

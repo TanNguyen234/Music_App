@@ -98,7 +98,7 @@ body {
 .body .main {
   padding-left: 170px;
   position: relative;
-  width: calc(100% - 130px);
+  margin-top: 10px;
 }
 
 /* End Body  */

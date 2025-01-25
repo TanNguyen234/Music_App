@@ -2,18 +2,44 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/moment.pug
 include ../../mixins/pagination.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/search.pug
+include ../../mixins/form-change-multi.pug
+include ../../mixins/sort.pug
 
 block main
     +success-alert(5000)
     .container-fluid
-     .row 
-        .col-12 
-            h1 Danh sách bài hát
-            a.btn.btn-primary(href="/admin/songs/create") Thêm bài hát
-            
-            table.table.table-striped.table-bordered.table-hover
+      .card.mb-3
+       .card-header Bộ lộc và Tìm kiếm
+       .card-body
+        .row
+         .col-6 
+          +filterStatus(filterStatus)
+         .col-6
+          +search(keyword)
+
+      .card.mb-3
+       .card-header Sắp xếp 
+       .card-body
+        .row
+        .col-4 
+          +sort()
+
+      .card.mb-3 
+       .card-header Danh sách
+       .card-body
+        .row
+         .col-12
+            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+            a(href=`/${prefixAdmin}/songs/create` class="btn btn-outline-success") + Thêm mới
+         .col-12
+
+            table.table.table-striped.table-bordered.table-hover(checkbox-multi)
                 thead
                     tr
+                        th
+                            input(type="checkbox" name="checkall") 
                         th Stt
                         th Ảnh
                         th Tiêu đề
@@ -25,6 +51,8 @@ block main
                  if(songs.length > 0)
                     each song, index in songs
                         tr  
+                            td 
+                                input(type="checkbox" name="ids" value=song.id) 
                             td= index + 1 + pagination.limitItem * (pagination.currentPage - 1)
                             td
                                 if song.avatar
@@ -33,10 +61,10 @@ block main
                                     | No Image
                             td= song.title
                             td
-                                if(song.status === 'active')
-                                    span.badge.bg-success.text-white Hoạt động
+                                if(song.status === "active")
+                                    a(href="javascript:;" button-change-status data-status=song.status data-id=song.id type="button" class="btn btn-success") Hoạt động 
                                 else
-                                    span.badge.bg-danger.text-white Dừng hoạt động
+                                    a(href="javascript:;" button-change-status data-status=song.status data-id=song.id type="button" class="btn btn-danger") Dừng hoạt động 
                             td 
                                 if(song.createdAt)
                                     +formatDay(song.createdAt)
@@ -52,5 +80,6 @@ block main
                                 a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/songs/edit/${song._id}`) Chỉnh sửa
                                 a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/songs/detail/${song._id}`) Xem chi tiết
                                 button.btn-delete.btn.btn-danger(btn-delete=song._id) Xóa
-                                form(method="POST" action=`/admin/songs/delete/${song._id}?_method=DELETE` id=`form-delete-${song._id}`) 
+                                form(action="" method="POST" id="form-change-status" data-path=`${prefixAdmin}/products/change-status`)-// form change
+                                form(action="" method="POST" id="form-delete-item" data-path=`${prefixAdmin}/products/delete`)-// form delete one
             +pagination(pagination)

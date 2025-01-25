@@ -5,11 +5,25 @@ import { systemConfig } from "../../config/config";
 import { CustomRequest } from "../../interface/CustomRequest";
 import { objectPage } from "../../interface/objectPage";
 import pagination from "../../helpers/pagination";
+import { search } from "../../helpers/search";
+import { filterStatus } from "../../helpers/filterStatus";
+import { Find } from "../../interface/query";
 
 //[GET] /admin/topics
 export const index = async (req: Request, res: Response): Promise<void> => {
-  let find = {
+  const filterStatusHelper = filterStatus(req.query);  //Trả về một mảng chứa các trạng thái của sản phẩm
+
+  let find: Find = {
     deleted: false
+  }
+  if (req.query.status) {            //Có req.query.status có ngĩa là trên url có key tên status do frontend truyền lên url
+    find.status = req.query.status //Thêm status vào oject find => find.status
+  }
+
+  const objectSearch: any = search(req.query);
+
+  if (objectSearch.regex) {
+      find.title = objectSearch.regex;
   }
 
   //Pagination
@@ -23,16 +37,32 @@ export const index = async (req: Request, res: Response): Promise<void> => {
     req.query,
     totalTopic
   );
-  //End Paginatio
+  //End Pagination
+
+  //Sort
+  let sort: any = {
+
+  }
+
+  if (req.query.sortKey && req.query.sortValue) {
+    const key: string | any = req.query.sortKey
+    const value: string | any = req.query.sortValue
+    sort[key] = value
+  } else {
+    sort.like = "desc"
+  }
+  //End Sort
 
   const topics = await Topic.find({
     deleted: false,
-  }).skip(objectPagination.skip).limit(objectPagination.limitItem);
+  }).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
 
   res.render("admin/pages/topics/index", {
     pageTitle: "Trang chủ đề",
     topics: topics || [],
     pagination: objectPagination,
+    filterStatus: filterStatusHelper,
+    keyword: objectSearch.keyword,
   });
 };
 
@@ -40,7 +70,7 @@ export const index = async (req: Request, res: Response): Promise<void> => {
 export const create = async (req: Request, res: Response): Promise<void> => {
   res.render("admin/pages/topics/create", {
     pageTitle: "Tạo chủ đề mới",
-  });
+  }); 
 };
 
 //[POST] /admin/topics/create

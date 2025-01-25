@@ -1,0 +1,9 @@
+mixin sort()
+ div(sort)
+          select(classname="form-control" name="sort" sort-select)
+            option(value="love-desc") Like giảm dần 
+            option(value="love-asc") Like tăng dần 
+            option(value="title-asc") Tiêu đề A - Z
+            option(value="title-desc") Tiêu đề Z - A
+         
+          button(class="btn btn-danger ml-2" sort-clear) clear

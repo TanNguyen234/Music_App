@@ -169,3 +169,102 @@ if (buttonsPagination) {
   });
 }
 //End Pagination
+//Sort
+const sort = document.querySelector('[sort]');
+if(sort) {
+    const select = document.querySelector('[sort-select]');
+    const buttonSortClear = document.querySelector('[sort-clear]');
+
+    let url = new URL(window.location.href);
+
+    select.addEventListener('change', (e) => {
+       const [sortKey, sortValue] = e.target.value.split('-')
+       
+       url.searchParams.set("sortKey", sortKey);
+       url.searchParams.set("sortValue", sortValue);
+
+       window.location.href = url.href
+    });
+
+    buttonSortClear.addEventListener('click', () => {
+        url.searchParams.delete("sortKey");
+        url.searchParams.delete("sortValue");     
+        
+        window.location.href = url.href
+    })
+
+    const sortKey = url.searchParams.get("sortKey");
+    const sortValue = url.searchParams.get("sortValue");
+
+    if(sortKey && sortValue) {
+        const string = `${sortKey}-${sortValue}`;
+        const option = select.querySelector(`option[value="${string}"]`);
+        option.selected = true;
+    }
+}
+//End Sort
+//Change Status
+const buttonsChangeStatus = document.querySelectorAll('[button-change-status]');
+
+if(buttonsChangeStatus.length > 0) {
+    const formChangeStatus = document.querySelector("#form-change-status");
+    const path = formChangeStatus.getAttribute("data-path")
+
+    buttonsChangeStatus.forEach(button => {
+        button.addEventListener('click', () => {
+            const statusCurrent = button.getAttribute('data-status');
+            const id = button.getAttribute('data-id');
+
+            let statusChange = statusCurrent == "active" ? "inactive" : "active";
+            const data = {
+                id: id,
+                status: statusChange
+            }
+
+            fetch(action, {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+           .then(response => response.json())
+           .then(data => {
+                if(data.code == 200) {
+                    if(statusChange == "active") {
+                        button.classList.remove('btn-danger');
+                        button.classList.add('btn-success');
+                        button.textContent = "Active";
+                    } else {
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-danger');
+                        button.textContent = "Inactive";
+                    }
+                }
+           })
+        })
+    })
+}
+//End Change Status
+//Button Status
+const buttonStatus = document.querySelectorAll("[button-status]");
+if(buttonStatus.length > 0) {
+
+    let url = new URL(window.location.href); //Ghi new URL mới sử dụng được các hàm set bên dưới
+
+    buttonStatus.forEach(button => {
+        button.addEventListener("click", () => {
+            button.classList.toggle("active")
+            const status = button.getAttribute("button-status");//Lấy ra thuộc tính button-status của button bị click
+            
+            if(status){
+                url.searchParams.set("status", status);  //Thêm param status
+            } else {
+                url.searchParams.delete("status"); //Xóa param status
+            }
+            window.location.href = url.href;  //Chuyển trang hiện tại đến đường dẫn mới
+        })
+    })
+}
+//End Button Status

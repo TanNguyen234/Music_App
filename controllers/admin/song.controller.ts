@@ -6,15 +6,29 @@ import { systemConfig } from "../../config/config";
 import { CustomRequest } from "../../interface/CustomRequest";
 import { objectPage } from "../../interface/objectPage";
 import pagination from "../../helpers/pagination";
+import { Find } from "../../interface/query";
+import { filterStatus } from "../../helpers/filterStatus";
+import { search } from "../../helpers/search";
 
 //[GET] /admin/songs
 export const index = async (req: Request, res: Response): Promise<void> => {
-  let find = {
+  const filterStatusHelper = filterStatus(req.query);  //Trả về một mảng chứa các trạng thái của sản phẩm
+
+  let find: Find = {
     deleted: false
+  }
+  if (req.query.status) {            //Có req.query.status có ngĩa là trên url có key tên status do frontend truyền lên url
+    find.status = req.query.status //Thêm status vào oject find => find.status
+  }
+
+  const objectSearch: any = search(req.query);
+
+  if (objectSearch.regex) {
+      find.title = objectSearch.regex;
   }
 
   //Pagination
-  const totalTopic: number = await Song.countDocuments(find);
+  const totalSong: number = await Song.countDocuments(find);
 
   let objectPagination: objectPage = pagination(
     {
@@ -22,18 +36,34 @@ export const index = async (req: Request, res: Response): Promise<void> => {
       limitItem: 5,
     },
     req.query,
-    totalTopic
+    totalSong
   );
-  //End Paginatio
+  //End Pagination
+
+  //Sort
+  let sort: any = {
+
+  }
+
+  if (req.query.sortKey && req.query.sortValue) {
+    const key: string | any = req.query.sortKey
+    const value: string | any = req.query.sortValue
+    sort[key] = value
+  } else {
+    sort.like = "desc"
+  }
+  //End Sort
 
   const songs = await Song.find({
     deleted: false,
-  }).skip(objectPagination.skip).limit(objectPagination.limitItem);
+  }).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
 
   res.render("admin/pages/songs/index", {
     pageTitle: "Trang bài hát",
     songs: songs || [],
     pagination: objectPagination,
+    filterStatus: filterStatusHelper,
+    keyword: objectSearch.keyword,
   });
 };
 

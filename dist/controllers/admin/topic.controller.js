@@ -17,22 +17,43 @@ const topic_model_1 = __importDefault(require("../../model/topic.model"));
 const validate_topic_validate_1 = require("../../validates/validate-topic.validate");
 const config_1 = require("../../config/config");
 const pagination_1 = __importDefault(require("../../helpers/pagination"));
+const search_1 = require("../../helpers/search");
+const filterStatus_1 = require("../../helpers/filterStatus");
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const filterStatusHelper = (0, filterStatus_1.filterStatus)(req.query);
     let find = {
         deleted: false
     };
+    if (req.query.status) {
+        find.status = req.query.status;
+    }
+    const objectSearch = (0, search_1.search)(req.query);
+    if (objectSearch.regex) {
+        find.title = objectSearch.regex;
+    }
     const totalTopic = yield topic_model_1.default.countDocuments(find);
     let objectPagination = (0, pagination_1.default)({
         currentPage: 1,
         limitItem: 5,
     }, req.query, totalTopic);
+    let sort = {};
+    if (req.query.sortKey && req.query.sortValue) {
+        const key = req.query.sortKey;
+        const value = req.query.sortValue;
+        sort[key] = value;
+    }
+    else {
+        sort.like = "desc";
+    }
     const topics = yield topic_model_1.default.find({
         deleted: false,
-    }).skip(objectPagination.skip).limit(objectPagination.limitItem);
+    }).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
     res.render("admin/pages/topics/index", {
         pageTitle: "Trang chủ đề",
         topics: topics || [],
         pagination: objectPagination,
+        filterStatus: filterStatusHelper,
+        keyword: objectSearch.keyword,
     });
 });
 exports.index = index;
