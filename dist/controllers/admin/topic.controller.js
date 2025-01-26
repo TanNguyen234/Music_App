@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeStatus = exports.detail = exports.deleteTopic = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
+exports.changeMulti = exports.changeStatus = exports.detail = exports.deleteTopic = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
 const topic_model_1 = __importDefault(require("../../model/topic.model"));
 const validate_topic_validate_1 = require("../../validates/validate-topic.validate");
 const config_1 = require("../../config/config");
@@ -186,3 +186,36 @@ const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.changeStatus = changeStatus;
+const changeMulti = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const type = req.body.type;
+    const ids = req.body.ids.split(', ');
+    const updated = {
+        update_at: new Date()
+    };
+    switch (type) {
+        case "active":
+            yield topic_model_1.default.updateMany({ _id: { $in: ids } }, {
+                status: "active",
+                $push: { updatedBy: updated }
+            });
+            req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            break;
+        case "inactive":
+            yield topic_model_1.default.updateMany({ _id: { $in: ids } }, {
+                status: "inactive",
+                $push: { updatedBy: updated }
+            });
+            req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            break;
+        case "delete-all":
+            yield topic_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: {
+                    deleteAt: new Date()
+                } });
+            req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+            break;
+        default:
+            break;
+    }
+    res.redirect("back");
+});
+exports.changeMulti = changeMulti;

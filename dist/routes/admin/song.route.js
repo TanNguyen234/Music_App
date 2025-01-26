@@ -54,4 +54,5 @@ router.patch("/edit/:id", upload.fields([
 ]), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
 router.delete("/delete/:id", (0, CustomRequest_1.returnCustomRequest)(controller.deleteSong));
 router.patch("/change-status", controller.changeStatus);
+router.patch("/change-multi", (0, CustomRequest_1.returnCustomRequest)(controller.changeMulti));
 exports.songRoutes = router;

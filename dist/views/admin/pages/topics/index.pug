@@ -33,10 +33,10 @@ block main
        .card-body
         .row
          .col-12.d-flex.justify-content-between.mb-3
-            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+            +form-change-multi(`/${prefixAdmin}/topics/change-multi?_method=PATCH`)
             a(href=`/${prefixAdmin}/topics/create` class="btn btn-outline-success") + Thêm mới
          .col-12
-            table.table.table-striped.table-bordered.table-hover
+            table.table.table-striped.table-bordered.table-hover(checkbox-multi)
                 thead
                     tr  
                         th

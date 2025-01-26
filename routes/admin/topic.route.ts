@@ -46,4 +46,9 @@ router.patch(
   controller.changeStatus
 );
 
+router.patch(
+  "/change-multi",
+  returnCustomRequest(controller.changeMulti)
+);
+
 export const topicRoutes: Router = router;

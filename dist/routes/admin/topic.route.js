@@ -50,4 +50,5 @@ router.patch("/edit/:id", upload.single("avatar"), (0, CustomRequest_1.returnCus
 router.delete("/delete/:id", (0, CustomRequest_1.returnCustomRequest)(controller.deleteTopic));
 router.get("/detail/:id", controller.detail);
 router.patch("/change-status", controller.changeStatus);
+router.patch("/change-multi", (0, CustomRequest_1.returnCustomRequest)(controller.changeMulti));
 exports.topicRoutes = router;

@@ -217,3 +217,47 @@ export const changeStatus = async (
       })
     }
 };
+
+// [PATCH] /admin/songs/change-multi
+export const changeMulti = async (req: CustomRequest, res: Response): Promise<void> => {
+
+  const type = req.body.type;
+
+  const ids = req.body.ids.split(', '); //conver từ string thành array
+
+  const updated = {
+      update_at: new Date()
+  }
+
+  switch (type) {
+      case "active":
+          await Topic.updateMany({ _id: { $in: ids } }, { 
+              status: "active", 
+              $push: {updatedBy: updated}
+          })
+
+          req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+
+          break;
+      case "inactive":
+          await Topic.updateMany({ _id: { $in: ids } }, { 
+              status: "inactive", 
+              $push: {updatedBy: updated}
+          })
+
+          req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+
+          break;
+      case "delete-all":
+          await Topic.updateMany({ _id: { $in: ids } }, {deleted: true, deletedBy: {
+              deleteAt: new Date()
+          } } )
+
+          req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+          break;
+      default:
+          break;
+  }
+
+  res.redirect("back");
+}
