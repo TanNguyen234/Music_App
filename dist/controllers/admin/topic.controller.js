@@ -45,9 +45,11 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     else {
         sort.like = "desc";
     }
-    const topics = yield topic_model_1.default.find({
-        deleted: false,
-    }).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+    const topics = yield topic_model_1.default.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+    console.log(objectPagination);
+    console.log(sort);
+    console.log(find);
+    console.log(topics);
     res.render("admin/pages/topics/index", {
         pageTitle: "Trang chủ đề",
         topics: topics || [],

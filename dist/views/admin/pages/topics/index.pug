@@ -23,13 +23,13 @@ block main
        .card-body
         .row
         .col-4 
-          +sort()
+          +sort("topics")
 
      .card.mb-3 
        .card-header Danh sách
        .card-body
         .row
-         .col-12
+         .col-12.d-flex.justify-content-between.mb-3
             +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
             a(href=`/${prefixAdmin}/topics/create` class="btn btn-outline-success") + Thêm mới
          .col-12
@@ -79,4 +79,7 @@ block main
                                 a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/topics/detail/${topic._id}`) Xem chi tiết
                                 button.btn-delete.btn.btn-danger(btn-delete=topic._id) Xóa
                                 form(method="POST" action=`/admin/topics/delete/${topic._id}?_method=DELETE` id=`form-delete-${topic._id}`)
+                  else 
+                    tr
+                        td(colspan="12" class="text-center") Không có dữ liệu
             +pagination(pagination)

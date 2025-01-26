@@ -1,8 +1,13 @@
-mixin sort()
+mixin sort(type)
  div(sort)
           select(classname="form-control" name="sort" sort-select)
-            option(value="love-desc") Like giảm dần 
-            option(value="love-asc") Like tăng dần 
+            if(type==="songs")
+              option(value="like-desc") Lượt thích giảm dần 
+              option(value="like-asc") Lượt thích tăng dần
+              option(value="visit-desc") Lượt xem giảm dần
+              option(value="visit-asc") Lượt xem tăng dần
+            option(value="createdAt-desc") Ngày đăng giảm dần
+            option(value="createdAt-asc") Ngày đăng tăng dần
             option(value="title-asc") Tiêu đề A - Z
             option(value="title-desc") Tiêu đề Z - A
          

@@ -46,9 +46,7 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     else {
         sort.like = "desc";
     }
-    const songs = yield song_model_1.default.find({
-        deleted: false,
-    }).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+    const songs = yield song_model_1.default.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
     res.render("admin/pages/songs/index", {
         pageTitle: "Trang bài hát",
         songs: songs || [],

@@ -53,9 +53,11 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   }
   //End Sort
 
-  const topics = await Topic.find({
-    deleted: false,
-  }).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+  const topics = await Topic.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+  console.log(objectPagination)
+  console.log(sort)
+  console.log(find)
+  console.log(topics)
 
   res.render("admin/pages/topics/index", {
     pageTitle: "Trang chủ đề",

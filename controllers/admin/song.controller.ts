@@ -54,9 +54,7 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   }
   //End Sort
 
-  const songs = await Song.find({
-    deleted: false,
-  }).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+  const songs = await Song.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
 
   res.render("admin/pages/songs/index", {
     pageTitle: "Trang bài hát",

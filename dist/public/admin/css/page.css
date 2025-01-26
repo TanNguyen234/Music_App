@@ -140,6 +140,16 @@ img[upload-image-preview] + span {
   white-space: wrap;
   text-overflow: clip;
 }
+
+select[name="sort"] {
+  padding: 8px;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+
+[button-status] {
+  margin-right: 5px;
+}
 /* End Topic Detail */
 /* End Topic  */
 
