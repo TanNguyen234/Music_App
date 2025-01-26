@@ -49,4 +49,5 @@ router.patch("/edit/:id", upload.single("avatar"), (0, CustomRequest_1.returnCus
 router.patch("/edit/:id", upload.single("avatar"), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
 router.delete("/delete/:id", (0, CustomRequest_1.returnCustomRequest)(controller.deleteTopic));
 router.get("/detail/:id", controller.detail);
+router.patch("/change-status", controller.changeStatus);
 exports.topicRoutes = router;

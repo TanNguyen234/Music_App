@@ -53,4 +53,5 @@ router.patch("/edit/:id", upload.fields([
     { name: "audio", maxCount: 1 },
 ]), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
 router.delete("/delete/:id", (0, CustomRequest_1.returnCustomRequest)(controller.deleteSong));
+router.patch("/change-status", controller.changeStatus);
 exports.songRoutes = router;

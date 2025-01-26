@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteSong = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
+exports.changeStatus = exports.deleteSong = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
 const topic_model_1 = __importDefault(require("../../model/topic.model"));
 const song_model_1 = __importDefault(require("../../model/song.model"));
 const song_validate_1 = require("../../validates/song.validate");
@@ -147,3 +147,28 @@ const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteSong = deleteSong;
+const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.body.id;
+    const status = req.body.status;
+    try {
+        if (!id) {
+            throw new Error(`Invalid`);
+        }
+        yield song_model_1.default.updateOne({
+            _id: id,
+        }, {
+            status: status,
+        });
+        res.json({
+            code: 200,
+            message: "Thay đổi trạng thái bài hát thành công",
+        });
+    }
+    catch (error) {
+        res.json({
+            code: 500,
+            message: "Thay đổi trạng thái bài hát thất bại",
+        });
+    }
+});
+exports.changeStatus = changeStatus;

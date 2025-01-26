@@ -89,6 +89,36 @@ if(uploadImage) {
     })
 }
 //End Upload Image
+//Alert Defined
+function alertFunc(type, message) {
+    const alert = document.querySelector(`.alert-user-${type}`);
+    if (alert) {
+      alert.innerText = message;
+      const span = document.createElement("span");
+      span.setAttribute("close-alert", "");
+      span.innerHTML = 'x';
+      alert.appendChild(span);
+      alert.toggleAttribute("show-alert")
+      clearTimeout();
+      // Hiển thị thông báo
+      alert.classList.remove("alert-hidden"); // Đảm bảo thông báo hiển thị
+  
+      // Đặt thời gian ẩn thông báo
+      const timeAlert = alert.getAttribute("data-time");
+  
+      setTimeout(() => {
+        alert.classList.add("alert-hidden");  // Ẩn thông báo sau thời gian chờ
+      }, timeAlert);
+  
+      // Ẩn thông báo khi nhấn vào
+      alert.addEventListener("click", () => {
+        alert.classList.add("alert-hidden");
+      });
+    }
+  }
+  // Gửi OTP và kiểm tra thời gian chờ
+let isWaiting = false;  // Kiểm tra xem có đang chờ không
+//End Alert Defined
 //Close Alert
 const showAleart = document.querySelector('[show-alert]');
 if(showAleart) {
@@ -215,19 +245,20 @@ if(buttonsChangeStatus.length > 0) {
             const statusCurrent = button.getAttribute('data-status');
             const id = button.getAttribute('data-id');
 
-            let statusChange = statusCurrent == "active" ? "inactive" : "active";
-            const data = {
+            const statusChange = statusCurrent == "active" ? "inactive" : "active";
+
+            const dataSend = {
                 id: id,
                 status: statusChange
             }
 
-            fetch(action, {
+            fetch(path, {
                 method: 'PATCH',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(dataSend)
             })
            .then(response => response.json())
            .then(data => {
@@ -235,13 +266,17 @@ if(buttonsChangeStatus.length > 0) {
                     if(statusChange == "active") {
                         button.classList.remove('btn-danger');
                         button.classList.add('btn-success');
-                        button.textContent = "Active";
+                        button.textContent = "Hoạt động";
                     } else {
                         button.classList.remove('btn-success');
                         button.classList.add('btn-danger');
-                        button.textContent = "Inactive";
+                        button.textContent = "Dừng hoạt động";
                     }
+                    alertFunc("success", data.message);
+                } else {
+                    alertFunc("error", data.message);
                 }
+                button.setAttribute('data-status', statusChange);
            })
         })
     })

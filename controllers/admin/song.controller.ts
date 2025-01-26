@@ -9,6 +9,7 @@ import pagination from "../../helpers/pagination";
 import { Find } from "../../interface/query";
 import { filterStatus } from "../../helpers/filterStatus";
 import { search } from "../../helpers/search";
+import { Status } from "../../interface/status";
 
 //[GET] /admin/songs
 export const index = async (req: Request, res: Response): Promise<void> => {
@@ -176,5 +177,36 @@ export const deleteSong = async (
       } catch (error) {
         req.flash("error", "Xóa bài hát thất bại");
         res.redirect(`/${systemConfig.prefixAdmin}/songs`);
+      }
+  };
+
+//[PATCH] /admin/songs/change-status
+export const changeStatus = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const id: string = req.body.id;
+    const status: Status = req.body.status;
+    try {
+        if(!id) {
+            throw new Error(`Invalid`)
+        }
+        await Song.updateOne(
+          {
+            _id: id,
+          },
+          {
+            status: status,
+          }
+        );
+        res.json({
+          code: 200,
+          message: "Thay đổi trạng thái bài hát thành công",
+        })
+      } catch (error) {
+        res.json({
+          code: 500,
+          message: "Thay đổi trạng thái bài hát thất bại",
+        })
       }
   };

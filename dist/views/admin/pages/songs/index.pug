@@ -9,6 +9,9 @@ include ../../mixins/sort.pug
 
 block main
     +success-alert(5000)
+    +error-alert(5000)
+    div(class="alert-user alert-user-success" data-time=5000)
+    div(class="alert-user alert-user-error" data-time=5000)
     .container-fluid
       .card.mb-3
        .card-header Bộ lộc và Tìm kiếm
@@ -80,8 +83,8 @@ block main
                                 a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/songs/edit/${song._id}`) Chỉnh sửa
                                 a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/songs/detail/${song._id}`) Xem chi tiết
                                 button.btn-delete.btn.btn-danger(btn-delete=song._id) Xóa
-                                form(action="" method="POST" id="form-change-status" data-path=`${prefixAdmin}/products/change-status`)-// form change
-                                form(action="" method="POST" id="form-delete-item" data-path=`${prefixAdmin}/products/delete`)-// form delete one
+                                form(action="" method="POST" id="form-change-status" data-path=`/${prefixAdmin}/songs/change-status`)-// form change
+                                form(action="" method="POST" id="form-delete-item" data-path=`/${prefixAdmin}/songs/delete`)-// form delete one
                  else 
                     tr
                         td(colspan="12" class="text-center") Không có dữ liệu

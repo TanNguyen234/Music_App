@@ -8,6 +8,7 @@ import pagination from "../../helpers/pagination";
 import { search } from "../../helpers/search";
 import { filterStatus } from "../../helpers/filterStatus";
 import { Find } from "../../interface/query";
+import { Status } from "../../interface/status";
 
 //[GET] /admin/topics
 export const index = async (req: Request, res: Response): Promise<void> => {
@@ -54,10 +55,6 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   //End Sort
 
   const topics = await Topic.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
-  console.log(objectPagination)
-  console.log(sort)
-  console.log(find)
-  console.log(topics)
 
   res.render("admin/pages/topics/index", {
     pageTitle: "Trang chủ đề",
@@ -68,7 +65,7 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   });
 };
 
-//[GET] /admin/topics/create
+//[GET] /admin/topics/create  
 export const create = async (req: Request, res: Response): Promise<void> => {
   res.render("admin/pages/topics/create", {
     pageTitle: "Tạo chủ đề mới",
@@ -187,5 +184,36 @@ export const detail = async (req: Request, res: Response): Promise<void> => {
               }
     } catch (error) {
         res.redirect(`/${systemConfig.prefixAdmin}/topics`);
+    }
+};
+
+//[PATCH] /admin/topics/change-status
+export const changeStatus = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const id: string = req.body.id;
+  const status: Status = req.body.status;
+  try {
+      if(!id) {
+          throw new Error(`Invalid`)
+      }
+      await Topic.updateOne(
+        {
+          _id: id,
+        },
+        {
+          status: status,
+        }
+      );
+      res.json({
+        code: 200,
+        message: "Thay đổi trạng thái bài hát thành công",
+      })
+    } catch (error) {
+      res.json({
+        code: 500,
+        message: "Thay đổi trạng thái bài hát thất bại",
+      })
     }
 };

@@ -41,4 +41,9 @@ router.delete(
 
 router.get("/detail/:id", controller.detail);
 
+router.patch(
+  "/change-status",
+  controller.changeStatus
+);
+
 export const topicRoutes: Router = router;

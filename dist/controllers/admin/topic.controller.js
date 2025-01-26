@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.detail = exports.deleteTopic = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
+exports.changeStatus = exports.detail = exports.deleteTopic = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
 const topic_model_1 = __importDefault(require("../../model/topic.model"));
 const validate_topic_validate_1 = require("../../validates/validate-topic.validate");
 const config_1 = require("../../config/config");
@@ -46,10 +46,6 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         sort.like = "desc";
     }
     const topics = yield topic_model_1.default.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
-    console.log(objectPagination);
-    console.log(sort);
-    console.log(find);
-    console.log(topics);
     res.render("admin/pages/topics/index", {
         pageTitle: "Trang chủ đề",
         topics: topics || [],
@@ -165,3 +161,28 @@ const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.detail = detail;
+const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.body.id;
+    const status = req.body.status;
+    try {
+        if (!id) {
+            throw new Error(`Invalid`);
+        }
+        yield topic_model_1.default.updateOne({
+            _id: id,
+        }, {
+            status: status,
+        });
+        res.json({
+            code: 200,
+            message: "Thay đổi trạng thái bài hát thành công",
+        });
+    }
+    catch (error) {
+        res.json({
+            code: 500,
+            message: "Thay đổi trạng thái bài hát thất bại",
+        });
+    }
+});
+exports.changeStatus = changeStatus;

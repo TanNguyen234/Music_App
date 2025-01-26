@@ -38,4 +38,9 @@ router.delete(
   returnCustomRequest(controller.deleteSong)
 );
 
+router.patch(
+  "/change-status",
+  controller.changeStatus
+);
+
 export const songRoutes: Router = router;

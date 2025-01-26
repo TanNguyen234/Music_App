@@ -9,6 +9,9 @@ include ../../mixins/sort.pug
 
 block main
     +success-alert(5000)
+    +error-alert(5000)
+    div(class="alert-user alert-user-success" data-time=5000)
+    div(class="alert-user alert-user-error" data-time=5000)
     .container-fluid
      .card.mb-3
        .card-header Bộ lộc và Tìm kiếm
@@ -59,10 +62,10 @@ block main
                                     | No Image
                             td= topic.title
                             td
-                                if(topic.status === 'active')
-                                    span.badge.bg-success.text-white Hoạt động
+                                if(topic.status === "active")
+                                    a(href="javascript:;" button-change-status data-status=topic.status data-id=topic.id type="button" class="btn btn-success") Hoạt động 
                                 else
-                                    span.badge.bg-danger.text-white Dừng hoạt động
+                                    a(href="javascript:;" button-change-status data-status=topic.status data-id=topic.id type="button" class="btn btn-danger") Dừng hoạt động 
                             td 
                                 if(topic.createdAt)
                                     +formatDay(topic.createdAt)
@@ -78,6 +81,7 @@ block main
                                 a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/topics/edit/${topic._id}`) Chỉnh sửa
                                 a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/topics/detail/${topic._id}`) Xem chi tiết
                                 button.btn-delete.btn.btn-danger(btn-delete=topic._id) Xóa
+                                form(action="" method="POST" id="form-change-status" data-path=`/${prefixAdmin}/topics/change-status`)-// form change
                                 form(method="POST" action=`/admin/topics/delete/${topic._id}?_method=DELETE` id=`form-delete-${topic._id}`)
                   else 
                     tr
