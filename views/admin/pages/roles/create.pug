@@ -1,8 +1,8 @@
 extends ../../layouts/default.pug
 
 block main 
-  h1(class="mb-4 text-center") Thêm mới nhóm quyền 
   .container-fluid
+    h1(class="mb-4 text-center") Thêm mới nhóm quyền 
     form(action=`/${prefixAdmin}/roles/create` method="POST" id="form-create")
       div(class="form-group")
         label(for="tite") Tiêu đề

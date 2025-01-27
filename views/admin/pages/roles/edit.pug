@@ -1,8 +1,8 @@
 extends ../../layouts/default.pug
 
 block main 
-  h1(class="mb-4 text-center") Chỉnh sửa nhóm quyền 
   .container-fluid
+    h1(class="mb-4") Chỉnh sửa nhóm quyền
     form(action=`/${prefixAdmin}/roles/edit/${role._id}?_method=PATCH` method="POST" id="form-create")
       div(class="form-group")
         label(for="tite") Tiêu đề
