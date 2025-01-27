@@ -385,3 +385,32 @@ if(formChangeMulti) {
     })   
 }
 //End Change Form Multi
+//Delete Role
+const btnDeleteRole = document.querySelectorAll('[btn-delete-role]');
+if(btnDeleteRole.length > 0) {
+    btnDeleteRole.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const isConfirm = confirm("Are you sure you want to delete?");
+            if(!isConfirm) {
+                return;
+            } else {
+                const roleId = btn.getAttribute('btn-delete-role');
+                const path = window.location.pathname;
+                const link   = path + "/delete/" + roleId;
+                fetch(link, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.code == 200) {
+                        alertFunc("success", data.message);
+                        btn.closest('tr').remove();
+                    } else {
+                        alertFunc("error", data.message);
+                    }
+                })
+            }
+        })
+    })
+}
+//End Delete Role

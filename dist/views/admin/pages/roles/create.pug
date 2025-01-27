@@ -1,0 +1,14 @@
+extends ../../layouts/default.pug
+
+block main 
+  h1(class="mb-4 text-center") Thêm mới nhóm quyền 
+  .container-fluid
+    form(action=`/${prefixAdmin}/roles/create` method="POST" id="form-create")
+      div(class="form-group")
+        label(for="tite") Tiêu đề
+        input(type="text" class="form-control" id="title" name="title" required)
+      div(class="form-group mb-3")
+        label(for="desc") Mô tả
+        input(type="text" class="form-control" id="desc" name="description")
+      div(class="form-group")
+        button(type="submit" class="btn btn-primary") Tạo mới

@@ -27,23 +27,26 @@ if (aplayer) {
   const dataSong = JSON.parse(aplayer.getAttribute("data-song"));
   const ap = new APlayer({
     container: document.getElementById("aplayer"),
-    audio: [
-      {
-        name: dataSong.title,
-        artist: dataSong.singer || "",
-        url: dataSong.audio,
-        cover: dataSong.avatar,
-        theme: "#7676",
-        loop: "all",
-        preload: "auto",
-        volume: 0.7,
-        mutex: true,
-        listFolded: false,
-        listMaxHeight: 90,
-        lrcType: 3,
-      },
-    ],
+    mini: false,
+    autoplay: false,
+    theme: '#FADFA3',
+    loop: 'all',
+    order: 'random',
+    preload: 'auto',
+    volume: 0.7,
+    mutex: true,
+    listFolded: false,
+    listMaxHeight: 90,
+    lrcType: 1,
+    audio: [{
+      name: dataSong.title,
+      artist: dataSong.singer || "",
+      url: dataSong.audio,
+      cover: dataSong.avatar,
+      lrc: dataSong.lyrics
+    }],
   });
+  console.log(ap);
 
   //Spin
   const avatar = document.querySelector(".aplayer-pic");
