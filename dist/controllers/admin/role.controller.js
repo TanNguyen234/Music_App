@@ -41,13 +41,13 @@ const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.redirect(`/${config_1.systemConfig.prefixAdmin}/roles`);
     }
     else {
-        res.redirect("back");
+        res.redirect(req.get("Referrer") || `/${config_1.systemConfig.prefixAdmin}/dashboard`);
     }
 });
 exports.createPost = createPost;
 const edit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.params.id) {
-        res.redirect("/admin/roles");
+        res.redirect(`/${config_1.systemConfig.prefixAdmin}/roles`);
     }
     else {
         const role = yield role_model_1.default.findOne({
@@ -74,7 +74,7 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.redirect(`/${config_1.systemConfig.prefixAdmin}/roles`);
     }
     else {
-        res.redirect("back");
+        res.redirect(req.get("Referrer") || `/${config_1.systemConfig.prefixAdmin}/dashboard`);
     }
 });
 exports.editPatch = editPatch;

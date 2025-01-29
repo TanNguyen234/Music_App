@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+  +success-alert(5000)
+  +error-alert(5000)
+  .container-fluid
+    h1(class="mb-4 text-center") Thêm tài khoản 
+    if(roles.length > 0)
+      form(action=`/${prefixAdmin}/accounts/create` method="POST" id="form-create" enctype="multipart/form-data")
+        div(class="form-group mb-3")
+          label(for="fullName") Họ tên *
+          input(type="text" class="form-control" id="fullName" name="fullName" required)
+        div(class="form-group mb-3")
+          label(for="email") Email *
+          input(type="email" class="form-control" id="email" name="email")
+        div(class="form-group mb-3")
+          label(for="password") Mật khẩu
+          input(type="password" class="form-control" id="password" name="password")
+        div(class="form-group mb-3")
+          label(for="phone") Số điện thoại *
+          input(type="number" class="form-control" id="phone" name="phone")
+        div(class="form-group mb-3" upload-image)
+          label(for="avatar") Avatar
+          input(type="file" class="form-control-file" id="avatar" name="avatar" upload-image-input accept="image/*")
+          div 
+            img(src="" class="upload-image-preview" upload-image-preview alt="")
+            span x
+        div(class="form-group mb-3")
+          label(for="role_id") Phân quyền
+          select(type="number" class="form-control" id="role_id" name="role_id")
+            option(disabled) -- Chọn vai trò --
+            each role in roles
+              option(value=role.id) #{role.title}
+        div(class="form-group form-check form-check-inline mb-3")
+          input(type='radio' class="form-check-input" id="statusActive" name='status' value="active" checked)
+          label(for="statusActive" class="form-check-label") Hoạt động
+        div(class="form-group form-check form-check-inline")
+          input(type='radio' class="form-check-input" id="statusInActive" name='status' value="inactive")
+          label(for="statusInActive" class="form-check-label") Dừng hoạt động
+        div(class="form-group d-flex justify-content-center")
+          button(type="submit" class="btn btn-primary") Tạo mới
+    else
+      h2(class="mb-4 text-center") Chưa có nhóm quyền nào trong hệ thống. Vui lòng tạo nhóm quyền trước khi tạo tài khoản mới.

@@ -1,0 +1,68 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/moment.pug
+include ../../mixins/pagination.pug
+
+block main 
+  +success-alert(5000)
+  +error-alert(5000)
+  div(class="alert-user alert-user-success" data-time=5000)
+  div(class="alert-user alert-user-error" data-time=5000)
+  .container-fluid
+   h1(class="mb-4") Nhóm quyền
+   .card.mb-3 
+    .card-header Danh sách 
+    .card-body 
+      .row 
+        .col-9 
+        .col-3.d-flex.justify-content-end.mb-3
+          a(
+            class="btn btn-outline-success"
+            href=`/${prefixAdmin}/accounts/create`
+          ) + Thêm mới 
+        
+      table(class="table table-sm table-hover")
+          thead
+            tr
+              th STT
+              th Avatar
+              th Họ tên 
+              th Phân quyền
+              th Email
+              th Trạng thái
+              th Hành động
+          tbody
+            if(accounts.length > 0)
+              each item, index in accounts 
+                tr.p-3 
+                  td #{index + 1} 
+                  td 
+                    if(item.avatar) 
+                      img(src=item.avatar alt="Avatar" width="50" height="50")
+                    else
+                      span Chưa có ảnh
+                  td #{item.fullName}
+                  td #{item.role}
+                  td #{item.email} 
+                  td
+                    if(item.status === "active")
+                      a(href="javascript:;" button-change-status data-status=item.status data-id=item.id type="button" class="btn btn-success") Hoạt động 
+                    else
+                      a(href="javascript:;" button-change-status data-status=song.status data-id=item.id type="button" class="btn btn-danger") Dừng hoạt động 
+                  td 
+                    a(
+                      class="btn btn-secondary btn-sm"
+                      href=`/${prefixAdmin}/accounts/detail/${item.id}`
+                    ) Chi tiết 
+                    a(
+                      class="btn btn-warning btn-sm ms-1"
+                      href=`/${prefixAdmin}/accounts/edit/${item.id}`
+                    ) Sửa 
+                    button(
+                      btn-delete-account=item.id
+                      class="btn btn-danger btn-sm ms-1"
+                    ) Xóa
+                    form(action="" method="POST" id="form-change-status" data-path=`/${prefixAdmin}/accounts/change-status`)-// form change
+            else 
+                tr 
+                  td(colspan="12" class="text-center") Chưa có nhóm quyền nào được tạo  

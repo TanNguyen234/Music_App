@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router } from "express";
 const multer = require("multer");
 const router: Router = Router();
 const upload = multer();

@@ -9,6 +9,6 @@ block main
         input(type="text" class="form-control" id="title" name="title" required)
       div(class="form-group mb-3")
         label(for="desc") Mô tả
-        input(type="text" class="form-control" id="desc" name="description")
-      div(class="form-group")
+        textarea(class="form-control" textarea-mce id="desc" name="description")
+      div(class="form-group d-flex justify-content-center")
         button(type="submit" class="btn btn-primary") Tạo mới

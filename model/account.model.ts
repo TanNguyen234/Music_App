@@ -13,10 +13,6 @@ const accountSchema = new mongoose.Schema({//Thiết lập schema
   avatar: String,
   role_id: String,
   status: String,
-  permissions: {
-    type: Array,
-    default: []
-  },
   deleted: {
     type: Boolean,
     default: false
@@ -24,6 +20,6 @@ const accountSchema = new mongoose.Schema({//Thiết lập schema
   deleteAt: Date
 }, {timestamps: true});//Hàm mongoose nếu giá trị là true thì nó sẽ tự động lưu lại [ngày tạo] và khi uppdate nó cg tự động lưu [ngày updata]
 
-const Accounts = mongoose.model("Accounts", accountSchema, "accounts"); //Kết nối tới collection có tên products
+const Account = mongoose.model("Account", accountSchema, "accounts"); //Kết nối tới collection có tên products
 
-module.exports = Accounts;
+export default Account;

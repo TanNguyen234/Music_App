@@ -31,14 +31,14 @@ export const createPost = async (req: CustomRequest, res: Response): Promise<voi
         req.flash("success", "Thêm nhóm quyền thành công");
         res.redirect(`/${systemConfig.prefixAdmin}/roles`);
     } else {
-        res.redirect("back");
+        res.redirect(req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`)
     }
 }
 
 //[GET] /admin/roles/edit/:id
 export const edit = async (req: CustomRequest, res: Response): Promise<void> => {
     if(!req.params.id) {
-        res.redirect("/admin/roles");
+        res.redirect(`/${systemConfig.prefixAdmin}/roles`);
     } else {
         const role = await Roles.findOne({
             _id: req.params.id,
@@ -64,7 +64,7 @@ export const editPatch = async (req: CustomRequest, res: Response): Promise<void
         req.flash("success", "Chỉnh sửa nhóm quyền thành công");
         res.redirect(`/${systemConfig.prefixAdmin}/roles`);
     } else {
-        res.redirect("back");
+        res.redirect(req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`)
     }
 }
 

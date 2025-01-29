@@ -32,29 +32,19 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const generate = __importStar(require("../helpers/generate"));
-const accountSchema = new mongoose_1.default.Schema({
-    fullName: String,
-    email: String,
-    password: String,
-    token: {
-        type: String,
-        default: generate.generateRandomString(20)
-    },
-    phone: String,
-    avatar: String,
-    role_id: String,
-    status: String,
-    deleted: {
-        type: Boolean,
-        default: false
-    },
-    deleteAt: Date
-}, { timestamps: true });
-const Account = mongoose_1.default.model("Account", accountSchema, "accounts");
-exports.default = Account;
+exports.accountRoutes = void 0;
+const express_1 = require("express");
+const multer = require("multer");
+const router = (0, express_1.Router)();
+const upload = multer();
+const controller = __importStar(require("../../controllers/admin/account.controller"));
+const middleware = __importStar(require("../../middlewares/uploadToCloud.middleware"));
+const CustomRequest_1 = require("../../interface/CustomRequest");
+router.get("/", controller.index);
+router.get("/create", controller.create);
+router.post("/create", upload.single("avatar"), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.createPost));
+router.get("/edit/:id", (0, CustomRequest_1.returnCustomRequest)(controller.edit));
+router.patch("/edit/:id", upload.single("avatar"), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
+router.delete("/delete/:id", (0, CustomRequest_1.returnCustomRequest)(controller.deleteRole));
+exports.accountRoutes = router;
