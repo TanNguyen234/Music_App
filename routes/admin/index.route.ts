@@ -5,6 +5,7 @@ import { topicRoutes } from "./topic.route";
 import { songRoutes } from "./song.route";
 import { roleRoutes } from "./role.route";
 import { accountRoutes } from "./account.route";
+// import { authRoutes } from "./auth.route";
 
 const adminRoutes = (app: Express): void => {
   const PATH_ADMIN = "/" + systemConfig.prefixAdmin;
@@ -14,7 +15,7 @@ const adminRoutes = (app: Express): void => {
   app.use(PATH_ADMIN + "/songs", songRoutes);
   app.use(PATH_ADMIN + "/roles", roleRoutes);
   app.use(PATH_ADMIN + "/accounts", accountRoutes);
-  
+  // app.use(PATH_AMIN, authRoutes)
 };
 
 export default adminRoutes;

@@ -3,7 +3,6 @@ import { uploadToCloudinary } from "../helpers/uploadToCloudinary";
 import { CustomRequest } from "../interface/CustomRequest";
 
 export const uploadToCloud = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
-    console.log(req.body);
     if (req.file) {
         const buffer = req.file.buffer;
         const mimetype = req.file.mimetype;
@@ -28,6 +27,5 @@ export const uploadToCloud = async (req: CustomRequest, res: Response, next: Nex
             req.body[audio.fieldname] = result;
         }
     }
-    console.log(req.body)
     next();
 }

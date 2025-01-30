@@ -47,9 +47,7 @@ export const createPost = async (
   res: Response
 ): Promise<void> => {
   const condition = await accountValidate(req.body);
-  console.log(condition, req.body);
   if (condition) {
-    console.log(condition);
     req.body.password = await argon2.hash(req.body.password);
 
     let account = new Account(req.body);
@@ -98,7 +96,6 @@ export const editPatch = async (
   res: Response
 ): Promise<void> => {
   const condition = await accountEditValidate(req.body);
-  console.log(condition);
   if (condition) {
     if (req.body.password) {
       const admin = await Account.findOne({
@@ -110,7 +107,7 @@ export const editPatch = async (
         password,
         req.body.password
       );
-      if (!passwordCheckChange) {
+      if (!passwordCheckChange) {   
         req.body.password = await argon2.hash(req.body.password);
       }
     }

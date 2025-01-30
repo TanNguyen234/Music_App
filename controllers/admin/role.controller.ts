@@ -87,3 +87,40 @@ export const deleteRole = async (req: CustomRequest, res: Response): Promise<voi
         message: "Xóa nhóm quyền thành công"
     })
 }
+
+//[GET] /admin/role/permissions
+export const permission = async (req: Request, res: Response): Promise<void> => {
+    let find = {
+        deleted: false
+    }
+
+    const records = await Roles.find(find)
+
+    res.render("admin/pages/roles/permission", {
+        titlePage: "Phân quyền",
+        roles: records || []
+    })
+}
+
+//[POST] /admin/role/permissions
+export const permissionPost = async (req: Request, res: Response): Promise<void> => {
+    try {
+        if(!req.body) throw new Error('Dữ liệu không hợp lệ!');
+        for (let item of req.body) {
+            await Roles.updateOne({
+                _id: item.id
+            },{
+                permissions: item.permissions
+            })
+        }
+        res.json({
+            code: 200,
+            message: "Cập nhật phân quyền thành công!"
+        })
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Có lỗi xảy ra vui lòng thử lại!"
+        })
+    }
+}

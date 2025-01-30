@@ -1,5 +1,3 @@
-
-
 // li.breadcrumb-item.active(aria-current="page") Quản lý chủ đề
 //Breadcrumb
 const breadcrumb = document.querySelector('.breadcrumb');
@@ -307,7 +305,6 @@ if(buttonStatus.length > 0) {
 const checkboxMulti = document.querySelector('[checkbox-multi]')
 
 if(checkboxMulti) {
-    console.log(checkboxMulti)
     const inputCheckAll = checkboxMulti.querySelector("input[name='checkall']")
     
     const inputsId = checkboxMulti.querySelectorAll('input[name="ids"]')
@@ -414,3 +411,76 @@ if(btnDeleteRole.length > 0) {
     })
 }
 //End Delete Role
+//Permissions Default
+const permissionsFunction = (data) => {
+    const tablePermission = document.querySelector('[table-permissions]');
+    if(tablePermission) {
+        data.forEach((item, index) => {
+            const permissions = items.permissions;
+            permissions.forEach(permission => {
+                const row = tablePermission.querySelector(`[data-name=${permission}]`)
+                const inputs = row.querySelectorAll('input');
+                inputs[index] = checked
+            })
+        })
+    }
+}
+const dataRoles = document.querySelector('[data-roles]');
+if(dataRoles) {
+    if(dataRoles.length > 0) {
+        const dataConvert = JSON.parse(dataRoles);
+        permissionsFunction(dataConvert);
+    }
+}
+//End Permissions Default
+//Permissions
+const tablePermission = document.querySelector('[table-permissions]')
+if(tablePermission) {
+    const path = tablePermission.getAttribute('path');
+    const buttonSubmit = document.querySelector('[button-submit]');
+    buttonSubmit.addEventListener('click', (e) => {
+        let permissions = [];
+
+        const rows = tablePermission.querySelectorAll('[data-name]');
+        rows.forEach(row => {
+            const name = row.getAttribute('data-name');
+            const inputs = row.querySelectorAll('input');
+            
+            if(name === "id") {
+                inputs.forEach(input => {
+                    const id = input.value
+                    permissions.push({
+                        id: id,
+                        permissions: []
+                    })
+                })
+            } else {
+                inputs.forEach((input, index) => {
+                    const checked = input.checked;
+                    if(checked) {
+                        permissions[index].permissions.push(name);
+                    }
+                })
+            }
+        })
+        if(permissions.length > 0) {
+            fetch(path, {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(permissions)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.code == 200) {
+                    alertFunc("success", data.message);
+                    
+                } else {
+                    alertFunc("error", data.message);
+                }
+            })
+        }
+    })
+}

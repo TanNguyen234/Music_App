@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadToCloud = void 0;
 const uploadToCloudinary_1 = require("../helpers/uploadToCloudinary");
 const uploadToCloud = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
     if (req.file) {
         const buffer = req.file.buffer;
         const mimetype = req.file.mimetype;
@@ -35,7 +34,6 @@ const uploadToCloud = (req, res, next) => __awaiter(void 0, void 0, void 0, func
             req.body[audio.fieldname] = result;
         }
     }
-    console.log(req.body);
     next();
 });
 exports.uploadToCloud = uploadToCloud;

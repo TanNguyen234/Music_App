@@ -47,9 +47,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.create = create;
 const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const condition = yield (0, account_validate_1.accountValidate)(req.body);
-    console.log(condition, req.body);
     if (condition) {
-        console.log(condition);
         req.body.password = yield argon2_1.default.hash(req.body.password);
         let account = new account_model_1.default(req.body);
         yield account.save();
@@ -88,7 +86,6 @@ const edit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.edit = edit;
 const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const condition = yield (0, account_validate_1.accountEditValidate)(req.body);
-    console.log(condition);
     if (condition) {
         if (req.body.password) {
             const admin = yield account_model_1.default.findOne({

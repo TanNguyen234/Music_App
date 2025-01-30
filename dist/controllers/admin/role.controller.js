@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRole = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
+exports.permissionPost = exports.permission = exports.deleteRole = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
 const role_model_1 = __importDefault(require("../../model/role.model"));
 const role_validate_1 = require("../../validates/role.validate");
 const config_1 = require("../../config/config");
@@ -97,3 +97,38 @@ const deleteRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     });
 });
 exports.deleteRole = deleteRole;
+const permission = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let find = {
+        deleted: false
+    };
+    const records = yield role_model_1.default.find(find);
+    res.render("admin/pages/roles/permission", {
+        titlePage: "Phân quyền",
+        roles: records || []
+    });
+});
+exports.permission = permission;
+const permissionPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.body)
+            throw new Error('Dữ liệu không hợp lệ!');
+        for (let item of req.body) {
+            yield role_model_1.default.updateOne({
+                _id: item.id
+            }, {
+                permissions: item.permissions
+            });
+        }
+        res.json({
+            code: 200,
+            message: "Cập nhật phân quyền thành công!"
+        });
+    }
+    catch (error) {
+        res.json({
+            code: 400,
+            message: "Có lỗi xảy ra vui lòng thử lại!"
+        });
+    }
+});
+exports.permissionPost = permissionPost;

@@ -44,4 +44,6 @@ router.post("/create", (0, CustomRequest_1.returnCustomRequest)(controller.creat
 router.get("/edit/:id", (0, CustomRequest_1.returnCustomRequest)(controller.edit));
 router.patch("/edit/:id", (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
 router.delete("/delete/:id", (0, CustomRequest_1.returnCustomRequest)(controller.deleteRole));
+router.get("/permissions", controller.permission);
+router.patch("/permissions", controller.permissionPost);
 exports.roleRoutes = router;

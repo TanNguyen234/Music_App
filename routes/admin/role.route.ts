@@ -15,4 +15,8 @@ router.patch("/edit/:id", returnCustomRequest(controller.editPatch));
 
 router.delete("/delete/:id", returnCustomRequest(controller.deleteRole));
 
+router.get("/permissions", controller.permission)
+
+router.patch("/permissions", controller.permissionPost)
+
 export const roleRoutes: Router = router;
