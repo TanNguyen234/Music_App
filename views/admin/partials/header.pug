@@ -7,5 +7,8 @@ header.header
                 
           .header__content
              .admin 
-               a(href=`${prefixAdmin}/my-account` class="btn btn-primary btn-sm mr-2") Foxy
-               a(href=`${prefixAdmin}/auth/logout` class="btn btn-danger btn-sm") Đăng xuất
+               if(admin)
+                a(href=`/${prefixAdmin}/my-account` class="btn btn-primary btn-sm mr-2")= admin.fullName
+                a(href=`/${prefixAdmin}/auth/logout` class="btn btn-danger btn-sm" btn-logout) Đăng xuất
+               else 
+                a(href=`/${prefixAdmin}/auth/login` class="btn btn-primary") Đăng nhập

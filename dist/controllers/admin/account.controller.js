@@ -88,15 +88,10 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const condition = yield (0, account_validate_1.accountEditValidate)(req.body);
     if (condition) {
         if (req.body.password) {
-            const admin = yield account_model_1.default.findOne({
-                _id: req.params.id,
-                deleted: false,
-            }).select("password");
-            const password = admin === null || admin === void 0 ? void 0 : admin.password;
-            const passwordCheckChange = yield argon2_1.default.verify(password, req.body.password);
-            if (!passwordCheckChange) {
-                req.body.password = yield argon2_1.default.hash(req.body.password);
-            }
+            req.body.password = yield argon2_1.default.hash(req.body.password);
+        }
+        else {
+            delete req.body.password;
         }
         yield account_model_1.default.updateOne({
             _id: req.params.id,

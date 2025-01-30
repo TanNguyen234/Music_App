@@ -1,0 +1,21 @@
+extends ../../layouts/formUser.pug
+include ../../mixins/alert.pug
+
+block main 
+    +error-alert(5000)
+    
+    .container-fluid.d-flex.justify-content-center.align-items-center
+       .containerForm
+         .ballon-top           
+         form(action=`/${prefixAdmin}/auth/login` method="POST" autocomplete="off" class="form")
+          h1(class='text-center') Đăng nhập
+          div
+            label(for="email") Email
+            input(type="text" id="email" name="email" required)
+          div
+            label(for="password") Mật khẩu
+            input(type="password" id="password" name="password" minlength="8" maxlength="20" required)
+            
+          div
+            button(type="submit") Đăng nhập
+         .ballon-bottom 

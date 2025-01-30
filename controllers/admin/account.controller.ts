@@ -98,18 +98,9 @@ export const editPatch = async (
   const condition = await accountEditValidate(req.body);
   if (condition) {
     if (req.body.password) {
-      const admin = await Account.findOne({
-        _id: req.params.id,
-        deleted: false,
-      }).select("password");
-      const password: any = admin?.password;
-      const passwordCheckChange = await argon2.verify(
-        password,
-        req.body.password
-      );
-      if (!passwordCheckChange) {   
-        req.body.password = await argon2.hash(req.body.password);
-      }
+      req.body.password = await argon2.hash(req.body.password);
+    } else {
+      delete req.body.password
     }
 
     await Account.updateOne(

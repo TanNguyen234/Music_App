@@ -1,10 +1,12 @@
-// import { Router } from "express";
-// const router: Router = Router();
-// import * as controller from '../../controllers/admin/auth.controller'
-// import { returnCustomRequest } from "../../interface/CustomRequest";
+import { Router } from "express";
+const router: Router = Router();
+import * as controller from '../../controllers/admin/auth.controller'
+import { returnCustomRequest } from "../../interface/CustomRequest";
 
-// router.get("/login", controller.login);
+router.get("/login", controller.login);
 
-// router.post("/login", controller.loginPost);
+router.post("/login", returnCustomRequest(controller.loginPost));
 
-// export const authRoutes: Router = router;
+router.get('/logout', controller.logout)
+
+export const authRoutes: Router = router;
