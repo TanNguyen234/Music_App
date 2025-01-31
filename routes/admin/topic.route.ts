@@ -36,7 +36,7 @@ router.patch(
 
 router.delete(
   "/delete/:id",
-  returnCustomRequest(controller.deleteTopic)
+  controller.deleteTopic
 );
 
 router.get("/detail/:id", controller.detail);

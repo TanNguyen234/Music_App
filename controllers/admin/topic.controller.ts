@@ -139,29 +139,30 @@ export const editPatch = async (
 
 //[DELETE] /admin/topics/delete/:id
 export const deleteTopic = async (
-  req: CustomRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
-  const id = req.params.id;
-  if (id) {
-    try {
-      await Topic.updateOne(
-        {
-          _id: id,
-        },
-        {
-          deleted: true,
-        }
-      );
-      req.flash("success", "Xóa chủ đề thành công");
-      res.redirect("back");
-    } catch (error) {
-      req.flash("error", "Xóa chủ đề thất bại");
-      res.redirect(`/${systemConfig.prefixAdmin}/topics`);
-    }
-  } else {
-    req.flash("error", "id không hợp lệ");
-    res.redirect(`/${systemConfig.prefixAdmin}/topics`);
+  try {
+    const id: string = req.params.id;
+    console.log("topic id: "+id);
+    if(!id) throw new Error("Invalid")
+    await Topic.updateOne(
+      {
+        _id: id,
+      },
+      {
+        deleted: true,
+      }
+    );
+    res.json({
+      code: 200,
+      message: "Xóa chủ đề thành công"
+    })
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Xóa chủ đề thất bại"
+    })
   }
 };
 

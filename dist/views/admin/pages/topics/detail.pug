@@ -1,8 +1,10 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/moment.pug
+include ../../mixins/not-permission.pug
 
 block main 
+  if(role.permissions.includes('topic_view'))
     .topic-detail
       .container.my-3
         .row
@@ -20,3 +22,5 @@ block main
               .inner-label Mô tả
               .inner-text 
                | !{topic.description}
+  else 
+   +not-permission()

@@ -6,8 +6,10 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/search.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/sort.pug
+include ../../mixins/not-permission.pug
 
 block main
+  if(role.permissions.includes("song_view"))
     +success-alert(5000)
     +error-alert(5000)
     div(class="alert-user alert-user-success" data-time=5000)
@@ -64,10 +66,16 @@ block main
                                     | No Image
                             td= song.title
                             td
+                              if(role.permissions.includes("song_edit"))
                                 if(song.status === "active")
                                     a(href="javascript:;" button-change-status data-status=song.status data-id=song.id type="button" class="btn btn-success") Hoạt động 
                                 else
                                     a(href="javascript:;" button-change-status data-status=song.status data-id=song.id type="button" class="btn btn-danger") Dừng hoạt động 
+                              else 
+                                if(song.status === "active")
+                                    a(type="button" class="btn btn-success") Hoạt động 
+                                else
+                                    a(type="button" class="btn btn-danger") Dừng hoạt động 
                             td 
                                 if(song.createdAt)
                                     +formatDay(song.createdAt)
@@ -80,12 +88,13 @@ block main
                                     | No Data
 
                             td
-                                a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/songs/edit/${song._id}`) Chỉnh sửa
-                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/songs/detail/${song._id}`) Xem chi tiết
-                                button.btn-delete.btn.btn-danger(btn-delete=song._id) Xóa
+                                a.btn.btn-primary.d-inline-block.mx-2(href=`/${prefixAdmin}/songs/edit/${song._id}`) Chỉnh sửa
+                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/${prefixAdmin}/songs/detail/${song._id}`) Xem chi tiết
+                                button.btn-delete.btn.btn-danger(btn-delete=song._id path=`/${prefixAdmin}/songs/delete/${song._id}`) Xóa
                                 form(action="" method="POST" id="form-change-status" data-path=`/${prefixAdmin}/songs/change-status`)-// form change
-                                form(action="" method="POST" id="form-delete-item" data-path=`/${prefixAdmin}/songs/delete`)-// form delete one
                  else 
                     tr
                         td(colspan="12" class="text-center") Không có dữ liệu
             +pagination(pagination)
+  else 
+   +not-permission()

@@ -1,7 +1,9 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/not-permission.pug
 
-block main 
+block main
+ if(role.permissions.includes('admin_create'))
   +success-alert(5000)
   +error-alert(5000)
   .container-fluid
@@ -42,3 +44,5 @@ block main
           button(type="submit" class="btn btn-primary") Tạo mới
     else
       h2(class="mb-4 text-center") Chưa có nhóm quyền nào trong hệ thống. Vui lòng tạo nhóm quyền trước khi tạo tài khoản mới.
+ else 
+  +not-permission()

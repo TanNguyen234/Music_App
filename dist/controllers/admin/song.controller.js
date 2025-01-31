@@ -129,6 +129,7 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.editPatch = editPatch;
 const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    console.log("song id: " + id);
     try {
         if (!id) {
             throw new Error(`Invalid`);
@@ -138,12 +139,16 @@ const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }, {
             deleted: true,
         });
-        req.flash("success", "Xóa bài hát thành công");
-        res.redirect("back");
+        res.json({
+            code: 200,
+            message: "Xóa bài hát thành công"
+        });
     }
     catch (error) {
-        req.flash("error", "Xóa bài hát thất bại");
-        res.redirect(`/${config_1.systemConfig.prefixAdmin}/songs`);
+        res.json({
+            code: 400,
+            message: "Xóa bài hát thành công"
+        });
     }
 });
 exports.deleteSong = deleteSong;

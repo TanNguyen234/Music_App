@@ -12,7 +12,7 @@ const auth_route_1 = require("./auth.route");
 const adminRoutes = (app) => {
     const PATH_ADMIN = "/" + config_1.systemConfig.prefixAdmin;
     app.use(admin_middleware_1.adminInfo);
-    app.use(PATH_ADMIN + "/dashboard", dashboard_route_1.dashboardRoutes);
+    app.use(PATH_ADMIN + "/dashboard", authAdmin_middleware_1.requireAuthAdmin, dashboard_route_1.dashboardRoutes);
     app.use(PATH_ADMIN + "/topics", authAdmin_middleware_1.requireAuthAdmin, topic_route_1.topicRoutes);
     app.use(PATH_ADMIN + "/songs", authAdmin_middleware_1.requireAuthAdmin, song_route_1.songRoutes);
     app.use(PATH_ADMIN + "/roles", authAdmin_middleware_1.requireAuthAdmin, role_route_1.roleRoutes);

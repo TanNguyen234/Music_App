@@ -1,6 +1,8 @@
 extends ../../layouts/default.pug
+include ../../mixins/not-permission.pug
 
 block main 
+ if(role.permissions.includes('roles_create'))
   .container-fluid
     h1(class="mb-4 text-center") Thêm mới nhóm quyền 
     form(action=`/${prefixAdmin}/roles/create` method="POST" id="form-create")
@@ -12,3 +14,5 @@ block main
         textarea(class="form-control" textarea-mce id="desc" name="description")
       div(class="form-group d-flex justify-content-center")
         button(type="submit" class="btn btn-primary") Tạo mới
+ else
+  +not-permission()

@@ -35,7 +35,7 @@ router.patch(
 
 router.delete(
   "/delete/:id",
-  returnCustomRequest(controller.deleteSong)
+  controller.deleteSong
 );
 
 router.patch(

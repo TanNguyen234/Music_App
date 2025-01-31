@@ -131,3 +131,47 @@ body {
   background: #1d1c1c;
 }
 /* End Sider  */
+/* Mixin not permission */
+.main:has(.access-denied-container) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+.access-denied-container {
+  text-align: center;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.access-denied-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #d32f2f; /* Màu đỏ để báo lỗi */
+}
+
+.access-denied-container p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.access-denied-container .home-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #1976d2; /* Màu xanh dương */
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.access-denied-container .home-button:hover {
+  background-color: #1565c0; /* Màu xanh dương đậm hơn khi hover */
+}
+/*End Mixin not permission */

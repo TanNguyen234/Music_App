@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.requireAuthAdmin = void 0;
 const config_1 = require("../config/config");
 const account_model_1 = __importDefault(require("../model/account.model"));
+const role_model_1 = __importDefault(require("../model/role.model"));
 const requireAuthAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const tokenAdmin = req.cookies.tokenAdmin;
     if (!tokenAdmin) {
@@ -26,7 +27,11 @@ const requireAuthAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             res.redirect(`/${config_1.systemConfig.prefixAdmin}/auth/login`);
         }
         else {
+            const role = yield role_model_1.default.findOne({
+                _id: admin.role_id
+            }).select("title permissions");
             res.locals.admin = admin;
+            res.locals.role = role;
             next();
         }
     }

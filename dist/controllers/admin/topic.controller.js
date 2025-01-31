@@ -115,25 +115,26 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.editPatch = editPatch;
 const deleteTopic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    if (id) {
-        try {
-            yield topic_model_1.default.updateOne({
-                _id: id,
-            }, {
-                deleted: true,
-            });
-            req.flash("success", "Xóa chủ đề thành công");
-            res.redirect("back");
-        }
-        catch (error) {
-            req.flash("error", "Xóa chủ đề thất bại");
-            res.redirect(`/${config_1.systemConfig.prefixAdmin}/topics`);
-        }
+    try {
+        const id = req.params.id;
+        console.log("topic id: " + id);
+        if (!id)
+            throw new Error("Invalid");
+        yield topic_model_1.default.updateOne({
+            _id: id,
+        }, {
+            deleted: true,
+        });
+        res.json({
+            code: 200,
+            message: "Xóa chủ đề thành công"
+        });
     }
-    else {
-        req.flash("error", "id không hợp lệ");
-        res.redirect(`/${config_1.systemConfig.prefixAdmin}/topics`);
+    catch (error) {
+        res.json({
+            code: 400,
+            message: "Xóa chủ đề thất bại"
+        });
     }
 });
 exports.deleteTopic = deleteTopic;

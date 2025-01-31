@@ -47,7 +47,7 @@ router.post("/create", upload.single("avatar"), (0, CustomRequest_1.returnCustom
 router.get("/edit/:id", (0, CustomRequest_1.returnCustomRequest)(controller.edit));
 router.patch("/edit/:id", upload.single("avatar"), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
 router.patch("/edit/:id", upload.single("avatar"), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
-router.delete("/delete/:id", (0, CustomRequest_1.returnCustomRequest)(controller.deleteTopic));
+router.delete("/delete/:id", controller.deleteTopic);
 router.get("/detail/:id", controller.detail);
 router.patch("/change-status", controller.changeStatus);
 router.patch("/change-multi", (0, CustomRequest_1.returnCustomRequest)(controller.changeMulti));

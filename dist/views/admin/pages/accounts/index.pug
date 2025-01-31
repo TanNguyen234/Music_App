@@ -2,14 +2,16 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/moment.pug
 include ../../mixins/pagination.pug
+include ../../mixins/not-permission.pug
 
 block main 
+ if(role.permissions.includes('admin_view'))
   +success-alert(5000)
   +error-alert(5000)
   div(class="alert-user alert-user-success" data-time=5000)
   div(class="alert-user alert-user-error" data-time=5000)
   .container-fluid
-   h1(class="mb-4") Nhóm quyền
+   h1(class="mb-4") Tạo tài khoản admin
    .card.mb-3 
     .card-header Danh sách 
     .card-body 
@@ -45,10 +47,16 @@ block main
                   td #{item.role}
                   td #{item.email} 
                   td
-                    if(item.status === "active")
-                      a(href="javascript:;" button-change-status data-status=item.status data-id=item.id type="button" class="btn btn-success") Hoạt động 
-                    else
-                      a(href="javascript:;" button-change-status data-status=song.status data-id=item.id type="button" class="btn btn-danger") Dừng hoạt động 
+                    if(role.permissions.includes("admin_edit"))
+                      if(item.status === "active")
+                        a(href="javascript:;" button-change-status data-status=item.status data-id=item.id type="button" class="btn btn-success") Hoạt động 
+                      else
+                        a(href="javascript:;" button-change-status data-status=item.status data-id=item.id type="button" class="btn btn-danger") Dừng hoạt động 
+                    else 
+                      if(song.status === "active")
+                        a(type="button" class="btn btn-success") Hoạt động 
+                      else
+                        a(type="button" class="btn btn-danger") Dừng hoạt động 
                   td 
                     a(
                       class="btn btn-secondary btn-sm"
@@ -66,3 +74,5 @@ block main
             else 
                 tr 
                   td(colspan="12" class="text-center") Chưa có nhóm quyền nào được tạo  
+ else 
+  +not-permission()

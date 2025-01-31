@@ -156,10 +156,11 @@ export const editPatch = async (
 
 //[DELETE] /admin/songs/delete/:id
 export const deleteSong = async (
-    req: CustomRequest,
+    req: Request,
     res: Response
   ): Promise<void> => {
     const id: string = req.params.id;
+    console.log("song id: "+id);
     try {
         if(!id) {
             throw new Error(`Invalid`)
@@ -172,11 +173,15 @@ export const deleteSong = async (
             deleted: true,
           }
         );
-        req.flash("success", "Xóa bài hát thành công");
-        res.redirect("back");
+        res.json({
+          code: 200,
+          message: "Xóa bài hát thành công"
+        })
       } catch (error) {
-        req.flash("error", "Xóa bài hát thất bại");
-        res.redirect(`/${systemConfig.prefixAdmin}/songs`);
+        res.json({
+          code: 400,
+          message: "Xóa bài hát thành công"
+        })
       }
   };
 

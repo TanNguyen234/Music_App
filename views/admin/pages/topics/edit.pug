@@ -1,7 +1,9 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/not-permission.pug
 
 block main
+ if(role.permissions.includes('topic_edit'))
   +error-alert(5000)
   +success-alert(5000)
   h1.text-center #{pageTitle}
@@ -34,3 +36,5 @@ block main
       label(for="statusInacive" class="from-check-label") Dừng hoạt động
     .from-group
       button(type="submit" class="btn btn-primary") Thay đổi
+ else 
+  +not-permission()

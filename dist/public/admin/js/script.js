@@ -35,7 +35,7 @@ if(breadcrumb && pathArray.length > 0) {
         const index = pathArray[i]
 
         if(dictionary[index]) {
-            item = dictionary[index]
+            item = dictionary[index]   
         }
 
         if(pathArray[i + 1] && pathArray[i + 1].length === 24) {
@@ -141,12 +141,24 @@ if(btns && btns.length > 0) {
     btns.forEach(btn => {
         const id = btn.getAttribute('btn-delete');
         if(id) {
-            const form = document.querySelector(`#form-delete-${id}`);
-            if(form) {
+            const path = btn.getAttribute('path');
                 btn.addEventListener('click', (e) => {
-                    form.submit();
+                fetch(path, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
                 })
-            }
+                 .then(response => response.json())
+                 .then(data => {
+                    if(data.code === 200) {
+                        alertFunc('success', data.message);
+                        btn.closest('tr').remove();
+                    } else {
+                        alertFunc('error', data.message);
+                    }
+                 })
+            })
         }
     })
 }
@@ -416,21 +428,21 @@ const permissionsFunction = (data) => {
     const tablePermission = document.querySelector('[table-permissions]');
     if(tablePermission) {
         data.forEach((item, index) => {
-            const permissions = items.permissions;
+            const permissions = item.permissions;
             permissions.forEach(permission => {
                 const row = tablePermission.querySelector(`[data-name=${permission}]`)
                 const inputs = row.querySelectorAll('input');
-                inputs[index] = checked
+                inputs[index].checked = true
             })
         })
     }
 }
 const dataRoles = document.querySelector('[data-roles]');
 if(dataRoles) {
-    if(dataRoles.length > 0) {
-        const dataConvert = JSON.parse(dataRoles);
-        permissionsFunction(dataConvert);
-    }
+    const dataRolesValue = dataRoles.getAttribute('data-roles');
+    const dataConvert = JSON.parse(dataRolesValue);
+    console.log(dataConvert)
+    permissionsFunction(dataConvert);
 }
 //End Permissions Default
 //Permissions

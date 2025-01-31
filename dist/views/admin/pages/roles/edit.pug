@@ -1,6 +1,8 @@
 extends ../../layouts/default.pug
+include ../../mixins/not-permission.pug
 
 block main 
+ if(role.permissions.includes('roles_edit'))
   .container-fluid
     h1(class="mb-4") Chỉnh sửa nhóm quyền
     form(action=`/${prefixAdmin}/roles/edit/${role._id}?_method=PATCH` method="POST" id="form-create")
@@ -12,3 +14,5 @@ block main
         input(type="text" class="form-control" id="desc" name="description" value=role.description)
       div(class="form-group")
         button(type="submit" class="btn btn-primary") Lưu thay đổi
+ else 
+  +not-permission()

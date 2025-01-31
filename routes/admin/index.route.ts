@@ -12,7 +12,7 @@ import { authRoutes } from "./auth.route";
 const adminRoutes = (app: Express): void => {
   const PATH_ADMIN = "/" + systemConfig.prefixAdmin;
   app.use(adminInfo)
-  app.use(PATH_ADMIN + "/dashboard", dashboardRoutes);
+  app.use(PATH_ADMIN + "/dashboard", requireAuthAdmin, dashboardRoutes);
   app.use(PATH_ADMIN + "/topics", requireAuthAdmin, topicRoutes);
   app.use(PATH_ADMIN + "/songs", requireAuthAdmin, songRoutes);
   app.use(PATH_ADMIN + "/roles", requireAuthAdmin, roleRoutes);

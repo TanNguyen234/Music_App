@@ -6,8 +6,10 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/search.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/sort.pug
+include ../../mixins/not-permission.pug
 
 block main
+ if(role.permissions.includes('topic_view'))
     +success-alert(5000)
     +error-alert(5000)
     div(class="alert-user alert-user-success" data-time=5000)
@@ -61,11 +63,16 @@ block main
                                 else
                                     | No Image
                             td= topic.title
-                            td
+                              if(role.permissions.includes("topic_edit"))
                                 if(topic.status === "active")
                                     a(href="javascript:;" button-change-status data-status=topic.status data-id=topic.id type="button" class="btn btn-success") Hoạt động 
                                 else
                                     a(href="javascript:;" button-change-status data-status=topic.status data-id=topic.id type="button" class="btn btn-danger") Dừng hoạt động 
+                              else 
+                                if(topic.status === "active")
+                                    a(type="button" class="btn btn-success") Hoạt động 
+                                else
+                                    a(type="button" class="btn btn-danger") Dừng hoạt động 
                             td 
                                 if(topic.createdAt)
                                     +formatDay(topic.createdAt)
@@ -78,12 +85,13 @@ block main
                                     | No Data
 
                             td
-                                a.btn.btn-primary.d-inline-block.mx-2(href=`/admin/topics/edit/${topic._id}`) Chỉnh sửa
-                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/admin/topics/detail/${topic._id}`) Xem chi tiết
-                                button.btn-delete.btn.btn-danger(btn-delete=topic._id) Xóa
+                                a.btn.btn-primary.d-inline-block.mx-2(href=`/${prefixAdmin}/topics/edit/${topic._id}`) Chỉnh sửa
+                                a.btn.btn-secondary.d-inline-block.mx-2(href=`/${prefixAdmin}/topics/detail/${topic._id}`) Xem chi tiết
+                                button.btn-delete.btn.btn-danger(btn-delete=topic._id path=`/${prefixAdmin}/topics/delete/${topic._id}`) Xóa
                                 form(action="" method="POST" id="form-change-status" data-path=`/${prefixAdmin}/topics/change-status`)-// form change
-                                form(method="POST" action=`/admin/topics/delete/${topic._id}?_method=DELETE` id=`form-delete-${topic._id}`)
                   else 
                     tr
                         td(colspan="12" class="text-center") Không có dữ liệu
             +pagination(pagination)
+ else 
+  +not-permission()

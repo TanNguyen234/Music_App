@@ -1,0 +1,6 @@
+mixin not-permission()
+    .access-denied-container
+        p 403 - Không có quyền truy cập
+        p Xin lỗi, bạn không có quyền truy cập vào trang này.
+        p Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.
+        a(href=`/${prefixAdmin}/dashboard` class="home-button") Quay lại trang chủ

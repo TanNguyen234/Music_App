@@ -1,7 +1,9 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/not-permission.pug
 
 block main
+ if(role.permissions.includes('roles_permissions'))
   +success-alert(5000) 
   +error-alert(5000)
   div(class="alert-user alert-user-success" data-time=5000)
@@ -103,7 +105,43 @@ block main
             td Phân quyền 
             each role in roles 
               td(class="text-center")
-                input(type="checkbox")  
+                input(type="checkbox")
+          tr 
+            td(colspan="4")
+              b Tài khoản admin
+          tr(data-name="admin_view")
+            td Xem
+            each role in roles
+              td(class="text-center")
+                input(type="checkbox") 
+          tr(data-name="admin_create")
+            td Thêm mới 
+            each role in roles 
+              td(class="text-center")
+                input(type="checkbox") 
+          tr(data-name="admin_edit")
+            td Chỉnh sửa 
+            each role in roles 
+              td(class="text-center")
+                input(type="checkbox") 
+          tr(data-name="admin_delete")
+            td Xóa 
+            each role in roles 
+              td(class="text-center")
+                input(type="checkbox") 
+          tr 
+            td(colspan="4")
+              b Tài khoản người dùng
+          tr(data-name="user_view")
+            td Xem
+            each role in roles
+              td(class="text-center")
+                input(type="checkbox") 
+          tr(data-name="user_delete")
+            td Xóa 
+            each role in roles 
+              td(class="text-center")
+                input(type="checkbox") 
    else
     .d-flex.justify-content-center.align-items-center.mt-10
         span(class="mr-10 text-center") Hiện tại chưa có nhóm quyền nào:    
@@ -121,3 +159,5 @@ block main
     div(class="form-group")
       input(type="text" class="form-control" name="permissions")
   script(src="/admin/js/roles.js")
+ else 
+  +not-permission()
