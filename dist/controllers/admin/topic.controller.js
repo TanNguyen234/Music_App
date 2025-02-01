@@ -83,6 +83,11 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.create = create;
 const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const permissions = res.locals.admin.permissions;
+    if (!permissions.includes("topic_create")) {
+        res.redirect(`/${config_1.systemConfig.prefixAdmin}/dashboard`);
+        return;
+    }
     if ((0, validate_topic_validate_1.validateTopic)(req.body)) {
         req.body.createdBy = {
             account_id: res.locals.admin.id,
@@ -122,12 +127,18 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     if ((0, validate_topic_validate_1.validateTopic)(req.body) && id) {
         try {
+            const permissions = res.locals.admin.permissions;
+            if (!permissions.includes("topic_edit")) {
+                throw new Error(`Invalid`);
+            }
             yield topic_model_1.default.updateOne({
                 _id: id,
-            }, Object.assign(Object.assign({}, req.body), { $push: { updatedBy: {
+            }, Object.assign(Object.assign({}, req.body), { $push: {
+                    updatedBy: {
                         account_id: res.locals.admin.id,
                         delete_at: new Date(),
-                    } } }));
+                    },
+                } }));
             req.flash("success", "Chỉnh sửa chủ đề thành công");
             res.redirect("back");
         }
@@ -144,6 +155,10 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.editPatch = editPatch;
 const deleteTopic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const permissions = res.locals.admin.permissions;
+        if (!permissions.includes("topic_delete")) {
+            throw new Error("Permissions must be specified");
+        }
         const id = req.params.id;
         if (!id)
             throw new Error("Invalid");
@@ -197,6 +212,10 @@ const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const id = req.body.id;
     const status = req.body.status;
     try {
+        const permissions = res.locals.admin.permissions;
+        if (!permissions.includes("topic_edit")) {
+            throw new Error("Permissions must be specified");
+        }
         if (!id) {
             throw new Error(`Invalid`);
         }
@@ -204,10 +223,12 @@ const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             _id: id,
         }, {
             status: status,
-            $push: { updatedBy: {
+            $push: {
+                updatedBy: {
                     account_id: res.locals.admin.id,
                     delete_at: new Date(),
-                } }
+                },
+            },
         });
         res.json({
             code: 200,
@@ -229,24 +250,31 @@ const changeMulti = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         account_id: res.locals.admin.id,
         delete_at: new Date(),
     };
+    const permissions = res.locals.admin.permissions;
     switch (type) {
         case "active":
-            yield topic_model_1.default.updateMany({ _id: { $in: ids } }, {
-                status: "active",
-                $push: { updatedBy: updated },
-            });
-            req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            if (permissions.includes("topic_edit")) {
+                yield topic_model_1.default.updateMany({ _id: { $in: ids } }, {
+                    status: "active",
+                    $push: { updatedBy: updated },
+                });
+                req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            }
             break;
         case "inactive":
-            yield topic_model_1.default.updateMany({ _id: { $in: ids } }, {
-                status: "inactive",
-                $push: { updatedBy: updated },
-            });
-            req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            if (permissions.includes("topic_edit")) {
+                yield topic_model_1.default.updateMany({ _id: { $in: ids } }, {
+                    status: "inactive",
+                    $push: { updatedBy: updated },
+                });
+                req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            }
             break;
         case "delete-all":
-            yield topic_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: updated });
-            req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+            if (permissions.includes("topic_delete")) {
+                yield topic_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: updated });
+                req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+            }
             break;
         default:
             break;

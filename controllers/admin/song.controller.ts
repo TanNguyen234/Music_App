@@ -64,7 +64,7 @@ export const index = async (req: Request, res: Response): Promise<void> => {
       let admin = await Account.findOne({
         _id: song.createdBy.account_id,
       });
-  
+
       if (admin) {
         (song as any).accountFullNameCreated = admin.fullName;
       }
@@ -105,6 +105,11 @@ export const createPost = async (
   req: CustomRequest,
   res: Response
 ): Promise<void> => {
+  const permissions = res.locals.admin.permissions;
+  if (!permissions.includes("song_create")) {
+    res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
+    return;
+  }
   if (validateSong(req.body)) {
     req.body.createdBy = {
       account_id: res.locals.admin.id,
@@ -159,6 +164,11 @@ export const editPatch = async (
   req: CustomRequest,
   res: Response
 ): Promise<void> => {
+  const permissions = res.locals.admin.permissions;
+  if (!permissions.includes("song_edit")) {
+    res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
+    return;
+  }
   const id: string = req.params.id;
   if (validateSong(req.body) && id) {
     try {
@@ -191,8 +201,14 @@ export const deleteSong = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const id: string = req.params.id;
   try {
+    const permissions = res.locals.admin.permissions;
+    if (!permissions.includes("song_delete")) {
+      res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
+      throw new Error(`Invalid`);
+    }
+    const id: string = req.params.id;
+
     if (!id) {
       throw new Error(`Invalid`);
     }
@@ -226,9 +242,14 @@ export const changeStatus = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const id: string = req.body.id;
-  const status: Status = req.body.status;
   try {
+    const permissions = res.locals.admin.permissions;
+    if (!permissions.includes("song_edit")) {
+      res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
+      throw new Error(`Invalid`);
+    }
+    const id: string = req.body.id;
+    const status: Status = req.body.status;
     if (!id) {
       throw new Error(`Invalid`);
     }
@@ -257,6 +278,7 @@ export const changeMulti = async (
   req: CustomRequest,
   res: Response
 ): Promise<void> => {
+  const permissions = res.locals.admin.permissions;
   const type = req.body.type;
 
   const ids = req.body.ids.split(", "); //conver từ string thành array
@@ -268,42 +290,48 @@ export const changeMulti = async (
 
   switch (type) {
     case "active":
-      await Song.updateMany(
-        { _id: { $in: ids } },
-        {
-          status: "active",
-          $push: { updatedBy: updated },
-        }
-      );
+      if (permissions.includes("song_edit")) {
+        await Song.updateMany(
+          { _id: { $in: ids } },
+          {
+            status: "active",
+            $push: { updatedBy: updated },
+          }
+        );
 
-      req.flash(
-        "success",
-        `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
-      );
+        req.flash(
+          "success",
+          `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
+        );
+      }
 
       break;
     case "inactive":
-      await Song.updateMany(
-        { _id: { $in: ids } },
-        {
-          status: "inactive",
-          $push: { updatedBy: updated },
-        }
-      );
+      if (permissions.includes("song_edit")) {
+        await Song.updateMany(
+          { _id: { $in: ids } },
+          {
+            status: "inactive",
+            $push: { updatedBy: updated },
+          }
+        );
 
-      req.flash(
-        "success",
-        `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
-      );
+        req.flash(
+          "success",
+          `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
+        );
+      }
 
       break;
     case "delete-all":
-      await Song.updateMany(
-        { _id: { $in: ids } },
-        { deleted: true, deletedBy: updated }
-      );
+      if (permissions.includes("song_delete")) {
+        await Song.updateMany(
+          { _id: { $in: ids } },
+          { deleted: true, deletedBy: updated }
+        );
 
-      req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+        req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+      }
       break;
     default:
       break;

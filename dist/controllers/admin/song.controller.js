@@ -88,6 +88,11 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.create = create;
 const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const permissions = res.locals.admin.permissions;
+    if (!permissions.includes("song_create")) {
+        res.redirect(`/${config_1.systemConfig.prefixAdmin}/dashboard`);
+        return;
+    }
     if ((0, song_validate_1.validateSong)(req.body)) {
         req.body.createdBy = {
             account_id: res.locals.admin.id,
@@ -132,6 +137,11 @@ const edit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.edit = edit;
 const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const permissions = res.locals.admin.permissions;
+    if (!permissions.includes("song_edit")) {
+        res.redirect(`/${config_1.systemConfig.prefixAdmin}/dashboard`);
+        return;
+    }
     const id = req.params.id;
     if ((0, song_validate_1.validateSong)(req.body) && id) {
         try {
@@ -156,8 +166,13 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.editPatch = editPatch;
 const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
     try {
+        const permissions = res.locals.admin.permissions;
+        if (!permissions.includes("song_delete")) {
+            res.redirect(`/${config_1.systemConfig.prefixAdmin}/dashboard`);
+            throw new Error(`Invalid`);
+        }
+        const id = req.params.id;
         if (!id) {
             throw new Error(`Invalid`);
         }
@@ -184,9 +199,14 @@ const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.deleteSong = deleteSong;
 const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.body.id;
-    const status = req.body.status;
     try {
+        const permissions = res.locals.admin.permissions;
+        if (!permissions.includes("song_edit")) {
+            res.redirect(`/${config_1.systemConfig.prefixAdmin}/dashboard`);
+            throw new Error(`Invalid`);
+        }
+        const id = req.body.id;
+        const status = req.body.status;
         if (!id) {
             throw new Error(`Invalid`);
         }
@@ -209,6 +229,7 @@ const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.changeStatus = changeStatus;
 const changeMulti = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const permissions = res.locals.admin.permissions;
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
     const updated = {
@@ -217,22 +238,28 @@ const changeMulti = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     };
     switch (type) {
         case "active":
-            yield song_model_1.default.updateMany({ _id: { $in: ids } }, {
-                status: "active",
-                $push: { updatedBy: updated },
-            });
-            req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            if (permissions.includes("song_edit")) {
+                yield song_model_1.default.updateMany({ _id: { $in: ids } }, {
+                    status: "active",
+                    $push: { updatedBy: updated },
+                });
+                req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            }
             break;
         case "inactive":
-            yield song_model_1.default.updateMany({ _id: { $in: ids } }, {
-                status: "inactive",
-                $push: { updatedBy: updated },
-            });
-            req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            if (permissions.includes("song_edit")) {
+                yield song_model_1.default.updateMany({ _id: { $in: ids } }, {
+                    status: "inactive",
+                    $push: { updatedBy: updated },
+                });
+                req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+            }
             break;
         case "delete-all":
-            yield song_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: updated });
-            req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+            if (permissions.includes("song_delete")) {
+                yield song_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: updated });
+                req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+            }
             break;
         default:
             break;
