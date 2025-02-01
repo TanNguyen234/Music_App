@@ -49,7 +49,9 @@ block main
                         th Ảnh
                         th Tiêu đề
                         th Trạng thái
+                        th Người tạo
                         th Ngày tạo
+                        th Người cập nhật mới nhất
                         th Ngày cập nhật mới nhất
                         th Hành động
                 tbody
@@ -77,8 +79,18 @@ block main
                                 else
                                     a(type="button" class="btn btn-danger") Dừng hoạt động 
                             td 
+                                if(song.accountFullNameCreated)
+                                    | #{song.accountFullNameCreated}
+                                else
+                                    | No Data
+                            td 
                                 if(song.createdAt)
                                     +formatDay(song.createdAt)
+                                else
+                                    | No Data
+                            td 
+                                if(song.accountFullNameUpdated)
+                                    | #{song.accountFullNameUpdated}
                                 else
                                     | No Data
                             td 

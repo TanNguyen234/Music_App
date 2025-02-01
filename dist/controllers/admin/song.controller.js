@@ -20,10 +20,11 @@ const config_1 = require("../../config/config");
 const pagination_1 = __importDefault(require("../../helpers/pagination"));
 const filterStatus_1 = require("../../helpers/filterStatus");
 const search_1 = require("../../helpers/search");
+const account_model_1 = __importDefault(require("../../model/account.model"));
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filterStatusHelper = (0, filterStatus_1.filterStatus)(req.query);
     let find = {
-        deleted: false
+        deleted: false,
     };
     if (req.query.status) {
         find.status = req.query.status;
@@ -46,7 +47,27 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     else {
         sort.like = "desc";
     }
-    const songs = yield song_model_1.default.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+    const songs = yield song_model_1.default.find(find)
+        .skip(objectPagination.skip)
+        .limit(objectPagination.limitItem)
+        .sort(sort);
+    for (const song of songs) {
+        if (song.createdBy) {
+            let admin = yield account_model_1.default.findOne({
+                _id: song.createdBy.account_id,
+            });
+            if (admin) {
+                song.accountFullNameCreated = admin.fullName;
+            }
+        }
+        const updatedBy = song.updatedBy[song.updatedBy.length - 1];
+        if (updatedBy) {
+            const adminUpdated = yield account_model_1.default.findOne({
+                _id: updatedBy.account_id,
+            });
+            song.accountFullNameUpdated = adminUpdated === null || adminUpdated === void 0 ? void 0 : adminUpdated.fullName;
+        }
+    }
     res.render("admin/pages/songs/index", {
         pageTitle: "Trang bài hát",
         songs: songs || [],
@@ -68,6 +89,10 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.create = create;
 const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if ((0, song_validate_1.validateSong)(req.body)) {
+        req.body.createdBy = {
+            account_id: res.locals.admin.id,
+            delete_at: new Date(),
+        };
         const newSong = new song_model_1.default(req.body);
         yield newSong.save();
         req.flash("success", "Tạo bài hát mới thành công");
@@ -112,7 +137,10 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             yield song_model_1.default.updateOne({
                 _id: id,
-            }, req.body);
+            }, Object.assign(Object.assign({}, req.body), { $push: {
+                    account_id: res.locals.user.id,
+                    update_at: new Date(),
+                } }));
             req.flash("success", "Chỉnh sửa bài hát thành công");
             res.redirect("back");
         }
@@ -129,7 +157,6 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.editPatch = editPatch;
 const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    console.log("song id: " + id);
     try {
         if (!id) {
             throw new Error(`Invalid`);
@@ -137,17 +164,21 @@ const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         yield song_model_1.default.updateOne({
             _id: id,
         }, {
+            deletedBy: {
+                account_id: res.locals.admin.id,
+                delete_at: new Date(),
+            },
             deleted: true,
         });
         res.json({
             code: 200,
-            message: "Xóa bài hát thành công"
+            message: "Xóa bài hát thành công",
         });
     }
     catch (error) {
         res.json({
             code: 400,
-            message: "Xóa bài hát thành công"
+            message: "Xóa bài hát thất bại",
         });
     }
 });
@@ -179,30 +210,28 @@ const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.changeStatus = changeStatus;
 const changeMulti = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const type = req.body.type;
-    const ids = req.body.ids.split(', ');
+    const ids = req.body.ids.split(", ");
     const updated = {
-        account_id: res.locals.user.id,
-        update_at: new Date()
+        account_id: res.locals.admin.id,
+        update_at: new Date(),
     };
     switch (type) {
         case "active":
             yield song_model_1.default.updateMany({ _id: { $in: ids } }, {
                 status: "active",
-                $push: { updatedBy: updated }
+                $push: { updatedBy: updated },
             });
             req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
             break;
         case "inactive":
             yield song_model_1.default.updateMany({ _id: { $in: ids } }, {
                 status: "inactive",
-                $push: { updatedBy: updated }
+                $push: { updatedBy: updated },
             });
             req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
             break;
         case "delete-all":
-            yield song_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: {
-                    deleteAt: new Date()
-                } });
+            yield song_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: updated });
             req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
             break;
         default:

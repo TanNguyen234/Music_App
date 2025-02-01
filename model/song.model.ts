@@ -21,6 +21,23 @@ const songSchema = new mongoose.Schema({//Thiết lập schema
   lyrics: String,
   audio: String,
   slug: { type: String, slug: "title", unique: true },
+  createdBy: {
+    account_id: String,
+    create_at: {
+      type: Date,
+      default: Date.now()
+    }
+  },
+  updatedBy: [//Vì update có thể nhiều người cùng update nên là một array
+    {
+    account_id: String,
+    update_at: Date
+    }
+  ],
+  deletedBy: {
+    account_id: String,
+    delete_at: Date
+  },
   deleted: {
     type: Boolean,
     default: false

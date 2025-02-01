@@ -10,22 +10,24 @@ import { Find } from "../../interface/query";
 import { filterStatus } from "../../helpers/filterStatus";
 import { search } from "../../helpers/search";
 import { Status } from "../../interface/status";
+import Account from "../../model/account.model";
 
 //[GET] /admin/songs
 export const index = async (req: Request, res: Response): Promise<void> => {
-  const filterStatusHelper = filterStatus(req.query);  //Trả về một mảng chứa các trạng thái của sản phẩm
+  const filterStatusHelper = filterStatus(req.query); //Trả về một mảng chứa các trạng thái của sản phẩm
 
   let find: Find = {
-    deleted: false
-  }
-  if (req.query.status) {            //Có req.query.status có ngĩa là trên url có key tên status do frontend truyền lên url
-    find.status = req.query.status //Thêm status vào oject find => find.status
+    deleted: false,
+  };
+  if (req.query.status) {
+    //Có req.query.status có ngĩa là trên url có key tên status do frontend truyền lên url
+    find.status = req.query.status; //Thêm status vào oject find => find.status
   }
 
   const objectSearch: any = search(req.query);
 
   if (objectSearch.regex) {
-      find.title = objectSearch.regex;
+    find.title = objectSearch.regex;
   }
 
   //Pagination
@@ -42,20 +44,41 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   //End Pagination
 
   //Sort
-  let sort: any = {
-
-  }
+  let sort: any = {};
 
   if (req.query.sortKey && req.query.sortValue) {
-    const key: string | any = req.query.sortKey
-    const value: string | any = req.query.sortValue
-    sort[key] = value
+    const key: string | any = req.query.sortKey;
+    const value: string | any = req.query.sortValue;
+    sort[key] = value;
   } else {
-    sort.like = "desc"
+    sort.like = "desc";
   }
   //End Sort
 
-  const songs = await Song.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+  const songs = await Song.find(find)
+    .skip(objectPagination.skip)
+    .limit(objectPagination.limitItem)
+    .sort(sort);
+  for (const song of songs) {
+    if (song.createdBy) {
+      let admin = await Account.findOne({
+        _id: song.createdBy.account_id,
+      });
+  
+      if (admin) {
+        (song as any).accountFullNameCreated = admin.fullName;
+      }
+    }
+
+    const updatedBy = song.updatedBy[song.updatedBy.length - 1];
+    if (updatedBy) {
+      const adminUpdated = await Account.findOne({
+        _id: updatedBy.account_id,
+      });
+
+      (song as any).accountFullNameUpdated = adminUpdated?.fullName;
+    }
+  }
 
   res.render("admin/pages/songs/index", {
     pageTitle: "Trang bài hát",
@@ -83,6 +106,10 @@ export const createPost = async (
   res: Response
 ): Promise<void> => {
   if (validateSong(req.body)) {
+    req.body.createdBy = {
+      account_id: res.locals.admin.id,
+      delete_at: new Date(),
+    };
     const newSong = new Song(req.body);
     await newSong.save();
     req.flash("success", "Tạo bài hát mới thành công");
@@ -121,7 +148,6 @@ export const edit = async (
       song: song,
       topics: topics,
     });
-
   } catch (error) {
     req.flash("error", "Bài hát không tồn tại!");
     res.redirect(`/${systemConfig.prefixAdmin}/songs`);
@@ -140,7 +166,13 @@ export const editPatch = async (
         {
           _id: id,
         },
-        req.body
+        {
+          ...req.body,
+          $push: {
+            account_id: res.locals.user.id,
+            update_at: new Date(),
+          },
+        }
       );
       req.flash("success", "Chỉnh sửa bài hát thành công");
       res.redirect("back");
@@ -156,107 +188,126 @@ export const editPatch = async (
 
 //[DELETE] /admin/songs/delete/:id
 export const deleteSong = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
-    const id: string = req.params.id;
-    console.log("song id: "+id);
-    try {
-        if(!id) {
-            throw new Error(`Invalid`)
-        }
-        await Song.updateOne(
-          {
-            _id: id,
-          },
-          {
-            deleted: true,
-          }
-        );
-        res.json({
-          code: 200,
-          message: "Xóa bài hát thành công"
-        })
-      } catch (error) {
-        res.json({
-          code: 400,
-          message: "Xóa bài hát thành công"
-        })
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const id: string = req.params.id;
+  try {
+    if (!id) {
+      throw new Error(`Invalid`);
+    }
+
+    await Song.updateOne(
+      {
+        _id: id,
+      },
+      {
+        deletedBy: {
+          account_id: res.locals.admin.id,
+          delete_at: new Date(),
+        },
+        deleted: true,
       }
-  };
+    );
+    res.json({
+      code: 200,
+      message: "Xóa bài hát thành công",
+    });
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Xóa bài hát thất bại",
+    });
+  }
+};
 
 //[PATCH] /admin/songs/change-status
 export const changeStatus = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
-    const id: string = req.body.id;
-    const status: Status = req.body.status;
-    try {
-        if(!id) {
-            throw new Error(`Invalid`)
-        }
-        await Song.updateOne(
-          {
-            _id: id,
-          },
-          {
-            status: status,
-          }
-        );
-        res.json({
-          code: 200,
-          message: "Thay đổi trạng thái bài hát thành công",
-        })
-      } catch (error) {
-        res.json({
-          code: 500,
-          message: "Thay đổi trạng thái bài hát thất bại",
-        })
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const id: string = req.body.id;
+  const status: Status = req.body.status;
+  try {
+    if (!id) {
+      throw new Error(`Invalid`);
+    }
+    await Song.updateOne(
+      {
+        _id: id,
+      },
+      {
+        status: status,
       }
-  };
+    );
+    res.json({
+      code: 200,
+      message: "Thay đổi trạng thái bài hát thành công",
+    });
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: "Thay đổi trạng thái bài hát thất bại",
+    });
+  }
+};
 
-  // [PATCH] /admin/songs/change-multi
-export const changeMulti = async (req: CustomRequest, res: Response): Promise<void> => {
-
+// [PATCH] /admin/songs/change-multi
+export const changeMulti = async (
+  req: CustomRequest,
+  res: Response
+): Promise<void> => {
   const type = req.body.type;
 
-  const ids = req.body.ids.split(', '); //conver từ string thành array
+  const ids = req.body.ids.split(", "); //conver từ string thành array
 
   const updated = {
-      account_id: res.locals.user.id,
-      update_at: new Date()
-  }
+    account_id: res.locals.admin.id,
+    update_at: new Date(),
+  };
 
   switch (type) {
-      case "active":
-          await Song.updateMany({ _id: { $in: ids } }, { 
-              status: "active", 
-              $push: {updatedBy: updated}
-          })
+    case "active":
+      await Song.updateMany(
+        { _id: { $in: ids } },
+        {
+          status: "active",
+          $push: { updatedBy: updated },
+        }
+      );
 
-          req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+      req.flash(
+        "success",
+        `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
+      );
 
-          break;
-      case "inactive":
-          await Song.updateMany({ _id: { $in: ids } }, { 
-              status: "inactive", 
-              $push: {updatedBy: updated}
-          })
+      break;
+    case "inactive":
+      await Song.updateMany(
+        { _id: { $in: ids } },
+        {
+          status: "inactive",
+          $push: { updatedBy: updated },
+        }
+      );
 
-          req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
+      req.flash(
+        "success",
+        `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
+      );
 
-          break;
-      case "delete-all":
-          await Song.updateMany({ _id: { $in: ids } }, {deleted: true, deletedBy: {
-              deleteAt: new Date()
-          } } )
+      break;
+    case "delete-all":
+      await Song.updateMany(
+        { _id: { $in: ids } },
+        { deleted: true, deletedBy: updated }
+      );
 
-          req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
-          break;
-      default:
-          break;
+      req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
+      break;
+    default:
+      break;
   }
 
   res.redirect("back");
-}
+};

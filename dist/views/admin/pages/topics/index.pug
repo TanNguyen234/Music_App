@@ -47,7 +47,9 @@ block main
                         th Ảnh
                         th Tiêu đề
                         th Trạng thái
+                        th Người tạo
                         th Ngày tạo
+                        th Người cập nhật mới nhất
                         th Ngày cập nhật mới nhất
                         th Hành động
                 tbody
@@ -63,6 +65,7 @@ block main
                                 else
                                     | No Image
                             td= topic.title
+                            td  
                               if(role.permissions.includes("topic_edit"))
                                 if(topic.status === "active")
                                     a(href="javascript:;" button-change-status data-status=topic.status data-id=topic.id type="button" class="btn btn-success") Hoạt động 
@@ -74,8 +77,18 @@ block main
                                 else
                                     a(type="button" class="btn btn-danger") Dừng hoạt động 
                             td 
+                                if(topic.accountFullNameCreated)
+                                    | #{topic.accountFullNameCreated}
+                                else
+                                    | No Data
+                            td 
                                 if(topic.createdAt)
                                     +formatDay(topic.createdAt)
+                                else
+                                    | No Data
+                            td 
+                                if(topic.accountFullNameUpdated)
+                                    | #{topic.accountFullNameUpdated}
                                 else
                                     | No Data
                             td 

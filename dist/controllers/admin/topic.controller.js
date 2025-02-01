@@ -19,10 +19,11 @@ const config_1 = require("../../config/config");
 const pagination_1 = __importDefault(require("../../helpers/pagination"));
 const search_1 = require("../../helpers/search");
 const filterStatus_1 = require("../../helpers/filterStatus");
+const account_model_1 = __importDefault(require("../../model/account.model"));
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filterStatusHelper = (0, filterStatus_1.filterStatus)(req.query);
     let find = {
-        deleted: false
+        deleted: false,
     };
     if (req.query.status) {
         find.status = req.query.status;
@@ -45,7 +46,27 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     else {
         sort.like = "desc";
     }
-    const topics = yield topic_model_1.default.find(find).skip(objectPagination.skip).limit(objectPagination.limitItem).sort(sort);
+    const topics = yield topic_model_1.default.find(find)
+        .skip(objectPagination.skip)
+        .limit(objectPagination.limitItem)
+        .sort(sort);
+    for (const topic of topics) {
+        if (topic.createdBy) {
+            const admin = yield account_model_1.default.findOne({
+                _id: topic.createdBy.account_id,
+            });
+            if (admin) {
+                topic.accountFullName = admin.fullName;
+            }
+        }
+        const updatedBy = topic.updatedBy[topic.updatedBy.length - 1];
+        if (updatedBy) {
+            const adminUpdated = yield account_model_1.default.findOne({
+                _id: updatedBy.account_id,
+            });
+            topic.accountFullNameUpdated = adminUpdated === null || adminUpdated === void 0 ? void 0 : adminUpdated.fullName;
+        }
+    }
     res.render("admin/pages/topics/index", {
         pageTitle: "Trang chủ đề",
         topics: topics || [],
@@ -63,6 +84,10 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.create = create;
 const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if ((0, validate_topic_validate_1.validateTopic)(req.body)) {
+        req.body.createdBy = {
+            account_id: res.locals.admin.id,
+            delete_at: new Date(),
+        };
         const newTopic = new topic_model_1.default(req.body);
         yield newTopic.save();
         req.flash("success", "Tạo chủ đề mới thành công");
@@ -99,7 +124,10 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             yield topic_model_1.default.updateOne({
                 _id: id,
-            }, req.body);
+            }, Object.assign(Object.assign({}, req.body), { $push: { updatedBy: {
+                        account_id: res.locals.admin.id,
+                        delete_at: new Date(),
+                    } } }));
             req.flash("success", "Chỉnh sửa chủ đề thành công");
             res.redirect("back");
         }
@@ -117,23 +145,26 @@ exports.editPatch = editPatch;
 const deleteTopic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
-        console.log("topic id: " + id);
         if (!id)
             throw new Error("Invalid");
         yield topic_model_1.default.updateOne({
             _id: id,
         }, {
+            deletedBy: {
+                account_id: res.locals.admin.id,
+                delete_at: new Date(),
+            },
             deleted: true,
         });
         res.json({
             code: 200,
-            message: "Xóa chủ đề thành công"
+            message: "Xóa chủ đề thành công",
         });
     }
     catch (error) {
         res.json({
             code: 400,
-            message: "Xóa chủ đề thất bại"
+            message: "Xóa chủ đề thất bại",
         });
     }
 });
@@ -142,7 +173,7 @@ const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
         if (!id)
-            throw new Error('Invalid id');
+            throw new Error("Invalid id");
         const topic = yield topic_model_1.default.findOne({
             _id: id,
             deleted: false,
@@ -173,6 +204,10 @@ const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             _id: id,
         }, {
             status: status,
+            $push: { updatedBy: {
+                    account_id: res.locals.admin.id,
+                    delete_at: new Date(),
+                } }
         });
         res.json({
             code: 200,
@@ -189,29 +224,28 @@ const changeStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.changeStatus = changeStatus;
 const changeMulti = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const type = req.body.type;
-    const ids = req.body.ids.split(', ');
+    const ids = req.body.ids.split(", ");
     const updated = {
-        update_at: new Date()
+        account_id: res.locals.admin.id,
+        delete_at: new Date(),
     };
     switch (type) {
         case "active":
             yield topic_model_1.default.updateMany({ _id: { $in: ids } }, {
                 status: "active",
-                $push: { updatedBy: updated }
+                $push: { updatedBy: updated },
             });
             req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
             break;
         case "inactive":
             yield topic_model_1.default.updateMany({ _id: { $in: ids } }, {
                 status: "inactive",
-                $push: { updatedBy: updated }
+                $push: { updatedBy: updated },
             });
             req.flash("success", `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`);
             break;
         case "delete-all":
-            yield topic_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: {
-                    deleteAt: new Date()
-                } });
+            yield topic_model_1.default.updateMany({ _id: { $in: ids } }, { deleted: true, deletedBy: updated });
             req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
             break;
         default:
