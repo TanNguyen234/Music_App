@@ -16,6 +16,7 @@ exports.accountEditValidate = exports.accountValidate = void 0;
 const account_model_1 = __importDefault(require("../model/account.model"));
 const user_validate_1 = require("./user.validate");
 const accountValidate = (Data) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(Data, !(0, user_validate_1.isValidEmail)(Data.email));
     if (!Data.fullName || !(0, user_validate_1.isValidEmail)(Data.email) || !Data.password || !Data.role_id) {
         return false;
     }

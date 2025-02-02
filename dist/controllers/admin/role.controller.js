@@ -80,21 +80,24 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.editPatch = editPatch;
 const deleteRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    if (!id) {
+    const permisions = res.locals.admin.permisions;
+    if (!id || !permisions.includes("roles_delete")) {
         res.json({
             code: 400,
             message: "Không tìm thấy nhóm quyền"
         });
     }
-    yield role_model_1.default.updateOne({
-        _id: id
-    }, {
-        deleted: true
-    });
-    res.json({
-        code: 200,
-        message: "Xóa nhóm quyền thành công"
-    });
+    else {
+        yield role_model_1.default.updateOne({
+            _id: id
+        }, {
+            deleted: true
+        });
+        res.json({
+            code: 200,
+            message: "Xóa nhóm quyền thành công"
+        });
+    }
 });
 exports.deleteRole = deleteRole;
 const permission = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -112,7 +112,7 @@ const deleteRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             message: "Không tìm thấy nhóm quyền",
         });
     }
-    yield role_model_1.default.updateOne({
+    yield account_model_1.default.updateOne({
         _id: id,
     }, {
         deleted: true,

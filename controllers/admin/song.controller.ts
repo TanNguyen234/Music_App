@@ -105,11 +105,6 @@ export const createPost = async (
   req: CustomRequest,
   res: Response
 ): Promise<void> => {
-  const permissions = res.locals.admin.permissions;
-  if (!permissions.includes("song_create")) {
-    res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
-    return;
-  }
   if (validateSong(req.body)) {
     req.body.createdBy = {
       account_id: res.locals.admin.id,
@@ -164,11 +159,6 @@ export const editPatch = async (
   req: CustomRequest,
   res: Response
 ): Promise<void> => {
-  const permissions = res.locals.admin.permissions;
-  if (!permissions.includes("song_edit")) {
-    res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
-    return;
-  }
   const id: string = req.params.id;
   if (validateSong(req.body) && id) {
     try {
@@ -185,7 +175,9 @@ export const editPatch = async (
         }
       );
       req.flash("success", "Chỉnh sửa bài hát thành công");
-      res.redirect("back");
+      res.redirect(
+        req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`
+      );
     } catch (error) {
       req.flash("error", "Không tìm thấy bài hát");
       res.redirect(`/${systemConfig.prefixAdmin}/songs`);
@@ -202,11 +194,6 @@ export const deleteSong = async (
   res: Response
 ): Promise<void> => {
   try {
-    const permissions = res.locals.admin.permissions;
-    if (!permissions.includes("song_delete")) {
-      res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
-      throw new Error(`Invalid`);
-    }
     const id: string = req.params.id;
 
     if (!id) {
@@ -243,11 +230,6 @@ export const changeStatus = async (
   res: Response
 ): Promise<void> => {
   try {
-    const permissions = res.locals.admin.permissions;
-    if (!permissions.includes("song_edit")) {
-      res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
-      throw new Error(`Invalid`);
-    }
     const id: string = req.body.id;
     const status: Status = req.body.status;
     if (!id) {
@@ -278,7 +260,6 @@ export const changeMulti = async (
   req: CustomRequest,
   res: Response
 ): Promise<void> => {
-  const permissions = res.locals.admin.permissions;
   const type = req.body.type;
 
   const ids = req.body.ids.split(", "); //conver từ string thành array
@@ -290,52 +271,48 @@ export const changeMulti = async (
 
   switch (type) {
     case "active":
-      if (permissions.includes("song_edit")) {
-        await Song.updateMany(
-          { _id: { $in: ids } },
-          {
-            status: "active",
-            $push: { updatedBy: updated },
-          }
-        );
+      await Song.updateMany(
+        { _id: { $in: ids } },
+        {
+          status: "active",
+          $push: { updatedBy: updated },
+        }
+      );
 
-        req.flash(
-          "success",
-          `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
-        );
-      }
+      req.flash(
+        "success",
+        `Đã cập nhật thành công trạng thái của ${ids.length} bài hát`
+      );
 
       break;
     case "inactive":
-      if (permissions.includes("song_edit")) {
-        await Song.updateMany(
-          { _id: { $in: ids } },
-          {
-            status: "inactive",
-            $push: { updatedBy: updated },
-          }
-        );
+      await Song.updateMany(
+        { _id: { $in: ids } },
+        {
+          status: "inactive",
+          $push: { updatedBy: updated },
+        }
+      );
 
-        req.flash(
-          "success",
-          `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
-        );
-      }
+      req.flash(
+        "success",
+        `Đã cập nhật thành công trạng thái của ${ids.length} bài hát`
+      );
 
       break;
     case "delete-all":
-      if (permissions.includes("song_delete")) {
-        await Song.updateMany(
-          { _id: { $in: ids } },
-          { deleted: true, deletedBy: updated }
-        );
+      await Song.updateMany(
+        { _id: { $in: ids } },
+        { deleted: true, deletedBy: updated }
+      );
 
-        req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
-      }
+      req.flash("success", `Đã xóa thành công ${ids.length} bài hát`);
       break;
     default:
       break;
   }
 
-  res.redirect("back");
+  res.redirect(
+    req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`
+  );
 };

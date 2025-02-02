@@ -99,11 +99,6 @@ export const createPost = async (
   req: CustomRequest,
   res: Response
 ): Promise<void> => {
-  const permissions = res.locals.admin.permissions;
-  if (!permissions.includes("topic_create")) {
-    res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
-    return;
-  }
   if (validateTopic(req.body)) {
     req.body.createdBy = {
       account_id: res.locals.admin.id,
@@ -115,7 +110,9 @@ export const createPost = async (
     res.redirect(`/${systemConfig.prefixAdmin}/topics`);
   } else {
     req.flash("error", "Dữ liệu không hợp lệ");
-    res.redirect("back");
+    res.redirect(
+      req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`
+    );
   }
 };
 
@@ -150,10 +147,6 @@ export const editPatch = async (
   const id = req.params.id;
   if (validateTopic(req.body) && id) {
     try {
-      const permissions = res.locals.admin.permissions;
-      if (!permissions.includes("topic_edit")) {
-        throw new Error(`Invalid`);
-      }
       await Topic.updateOne(
         {
           _id: id,
@@ -169,7 +162,9 @@ export const editPatch = async (
         }
       );
       req.flash("success", "Chỉnh sửa chủ đề thành công");
-      res.redirect("back");
+      res.redirect(
+        req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`
+      );
     } catch (error) {
       req.flash("error", "Không tìm thấy chủ đề");
       res.redirect(`/${systemConfig.prefixAdmin}/topics`);
@@ -186,10 +181,6 @@ export const deleteTopic = async (
   res: Response
 ): Promise<void> => {
   try {
-    const permissions = res.locals.admin.permissions;
-    if (!permissions.includes("topic_delete")) {
-      throw new Error("Permissions must be specified");
-    }
     const id: string = req.params.id;
     if (!id) throw new Error("Invalid");
     await Topic.updateOne(
@@ -246,10 +237,6 @@ export const changeStatus = async (
   const id: string = req.body.id;
   const status: Status = req.body.status;
   try {
-    const permissions = res.locals.admin.permissions;
-    if (!permissions.includes("topic_edit")) {
-      throw new Error("Permissions must be specified");
-    }
     if (!id) {
       throw new Error(`Invalid`);
     }
@@ -292,56 +279,51 @@ export const changeMulti = async (
     account_id: res.locals.admin.id,
     delete_at: new Date(),
   };
-  const permissions = res.locals.admin.permissions;
 
   switch (type) {
     case "active":
-      if (permissions.includes("topic_edit")) {
-        await Topic.updateMany(
-          { _id: { $in: ids } },
-          {
-            status: "active",
-            $push: { updatedBy: updated },
-          }
-        );
+      await Topic.updateMany(
+        { _id: { $in: ids } },
+        {
+          status: "active",
+          $push: { updatedBy: updated },
+        }
+      );
 
-        req.flash(
-          "success",
-          `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
-        );
-      }
+      req.flash(
+        "success",
+        `Đã cập nhật thành công trạng thái của ${ids.length} chủ đề`
+      );
 
       break;
     case "inactive":
-      if (permissions.includes("topic_edit")) {
-        await Topic.updateMany(
-          { _id: { $in: ids } },
-          {
-            status: "inactive",
-            $push: { updatedBy: updated },
-          }
-        );
+      await Topic.updateMany(
+        { _id: { $in: ids } },
+        {
+          status: "inactive",
+          $push: { updatedBy: updated },
+        }
+      );
 
-        req.flash(
-          "success",
-          `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm`
-        );
-      }
+      req.flash(
+        "success",
+        `Đã cập nhật thành công trạng thái của ${ids.length} chủ đề`
+      );
 
       break;
     case "delete-all":
-      if (permissions.includes("topic_delete")) {
-        await Topic.updateMany(
-          { _id: { $in: ids } },
-          { deleted: true, deletedBy: updated }
-        );
+      await Topic.updateMany(
+        { _id: { $in: ids } },
+        { deleted: true, deletedBy: updated }
+      );
 
-        req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
-      }
+      req.flash("success", `Đã xóa thành công ${ids.length} chủ đề`);
       break;
     default:
       break;
   }
 
-  res.redirect("back");
+  res.redirect(
+    req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`
+  );
 };

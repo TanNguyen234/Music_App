@@ -130,7 +130,7 @@ export const deleteRole = async (
       message: "Không tìm thấy nhóm quyền",
     });
   }
-  await Roles.updateOne(
+  await Account.updateOne(
     {
       _id: id,
     },

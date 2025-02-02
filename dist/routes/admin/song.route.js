@@ -41,18 +41,19 @@ const upload = multer();
 const controller = __importStar(require("../../controllers/admin/song.controller"));
 const middleware = __importStar(require("../../middlewares/uploadToCloud.middleware"));
 const CustomRequest_1 = require("../../interface/CustomRequest");
+const checkPermissions_middleware_1 = require("../../middlewares/checkPermissions.middleware");
 router.get("/", controller.index);
 router.get("/create", controller.create);
-router.post("/create", upload.fields([
+router.post("/create", (0, checkPermissions_middleware_1.checkPermission)("render", "song_create"), upload.fields([
     { name: "avatar", maxCount: 1 },
     { name: "audio", maxCount: 1 },
 ]), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.createPost));
 router.get("/edit/:id", (0, CustomRequest_1.returnCustomRequest)(controller.edit));
-router.patch("/edit/:id", upload.fields([
+router.patch("/edit/:id", (0, checkPermissions_middleware_1.checkPermission)("render", "song_edit"), upload.fields([
     { name: "avatar", maxCount: 1 },
     { name: "audio", maxCount: 1 },
 ]), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
-router.delete("/delete/:id", controller.deleteSong);
-router.patch("/change-status", controller.changeStatus);
-router.patch("/change-multi", (0, CustomRequest_1.returnCustomRequest)(controller.changeMulti));
+router.delete("/delete/:id", (0, checkPermissions_middleware_1.checkPermission)("json", "song_delete"), controller.deleteSong);
+router.patch("/change-status", (0, checkPermissions_middleware_1.checkPermission)("json", "song_edit"), controller.changeStatus);
+router.patch("/change-multi", (0, checkPermissions_middleware_1.checkPermission)("render", "song_edit"), (0, CustomRequest_1.returnCustomRequest)(controller.changeMulti));
 exports.songRoutes = router;

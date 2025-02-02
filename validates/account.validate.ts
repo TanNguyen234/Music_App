@@ -15,6 +15,7 @@ interface TypeData2 extends TypeData {
 }
 
 export const accountValidate = async (Data: TypeData2): Promise<Boolean> => {
+    console.log(Data, !isValidEmail(Data.email))
     if (!Data.fullName || !isValidEmail(Data.email) || !Data.password || !Data.role_id) {
         return false;
     }

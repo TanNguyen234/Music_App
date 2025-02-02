@@ -67,7 +67,8 @@ block main
                       href=`/${prefixAdmin}/accounts/edit/${item.id}`
                     ) Sửa 
                     button(
-                      btn-delete-account=item.id
+                      btn-delete=item.id 
+                      path=`/${prefixAdmin}/accounts/delete/${item.id}`
                       class="btn btn-danger btn-sm ms-1"
                     ) Xóa
                     form(action="" method="POST" id="form-change-status" data-path=`/${prefixAdmin}/accounts/change-status`)-// form change

@@ -71,21 +71,23 @@ export const editPatch = async (req: CustomRequest, res: Response): Promise<void
 //[DELETE] /admin/roles/delete/:id
 export const deleteRole = async (req: CustomRequest, res: Response): Promise<void> => {
     const id: string = req.params.id;
-    if(!id) {
+    const permisions = res.locals.admin.permisions
+    if(!id || !permisions.includes("roles_delete")) {
         res.json({
             code: 400,
             message: "Không tìm thấy nhóm quyền"
         })
+    } else {
+        await Roles.updateOne({
+            _id: id
+        }, {
+            deleted: true
+        });
+        res.json({
+            code: 200,
+            message: "Xóa nhóm quyền thành công"
+        })
     }
-    await Roles.updateOne({
-        _id: id
-    }, {
-        deleted: true
-    });
-    res.json({
-        code: 200,
-        message: "Xóa nhóm quyền thành công"
-    })
 }
 
 //[GET] /admin/role/permissions

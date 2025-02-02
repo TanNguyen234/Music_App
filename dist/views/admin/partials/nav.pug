@@ -20,7 +20,7 @@
       if(role.permissions.includes('roles_permissions'))
         li 
           a(href=`/${prefixAdmin}/roles/permissions`) <i class="fa-solid fa-user-gear"></i> Phân quyền
-      if(role.permissions.includes('admin_view  '))  
+      if(role.permissions.includes('admin_view'))  
         li 
           a(href=`/${prefixAdmin}/accounts`) <i class="fa-solid fa-shield-halved"></i> Tài khoản admin
       if(role.permissions.includes('user_view'))
