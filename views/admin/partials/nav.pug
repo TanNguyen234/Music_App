@@ -1,7 +1,7 @@
 .nav
   .inner-logo
     a(href=`/${prefixAdmin}/dashboard`)
-      img(src="/client/images/logo.png", alt="logo")
+      img(src=(settingGeneral.logo ? settingGeneral.logo : "/client/images/logo.png"), alt="logo")
   .inner-menu
     ul
       li

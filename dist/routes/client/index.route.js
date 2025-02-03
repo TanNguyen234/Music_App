@@ -8,8 +8,10 @@ const auth_middleware_1 = require("../../middlewares/auth.middleware");
 const song_route_1 = require("./song.route");
 const result_route_1 = require("./result.route");
 const playlist_route_1 = require("./playlist.route");
+const setting_middleware_1 = require("../../middlewares/setting.middleware");
 const clientRoutes = (app) => {
     app.use(user_middleware_1.userInfo);
+    app.use(setting_middleware_1.settingGeneral);
     app.use('/', dashboard_route_1.dashboardRoutes);
     app.use('/user', user_route_1.userRoutes);
     app.use('/topics', topic_route_1.topicRoutes);

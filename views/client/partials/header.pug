@@ -4,7 +4,7 @@ header.header
             .col-xl-3.col-lg-4.col-md-4.col-sm-4.col-4.text-top
                 .header__logo
                     a(href="/") 
-                        img(src="/client/images/logo.png", alt="logo")
+                        img(src=settingGeneral.logo ? settingGeneral.logo : "/client/images/logo.png", alt="logo")
             .col-xl-5.col-lg-4.col-md-4.col-sm-4.col-4.text-top
                 .header__nav
                     ul.dislay-flex.flex-direction-row

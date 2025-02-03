@@ -1,0 +1,43 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/not-permission.pug
+
+block main
+ if(role.permissions.includes("setting_general"))
+  +success-alert(5000) 
+  +error-alert(5000)
+  div(class="alert-user alert-user-success" data-time=5000)
+  div(class="alert-user alert-user-error" data-time=5000)
+  h1.text-center #{pageTitle}
+
+  form(id="form-create" method="POST" action=`/${prefixAdmin}/settings/general?_method=PATCH` enctype="multipart/form-data")-// Thư viện upload multer
+    .form-group.mb-3
+      label(for="websiteName") Tiêu đề 
+      input(type="text" class="form-control" id="websiteName" name="websiteName" required value=(general ? general.websiteName : ''))
+    div(class="form-group mb-3" upload-image)
+      label(for="logo") Ảnh
+      input(type="file" class="form-control-file" upload-image-input id="logo" name="logo" accept="image/*")
+      if(general)
+        div(update)
+          img(src=general.logo class="upload-image-preview" upload-image-preview alt="")
+          span x
+      else 
+        div
+          img(src="" class="upload-image-preview" upload-image-preview alt="")
+          span x
+    .form-group.mb-3
+      label(for="phone") Số điện thoại
+      input(type="text" class="form-control" id="phone" name="phone" required value=(general ? general.phone : ''))
+    .form-group.mb-3
+      label(for="email") Email
+      input(type="email" class="form-control" id="email" name="email" required value=(general ? general.email : ''))
+    .form-group.mb-3
+      label(for="address") Địa chỉ
+      input(type="text" class="form-control" id="address" name="address" required value=(general ? general.address : ''))
+    .form-group.mb-3
+      label(for="copyright") Copyright
+      input(type="text" class="form-control" id="copyright" name="copyright" required value=(general ? general.copyright : ''))
+    .from-group.d-flex.justify-content-center
+      button(type="submit" class="btn btn-primary") Lưu thay đổi
+ else 
+  +not-permission()

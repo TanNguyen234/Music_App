@@ -8,9 +8,11 @@ import { requireAuth } from "../../middlewares/auth.middleware";
 import { songRoutes } from "./song.route";
 import { resultRoutes } from "./result.route";
 import { playlistRoutes } from "./playlist.route";
+import { settingGeneral } from "../../middlewares/setting.middleware";
 
 const clientRoutes = (app: Express): void => {
   app.use(userInfo)
+  app.use(settingGeneral)
   app.use('/', dashboardRoutes)
   app.use('/user', userRoutes)
   app.use('/topics', topicRoutes)

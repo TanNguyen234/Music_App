@@ -4,7 +4,6 @@ exports.checkPermission = void 0;
 const checkPermission = (type, permission) => {
     return (req, res, next) => {
         const permissions = res.locals.role.permissions;
-        console.log(permissions);
         if (!permissions.includes(permission)) {
             if (type === "render") {
                 res.render("admin/partials/403.pug");

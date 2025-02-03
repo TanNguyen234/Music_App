@@ -142,6 +142,14 @@ block main
             each role in roles 
               td(class="text-center")
                 input(type="checkbox") 
+          tr 
+            td(colspan="4")
+              b Cài đặt
+          tr(data-name="setting_general")
+            td Cài đặt chung
+            each role in roles
+              td(class="text-center")
+                input(type="checkbox") 
    else
     .d-flex.justify-content-center.align-items-center.mt-10
         span(class="mr-10 text-center") Hiện tại chưa có nhóm quyền nào:    
