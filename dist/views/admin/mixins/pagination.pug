@@ -1,4 +1,5 @@
 mixin pagination(pagination)
+ if(pagination.totalPages > 1)
   nav 
     ul(class="pagination")
       if(pagination.currentPage > 1) 

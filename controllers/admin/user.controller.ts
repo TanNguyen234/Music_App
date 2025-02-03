@@ -3,20 +3,69 @@ import { CustomRequest } from "../../interface/CustomRequest";
 import { systemConfig } from "../../config/config";
 import argon2 from "argon2";
 import User from "../../model/user.model";
-import { validateUser, valideRegiter } from "../../validates/user.validate";
+import { validateUser } from "../../validates/user.validate";
 import { Status } from "../../interface/status";
+import pagination from "../../helpers/pagination";
+import { objectPage } from "../../interface/objectPage";
+import { search } from "../../helpers/search";
+import { Find } from '../../interface/query';
+import { filterStatus } from "../../helpers/filterStatus";
 
 //[GET] /admin/users
 export const index = async (req: Request, res: Response): Promise<void> => {
-  let find = {
+  const filterStatusHelper = filterStatus(req.query); //Trả về một mảng chứa các trạng thái của sản phẩm
+
+  let find: Find = {
     deleted: false,
   };
+  if (req.query.status) {
+    //Có req.query.status có ngĩa là trên url có key tên status do frontend truyền lên url
+    find.status = req.query.status; //Thêm status vào oject find => find.status
+  }
 
-  const users = await User.find(find);
+  const objectSearch: any = search(req.query);
+
+  if (objectSearch.regex) {
+    find.fullName = objectSearch.regex;
+  }
+
+  //Pagination
+  const totalSong: number = await User.countDocuments(find);
+
+  let objectPagination: objectPage = pagination(
+    {
+      currentPage: 1,
+      limitItem: 5,
+    },
+    req.query,
+    totalSong
+  );
+  //End Pagination
+
+  //Sort
+  let sort: any = {};
+
+  if (req.query.sortKey && req.query.sortValue) {
+    const key: string | any = req.query.sortKey;
+    const value: string | any = req.query.sortValue;
+    sort[key] = value;
+  } else {
+    sort.like = "desc";
+  }
+  //End Sort
+
+  const users = await User.find(find)
+    .skip(objectPagination.skip)
+    .limit(objectPagination.limitItem)
+    .sort(sort)
+    .select("-password -token")
 
   res.render("admin/pages/users/index", {
     titlePage: "Trang danh sách tài khoản",
     users: users || [],
+    pagination: objectPagination,
+    filterStatus: filterStatusHelper,
+    keyword: objectSearch.keyword,
   });
 };
 

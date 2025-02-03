@@ -17,14 +17,46 @@ const config_1 = require("../../config/config");
 const argon2_1 = __importDefault(require("argon2"));
 const user_model_1 = __importDefault(require("../../model/user.model"));
 const user_validate_1 = require("../../validates/user.validate");
+const pagination_1 = __importDefault(require("../../helpers/pagination"));
+const search_1 = require("../../helpers/search");
+const filterStatus_1 = require("../../helpers/filterStatus");
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const filterStatusHelper = (0, filterStatus_1.filterStatus)(req.query);
     let find = {
         deleted: false,
     };
-    const users = yield user_model_1.default.find(find);
+    if (req.query.status) {
+        find.status = req.query.status;
+    }
+    const objectSearch = (0, search_1.search)(req.query);
+    if (objectSearch.regex) {
+        find.fullName = objectSearch.regex;
+    }
+    const totalSong = yield user_model_1.default.countDocuments(find);
+    let objectPagination = (0, pagination_1.default)({
+        currentPage: 1,
+        limitItem: 5,
+    }, req.query, totalSong);
+    let sort = {};
+    if (req.query.sortKey && req.query.sortValue) {
+        const key = req.query.sortKey;
+        const value = req.query.sortValue;
+        sort[key] = value;
+    }
+    else {
+        sort.like = "desc";
+    }
+    const users = yield user_model_1.default.find(find)
+        .skip(objectPagination.skip)
+        .limit(objectPagination.limitItem)
+        .sort(sort)
+        .select("-password -token");
     res.render("admin/pages/users/index", {
         titlePage: "Trang danh sách tài khoản",
         users: users || [],
+        pagination: objectPagination,
+        filterStatus: filterStatusHelper,
+        keyword: objectSearch.keyword,
     });
 });
 exports.index = index;

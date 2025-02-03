@@ -8,7 +8,7 @@ block main
   +error-alert(5000)
   .container-fluid
       h1(class="mb-4 text-center") Cập nhật tài khoản 
-      form(action=`/${prefixAdmin}/users/edit/${user.id}?_method=PATCH` method="POST" id="form-create" enctype="multipart/form-data")
+      form(action=`/${prefixAdmin}/users/edit/${user.id}?_method=PATCH` method="POST" id="form-create" enctype="multipart/form-data" autocomplete="off")
         div(class="form-group mb-3")
           label(for="fullName") Họ tên *
           input(type="text" class="form-control" id="fullName" name="fullName" required value=user.fullName)
@@ -16,8 +16,8 @@ block main
           label(for="email") Email *
           input(type="email" class="form-control" id="email" name="email" value=user.email)
         div(class="form-group mb-3")
-          label(for="password") Mật khẩu (Vui lòng bỏ trống nếu không muốn đổi mật khẩu)
-          input(type="password" class="form-control" id="password" name="password")
+          label(for="password") Mật khẩu
+          input(type="password" class="form-control" id="password" name="password" value="" autocomplete="new-password" placeholder="Vui lòng bỏ trống nếu không muốn đổi mật khẩu")
         div(class="form-group mb-3" upload-image)
           label(for="avatar") Avatar
           input(type="file" class="form-control-file" id="avatar" name="avatar" upload-image-input accept="image/*")

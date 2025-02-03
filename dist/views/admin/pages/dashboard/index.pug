@@ -1,7 +1,59 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
 block main 
-    .container-fluid 
-        .row
-            .col-12 
-                h1 Welcome to the website!
+  +success-alert(5000)
+  +error-alert(5000)
+  .container-fluid
+   h1 Trang tổng quan 
+
+   .row.mt-4
+    .col-12
+     .card.mb-4 
+      .card-header Thông tin tài khoản 
+      .card-body
+       if(admin.avatar)
+        img(src=user.avatar style="height: 100px; margin-bottom: 15px;" data-bs-toggle="modal"  data-bs-target="#reviewAvatar" data-bs-placement="bottom")
+       if(admin.fullName)
+        p Họ tên: <b>#{user.fullName}</b>
+       if(admin.email)
+        p Họ tên: <b>#{admin.email}</b>
+       if(admin.fullName)
+        p Số điện thoại: <b>#{admin.phone}</b>
+       if(role.title)
+        p Phân quyền: <b>#{role.title}</b>
+    .col-6
+     .card.mb-4 
+      .card-header Chủ đề bài hát
+      .card-body
+        p Số lượng: <b>#{statistic.topics.total}</b>
+        p Hoạt động: <b>#{statistic.topics.active}</b>
+        p Dừng hoạt động: <b>#{statistic.topics.inactive}</b>
+
+    .col-6
+     .card.mb-4 
+      .card-header Bài hát
+      .card-body
+        p Số lượng: <b>#{statistic.songs.total}</b>
+        p Hoạt động: <b>#{statistic.songs.active}</b>
+        p Dừng hoạt động: <b>#{statistic.songs.inactive}</b>
+   
+    .col-6
+     .card.mb-4 
+      .card-header Tài khoản admin
+      .card-body
+        p Số lượng: <b>#{statistic.accounts.total}</b>
+        p Hoạt động: <b>#{statistic.accounts.active}</b>
+        p Dừng hoạt động: <b>#{statistic.accounts.inactive}</b>
+
+    .col-6
+     .card.mb-4 
+      .card-header Tài khoản client
+      .card-body
+        p Số lượng: <b>#{statistic.users.total}</b>
+        p Hoạt động: <b>#{statistic.users.active}</b>
+        p Dừng hoạt động: <b>#{statistic.users.inactive}</b>
+    #reviewAvatar.modal.fade(tabindex='-1' aria-labelledby='avatarLabel' aria-hidden='true')
+            .modal-dialog.modal-dialog-centered.modal-lg
+              .modal-content
+                img(src=(user.avatar ? user.avatar : '/client/images/avatar-user.jpg'), alt='User')

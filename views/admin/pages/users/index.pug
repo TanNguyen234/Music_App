@@ -3,6 +3,9 @@ include ../../mixins/alert.pug
 include ../../mixins/moment.pug
 include ../../mixins/pagination.pug
 include ../../mixins/not-permission.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/search.pug
+include ../../mixins/sort.pug
 
 block main 
  if(role.permissions.includes('user_view'))
@@ -11,6 +14,21 @@ block main
   div(class="alert-user alert-user-success" data-time=5000)
   div(class="alert-user alert-user-error" data-time=5000)
   .container-fluid
+    .card.mb-3
+      .card-header Bộ lộc và Tìm kiếm
+      .card-body
+        .row
+          .col-6 
+            +filterStatus(filterStatus)
+          .col-6
+            +search(keyword)
+
+    .card.mb-3
+      .card-header Sắp xếp 
+      .card-body
+        .row
+          .col-4 
+            +sort("accounts")
     .card.mb-3 
      .card-header Danh sách 
      .card-body 
@@ -63,6 +81,7 @@ block main
                     form(action="" method="POST" id="form-change-status" data-path=`/${prefixAdmin}/users/change-status`)-// form change
             else 
                 tr 
-                  td(colspan="12" class="text-center") Chưa có tài khoản nào được tạo  
+                  td(colspan="12" class="text-center") Chưa có tài khoản nào được tạo 
+      +pagination(pagination)
  else 
   +not-permission()

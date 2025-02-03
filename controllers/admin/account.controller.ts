@@ -10,13 +10,60 @@ import {
 } from "../../validates/account.validate";
 import argon2 from "argon2";
 import { Status } from "../../interface/status";
+import pagination from "../../helpers/pagination";
+import { objectPage } from "../../interface/objectPage";
+import { search } from "../../helpers/search";
+import { Find } from '../../interface/query';
+import { filterStatus } from "../../helpers/filterStatus";
 
 //[GET] /admin/accounts
 export const index = async (req: Request, res: Response): Promise<void> => {
-  let find = {
+  const filterStatusHelper = filterStatus(req.query); //Trả về một mảng chứa các trạng thái của sản phẩm
+
+  let find: Find = {
     deleted: false,
   };
-  const accounts = await Account.find(find).select("-password -token");
+  if (req.query.status) {
+    //Có req.query.status có ngĩa là trên url có key tên status do frontend truyền lên url
+    find.status = req.query.status; //Thêm status vào oject find => find.status
+  }
+
+  const objectSearch: any = search(req.query);
+
+  if (objectSearch.regex) {
+    find.fullName = objectSearch.regex;
+  }
+
+  //Pagination
+  const totalSong: number = await Account.countDocuments(find);
+
+  let objectPagination: objectPage = pagination(
+    {
+      currentPage: 1,
+      limitItem: 5,
+    },
+    req.query,
+    totalSong
+  );
+  //End Pagination
+
+  //Sort
+  let sort: any = {};
+
+  if (req.query.sortKey && req.query.sortValue) {
+    const key: string | any = req.query.sortKey;
+    const value: string | any = req.query.sortValue;
+    sort[key] = value;
+  } else {
+    sort.like = "desc";
+  }
+  //End Sort
+
+  const accounts = await Account.find(find)
+    .skip(objectPagination.skip)
+    .limit(objectPagination.limitItem)
+    .sort(sort)
+    .select("-password -token")
 
   for (let account of accounts) {
     const role = await Roles.findOne({
@@ -28,6 +75,9 @@ export const index = async (req: Request, res: Response): Promise<void> => {
   res.render("admin/pages/accounts/index", {
     titlePage: "Trang danh sách tài khoản",
     accounts: accounts || [],
+    pagination: objectPagination,
+    filterStatus: filterStatusHelper,
+    keyword: objectSearch.keyword,
   });
 };
 

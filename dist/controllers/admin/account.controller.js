@@ -18,11 +18,40 @@ const config_1 = require("../../config/config");
 const account_model_1 = __importDefault(require("../../model/account.model"));
 const account_validate_1 = require("../../validates/account.validate");
 const argon2_1 = __importDefault(require("argon2"));
+const pagination_1 = __importDefault(require("../../helpers/pagination"));
+const search_1 = require("../../helpers/search");
+const filterStatus_1 = require("../../helpers/filterStatus");
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const filterStatusHelper = (0, filterStatus_1.filterStatus)(req.query);
     let find = {
         deleted: false,
     };
-    const accounts = yield account_model_1.default.find(find).select("-password -token");
+    if (req.query.status) {
+        find.status = req.query.status;
+    }
+    const objectSearch = (0, search_1.search)(req.query);
+    if (objectSearch.regex) {
+        find.fullName = objectSearch.regex;
+    }
+    const totalSong = yield account_model_1.default.countDocuments(find);
+    let objectPagination = (0, pagination_1.default)({
+        currentPage: 1,
+        limitItem: 5,
+    }, req.query, totalSong);
+    let sort = {};
+    if (req.query.sortKey && req.query.sortValue) {
+        const key = req.query.sortKey;
+        const value = req.query.sortValue;
+        sort[key] = value;
+    }
+    else {
+        sort.like = "desc";
+    }
+    const accounts = yield account_model_1.default.find(find)
+        .skip(objectPagination.skip)
+        .limit(objectPagination.limitItem)
+        .sort(sort)
+        .select("-password -token");
     for (let account of accounts) {
         const role = yield role_model_1.default.findOne({
             _id: account.role_id,
@@ -32,6 +61,9 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.render("admin/pages/accounts/index", {
         titlePage: "Trang danh sách tài khoản",
         accounts: accounts || [],
+        pagination: objectPagination,
+        filterStatus: filterStatusHelper,
+        keyword: objectSearch.keyword,
     });
 });
 exports.index = index;
