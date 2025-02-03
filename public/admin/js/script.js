@@ -245,6 +245,7 @@ if(sort) {
 //End Sort
 //Change Status
 const buttonsChangeStatus = document.querySelectorAll('[button-change-status]');
+console.log(buttonsChangeStatus)
 
 if(buttonsChangeStatus.length > 0) {
     const formChangeStatus = document.querySelector("#form-change-status");
@@ -252,6 +253,7 @@ if(buttonsChangeStatus.length > 0) {
 
     buttonsChangeStatus.forEach(button => {
         button.addEventListener('click', () => {
+            console.log("ok")
             const statusCurrent = button.getAttribute('data-status');
             const id = button.getAttribute('data-id');
 

@@ -11,6 +11,7 @@ const authAdmin_middleware_1 = require("../../middlewares/authAdmin.middleware")
 const auth_route_1 = require("./auth.route");
 const setting_route_1 = require("./setting.route");
 const setting_middleware_1 = require("../../middlewares/setting.middleware");
+const user_route_1 = require("./user.route");
 const adminRoutes = (app) => {
     const PATH_ADMIN = "/" + config_1.systemConfig.prefixAdmin;
     app.use(admin_middleware_1.adminInfo);
@@ -22,5 +23,6 @@ const adminRoutes = (app) => {
     app.use(PATH_ADMIN + "/accounts", authAdmin_middleware_1.requireAuthAdmin, account_route_1.accountRoutes);
     app.use(PATH_ADMIN + "/auth", auth_route_1.authRoutes);
     app.use(PATH_ADMIN + "/settings", authAdmin_middleware_1.requireAuthAdmin, setting_route_1.settingRoutes);
+    app.use(PATH_ADMIN + "/users", authAdmin_middleware_1.requireAuthAdmin, user_route_1.userRoutes);
 };
 exports.default = adminRoutes;

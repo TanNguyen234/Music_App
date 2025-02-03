@@ -1,0 +1,68 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/moment.pug
+include ../../mixins/pagination.pug
+include ../../mixins/not-permission.pug
+
+block main 
+ if(role.permissions.includes('user_view'))
+  +success-alert(5000)
+  +error-alert(5000)
+  div(class="alert-user alert-user-success" data-time=5000)
+  div(class="alert-user alert-user-error" data-time=5000)
+  .container-fluid
+    .card.mb-3 
+     .card-header Danh sách 
+     .card-body 
+      table(class="table table-sm table-hover")
+          thead
+            tr
+              th STT
+              th Avatar
+              th Họ tên 
+              th Email
+              th Trạng thái
+              th Hành động
+          tbody
+            if(users.length > 0)
+              each item, index in users 
+                tr.p-3 
+                  td #{index + 1} 
+                  td 
+                    if(item.avatar) 
+                      img(src=item.avatar alt="Avatar" width="50" height="50")
+                    else
+                      span Chưa có ảnh
+                  td #{item.fullName}
+                  td #{item.email} 
+                  td
+                    if(role.permissions.includes("user_edit"))
+                      if(item.status === "active")
+                        a(href="javascript:;" button-change-status data-status=item.status data-id=item.id type="button" class="btn btn-success") Hoạt động 
+                      else
+                        a(href="javascript:;" button-change-status data-status=item.status data-id=item.id type="button" class="btn btn-danger") Dừng hoạt động 
+                    else 
+                      if(item.status === "active")
+                        a(type="button" class="btn btn-success") Hoạt động 
+                      else
+                        a(type="button" class="btn btn-danger") Dừng hoạt động 
+                  td 
+                    a(
+                      class="btn btn-secondary btn-sm"
+                      href=`/${prefixAdmin}/users/detail/${item.id}`
+                    ) Chi tiết 
+                    a(
+                      class="btn btn-warning btn-sm ms-1"
+                      href=`/${prefixAdmin}/users/edit/${item.id}`
+                    ) Sửa 
+                    button(
+                      btn-delete=item.id 
+                      path=`/${prefixAdmin}/users/delete/${item.id}`
+                      class="btn btn-danger btn-sm ms-1"
+                    ) Xóa
+                    form(action="" method="POST" id="form-change-status" data-path=`/${prefixAdmin}/users/change-status`)-// form change
+            else 
+                tr 
+                  td(colspan="12" class="text-center") Chưa có tài khoản nào được tạo  
+ else 
+  +not-permission()

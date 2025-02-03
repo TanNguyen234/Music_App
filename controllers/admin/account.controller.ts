@@ -9,6 +9,7 @@ import {
   accountValidate,
 } from "../../validates/account.validate";
 import argon2 from "argon2";
+import { Status } from "../../interface/status";
 
 //[GET] /admin/accounts
 export const index = async (req: Request, res: Response): Promise<void> => {
@@ -115,6 +116,37 @@ export const editPatch = async (
     res.redirect(
       req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`
     );
+  }
+};
+
+//[PATCH] /admin/accounts/change-status
+export const changeStatus = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const id: string = req.body.id;
+    const status: Status = req.body.status;
+    if (!id) {
+      throw new Error(`Invalid`);
+    }
+    await Account.updateOne(
+      {
+        _id: id,
+      },
+      {
+        status: status,
+      }
+    );
+    res.json({
+      code: 200,
+      message: "Thay đổi trạng admin thành công",
+    });
+  } catch (error) {
+    res.json({
+      code: 500,
+      message: "Thay đổi trạng thái admin thất bại",
+    });
   }
 };
 
