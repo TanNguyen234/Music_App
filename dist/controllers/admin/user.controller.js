@@ -49,7 +49,8 @@ const edit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.edit = edit;
 const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const condition = yield (0, user_validate_1.valideRegiter)(req.body);
+    const condition = yield (0, user_validate_1.validateUser)(req.body);
+    console.log(req.body, condition);
     if (condition) {
         if (req.body.password) {
             req.body.password = yield argon2_1.default.hash(req.body.password);

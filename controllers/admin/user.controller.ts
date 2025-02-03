@@ -3,7 +3,7 @@ import { CustomRequest } from "../../interface/CustomRequest";
 import { systemConfig } from "../../config/config";
 import argon2 from "argon2";
 import User from "../../model/user.model";
-import { valideRegiter } from "../../validates/user.validate";
+import { validateUser, valideRegiter } from "../../validates/user.validate";
 import { Status } from "../../interface/status";
 
 //[GET] /admin/users
@@ -49,7 +49,8 @@ export const editPatch = async (
   req: CustomRequest,
   res: Response
 ): Promise<void> => {
-  const condition = await valideRegiter(req.body);
+  const condition = await validateUser(req.body);
+  console.log(req.body, condition)
   if (condition) {
     if (req.body.password) {
       req.body.password = await argon2.hash(req.body.password);

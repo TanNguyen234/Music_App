@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateLogin = exports.valideRegiter = void 0;
+exports.validateUser = exports.validateLogin = exports.valideRegiter = void 0;
 exports.isValidEmail = isValidEmail;
 const user_model_1 = __importDefault(require("../model/user.model"));
 function isValidEmail(email) {
@@ -63,3 +63,22 @@ const validateLogin = (data) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.validateLogin = validateLogin;
+const validateUser = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { fullName, email, password } = data;
+        if (!fullName || !email || !isValidEmail(email)) {
+            throw new Error("invalid");
+        }
+        if (fullName.length < 8 ||
+            fullName.length > 20 ||
+            password.length < 8 ||
+            password.length > 20) {
+            throw new Error("invalid");
+        }
+        return true;
+    }
+    catch (err) {
+        return false;
+    }
+});
+exports.validateUser = validateUser;

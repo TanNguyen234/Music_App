@@ -65,3 +65,25 @@ export const validateLogin = async (data: Data2): Promise<Boolean> => {
     return false;
   }
 };
+
+export const validateUser = async (data: Data): Promise<Boolean> => {
+  try {
+    const { fullName, email, password } = data;
+    if (!fullName || !email || !isValidEmail(email)) {
+      throw new Error("invalid");
+    }
+
+    if (
+      fullName.length < 8 ||
+      fullName.length > 20 ||
+      password.length < 8 ||
+      password.length > 20
+    ) {
+      throw new Error("invalid");
+    }
+
+    return true
+  } catch (err) {
+    return false;
+  }
+};

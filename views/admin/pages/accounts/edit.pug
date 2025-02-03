@@ -7,7 +7,7 @@ block main
   +success-alert(5000)
   +error-alert(5000)
   .container-fluid
-    h1(class="mb-4 text-center") Thêm tài khoản 
+    h1(class="mb-4 text-center") Cập nhật tài khoản 
     if(roles.length > 0)
       form(action=`/${prefixAdmin}/accounts/edit/${account.id}?_method=PATCH` method="POST" id="form-create" enctype="multipart/form-data")
         div(class="form-group mb-3")
