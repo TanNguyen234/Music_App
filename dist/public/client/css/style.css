@@ -396,6 +396,9 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
 /* Topic */
 .topic__container {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .topic__title {
@@ -700,7 +703,7 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
 
 .box-listen__content .box-listen__img {
   width: 400px;
-  height: 200px;
+  height: 100%;
   margin-right: 5px;
   border-radius: 5px;
   border: 3px solid #ccc;
@@ -710,6 +713,27 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
   animation: animation-spin 12s linear infinite paused;
   border-radius: 50%;
   border: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aplayer-pause {
+  bottom: 0 !important;
+  right: 0 !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Căn giữa theo cả chiều ngang và chiều dọc */
+} 
+
+.aplayer .aplayer-lrc p {
+  font-size: 17px;
+  color: #999;
+}
+
+.aplayer-lrc-current {
+  color: #212121 !important;
 }
 
 @keyframes animation-spin {
@@ -734,6 +758,8 @@ body.loaded .dashboard__content p:nth-of-type(2) span:last-child {
 .box-listen__img img {
   width: 100%;
   height: 100%;
+  aspect-ratio: 3/2;
+  object-fit: cover;
 }
 
 .box-listen__like, .box-listen__visit , .box-listen__singer {
@@ -791,35 +817,6 @@ nav > .pagination {
   color: #fff;
 }
 /* End Pagination */
-/* Page 404  */
-.page404 {
-  height: 45vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.page404 h1 {
-  font-family: "Workhorse", cursive;
-  margin-bottom: 30px;
-}
-
-.page404 button {
-  display: inline-block;
-  padding: 10px;
-  border: 0;
-  border-radius: 10px;
-  font-size: 16px;
-  background: var(--light-purple);
-  color: #fff;
-  transition: 0.6s;
-}
-
-.page404 button:hover {
-  cursor: pointer;
-  background: var(--dark-purple);
-}
-/* End Page 404  */
 /* Profile  */
 .row:has(.profile) {
   display: flex;

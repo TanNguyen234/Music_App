@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadToCloud = void 0;
 const uploadToCloudinary_1 = require("../helpers/uploadToCloudinary");
 const uploadToCloud = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     if (req.file) {
         const buffer = req.file.buffer;
         const mimetype = req.file.mimetype;
@@ -19,14 +20,14 @@ const uploadToCloud = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         req.body[req.file.fieldname] = result;
     }
     if (req.files && (req.files.avatar || req.files.audio)) {
-        if (req.files.avatar.length > 0) {
+        if (((_a = req.files.avatar) === null || _a === void 0 ? void 0 : _a.length) > 0) {
             const avatar = req.files.avatar[0];
             const buffer = avatar.buffer;
             const mimetype = avatar.mimetype;
             const result = yield (0, uploadToCloudinary_1.uploadToCloudinary)(buffer, mimetype);
             req.body[avatar.fieldname] = result;
         }
-        if (req.files.audio.length > 0) {
+        if (((_b = req.files.audio) === null || _b === void 0 ? void 0 : _b.length) > 0) {
             const audio = req.files.audio[0];
             const buffer = audio.buffer;
             const mimetype = audio.mimetype;

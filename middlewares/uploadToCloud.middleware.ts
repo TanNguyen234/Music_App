@@ -11,7 +11,7 @@ export const uploadToCloud = async (req: CustomRequest, res: Response, next: Nex
     }
 
     if(req.files && (req.files.avatar || req.files.audio)) {
-        if(req.files.avatar.length > 0) {
+        if(req.files.avatar?.length > 0) {
             const avatar = req.files.avatar[0]
             const buffer = avatar.buffer;
             const mimetype = avatar.mimetype;
@@ -19,7 +19,7 @@ export const uploadToCloud = async (req: CustomRequest, res: Response, next: Nex
             req.body[avatar.fieldname] = result;
         }
 
-        if(req.files.audio.length > 0) {
+        if(req.files.audio?.length > 0) {
             const audio = req.files.audio[0]
             const buffer = audio.buffer;
             const mimetype = audio.mimetype;
