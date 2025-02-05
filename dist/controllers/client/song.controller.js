@@ -48,7 +48,7 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const totalSong = (songs === null || songs === void 0 ? void 0 : songs.length) || 0;
     let objectPagination = (0, pagination_1.default)({
         currentPage: 1,
-        limitItem: 4,
+        limitItem: 10,
     }, req.query, totalSong);
     if (id) {
         songs = yield song_model_1.default.find({

@@ -29,7 +29,7 @@ if (aplayer) {
     container: document.getElementById("aplayer"),
     mini: false,
     autoplay: false,
-    theme: '#FADFA3',
+    theme: '#310623',
     loop: 'all',
     order: 'random',
     preload: 'auto',

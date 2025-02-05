@@ -36,7 +36,7 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const totalSong = yield song_model_1.default.countDocuments(find);
     let objectPagination = (0, pagination_1.default)({
         currentPage: 1,
-        limitItem: 5,
+        limitItem: 10,
     }, req.query, totalSong);
     let sort = {};
     if (req.query.sortKey && req.query.sortValue) {

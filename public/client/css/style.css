@@ -786,6 +786,17 @@ button[button-add-playlist] {
   border-radius: 5px;
   background: var(--light-purple);
 }
+
+.aplayer .aplayer-info .aplayer-controller .aplayer-time {
+  font-size: 14px;
+  color: var(--dark-purple);
+}
+
+@media (max-width: 992px) {
+  .box-listen__content {
+    flex-direction: column;
+  }
+}
 /* End Listen Page  */
 /* Paginaiton  */
 nav > .pagination {

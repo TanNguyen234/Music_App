@@ -47,7 +47,7 @@ export const index = async (
   let objectPagination: objectPage = pagination(
     {
       currentPage: 1,
-      limitItem: 4,
+      limitItem: 10,
     },
     req.query,
     totalSong
