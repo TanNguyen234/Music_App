@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/moment.pug
+include ../../mixins/not-permission.pug
+
+block main
+  .container.d-flex.justify-content-center
+   if(role.permissions.includes('song_view'))
+    .topic-detail
+      .container.my-3
+        .row
+          .col-12
+            .inner-title #{song.title}
+            
+            .inner-actions
+              .inner-action.inner-time 
+                <i class="fa-regular fa-clock"></i> 
+                +formatDay(song.updatedAt !== null ? song.updatedAt : song.createdAt)
+            .inner-play
+              .inner-avatar
+                img(src=song.avatar, alt=song.title)
+            audio(controls src=song.audio !== null ? song.audio : "") 
+            .inner-topic Thể loại: #{topic.title}
+
+            .inner-views
+             .inner-label Lượt xem: !{song.listen}
+
+            .inner-likes
+             .inner-label Thích: !{song.like} 
+                
+            .inner-desc
+              .inner-label Mô tả
+              .inner-text 
+               | !{song.description}
+   else 
+    +not-permission()

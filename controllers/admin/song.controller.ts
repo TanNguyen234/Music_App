@@ -188,6 +188,33 @@ export const editPatch = async (
   }
 };
 
+//[GET] /admin/topics/detail/:id
+export const detail = async (req: Request, res: Response): Promise<void> => {
+  const id: string = req.params.id;
+  try {
+    if (!id) throw new Error("Invalid id");
+    const song = await Song.findOne({
+      _id: id,
+      deleted: false,
+    });
+    const topic = await Topic.findOne({
+      _id: song?.topicId,
+      deleted: false
+    })
+    if (song && topic) {
+      res.render("admin/pages/songs/detail", {
+        pageTitle: "Chi tiết bài hát",
+        song,
+        topic
+      });
+    } else {
+      throw new Error("Invalid");
+    }
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/songss`);
+  }
+};
+
 //[DELETE] /admin/songs/delete/:id
 export const deleteSong = async (
   req: Request,

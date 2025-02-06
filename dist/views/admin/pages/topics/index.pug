@@ -38,8 +38,8 @@ block main
             +form-change-multi(`/${prefixAdmin}/topics/change-multi?_method=PATCH`)
             a(href=`/${prefixAdmin}/topics/create` class="btn btn-outline-success") + Thêm mới
          .col-12
-            table.table.table-striped.table-bordered.table-hover(checkbox-multi)
-                thead
+            table.table.table-bordered.table-hover(checkbox-multi)
+                thead.table-dark
                     tr  
                         th
                             input(type="checkbox" name="checkall") 

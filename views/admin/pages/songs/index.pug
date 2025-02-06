@@ -39,9 +39,8 @@ block main
             +form-change-multi(`/${prefixAdmin}/songs/change-multi?_method=PATCH`)
             a(href=`/${prefixAdmin}/songs/create` class="btn btn-outline-success") + Thêm mới
          .col-12
-
-            table.table.table-striped.table-bordered.table-hover(checkbox-multi)
-                thead
+            table.table.table-bordered.table-hover(checkbox-multi)
+                thead.table-dark
                     tr
                         th
                             input(type="checkbox" name="checkall") 

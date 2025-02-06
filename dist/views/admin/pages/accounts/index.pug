@@ -41,7 +41,7 @@ block main
           ) + Thêm mới 
        .col-12 
         table(class="table table-sm table-hover")
-          thead
+          thead.table-dark
             tr
               th STT
               th Avatar
@@ -75,10 +75,6 @@ block main
                       else
                         a(type="button" class="btn btn-danger") Dừng hoạt động 
                   td 
-                    a(
-                      class="btn btn-secondary btn-sm"
-                      href=`/${prefixAdmin}/accounts/detail/${item.id}`
-                    ) Chi tiết 
                     a(
                       class="btn btn-warning btn-sm ms-1"
                       href=`/${prefixAdmin}/accounts/edit/${item.id}`

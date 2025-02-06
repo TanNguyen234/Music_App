@@ -36,6 +36,8 @@ router.patch(
   returnCustomRequest(controller.editPatch)
 );
 
+router.get("/detail/:id", controller.detail);
+
 router.delete(
   "/delete/:id",
   checkPermission("json", "song_delete"),

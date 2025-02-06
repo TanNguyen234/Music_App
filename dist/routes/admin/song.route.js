@@ -53,6 +53,7 @@ router.patch("/edit/:id", (0, checkPermissions_middleware_1.checkPermission)("re
     { name: "avatar", maxCount: 1 },
     { name: "audio", maxCount: 1 },
 ]), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.editPatch));
+router.get("/detail/:id", controller.detail);
 router.delete("/delete/:id", (0, checkPermissions_middleware_1.checkPermission)("json", "song_delete"), controller.deleteSong);
 router.patch("/change-status", (0, checkPermissions_middleware_1.checkPermission)("json", "song_edit"), controller.changeStatus);
 router.patch("/change-multi", (0, checkPermissions_middleware_1.checkPermission)("render", "song_edit"), (0, CustomRequest_1.returnCustomRequest)(controller.changeMulti));

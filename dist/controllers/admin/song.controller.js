@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeMulti = exports.changeStatus = exports.deleteSong = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
+exports.changeMulti = exports.changeStatus = exports.deleteSong = exports.detail = exports.editPatch = exports.edit = exports.createPost = exports.create = exports.index = void 0;
 const topic_model_1 = __importDefault(require("../../model/topic.model"));
 const song_model_1 = __importDefault(require("../../model/song.model"));
 const song_validate_1 = require("../../validates/song.validate");
@@ -155,6 +155,35 @@ const editPatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.editPatch = editPatch;
+const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        if (!id)
+            throw new Error("Invalid id");
+        const song = yield song_model_1.default.findOne({
+            _id: id,
+            deleted: false,
+        });
+        const topic = yield topic_model_1.default.findOne({
+            _id: song === null || song === void 0 ? void 0 : song.topicId,
+            deleted: false
+        });
+        if (song && topic) {
+            res.render("admin/pages/songs/detail", {
+                pageTitle: "Chi tiết bài hát",
+                song,
+                topic
+            });
+        }
+        else {
+            throw new Error("Invalid");
+        }
+    }
+    catch (error) {
+        res.redirect(`/${config_1.systemConfig.prefixAdmin}/songss`);
+    }
+});
+exports.detail = detail;
 const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
