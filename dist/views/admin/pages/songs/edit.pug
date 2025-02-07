@@ -33,7 +33,7 @@ block main
       input(type="file" class="form-control-file" upload-audio-input id="audio" name="audio" accept="audio/*")
       if(song.audio)
         div(class="mb-3 mt-3" update)
-            audio(controls upload-audio-play alt)
+            audio(controls upload-audio-play alt src=song.audio)
             source(src=song.audio)
             span x
       else 

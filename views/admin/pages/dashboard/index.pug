@@ -13,9 +13,9 @@ block main
       .card-header Thông tin tài khoản 
       .card-body
        if(admin.avatar)
-        img(src=user.avatar style="height: 100px; margin-bottom: 15px;" data-bs-toggle="modal"  data-bs-target="#reviewAvatar" data-bs-placement="bottom")
+        img(src=admin.avatar style="height: 100px; margin-bottom: 15px;" data-bs-toggle="modal"  data-bs-target="#reviewAvatar" data-bs-placement="bottom")
        if(admin.fullName)
-        p Họ tên: <b>#{user.fullName}</b>
+        p Họ tên: <b>#{admin.fullName}</b>
        if(admin.email)
         p Họ tên: <b>#{admin.email}</b>
        if(admin.fullName)
@@ -56,4 +56,4 @@ block main
     #reviewAvatar.modal.fade(tabindex='-1' aria-labelledby='avatarLabel' aria-hidden='true')
             .modal-dialog.modal-dialog-centered.modal-lg
               .modal-content
-                img(src=(user.avatar ? user.avatar : '/client/images/avatar-user.jpg'), alt='User')
+                img(src=(admin.avatar ? admin.avatar : '/client/images/avatar-user.jpg'), alt='User')

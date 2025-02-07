@@ -52,3 +52,15 @@ export const logout = (req: Request, res: Response) => {
     res.clearCookie("tokenAdmin");
     res.redirect(`/${systemConfig.prefixAdmin}/dashboard`)
 }
+
+//[GET] /user/auth/profile
+export const profile = (req: CustomRequest, res: Response): any => {
+    try {
+        res.render("admin/pages/auth/profile.pug", {
+            pageTitle: 'Trang thông tin tài khoản'
+        })
+    } catch (error) {
+        req.flash("error", "Id is not a valid")
+        res.redirect(req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`)
+    }
+}

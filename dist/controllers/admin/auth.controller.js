@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.loginPost = exports.login = void 0;
+exports.profile = exports.logout = exports.loginPost = exports.login = void 0;
 const user_validate_1 = require("../../validates/user.validate");
 const argon2_1 = __importDefault(require("argon2"));
 const config_1 = require("../../config/config");
@@ -65,3 +65,15 @@ const logout = (req, res) => {
     res.redirect(`/${config_1.systemConfig.prefixAdmin}/dashboard`);
 };
 exports.logout = logout;
+const profile = (req, res) => {
+    try {
+        res.render("admin/pages/auth/profile.pug", {
+            pageTitle: 'Trang thông tin tài khoản'
+        });
+    }
+    catch (error) {
+        req.flash("error", "Id is not a valid");
+        res.redirect(req.get("Referrer") || `/${config_1.systemConfig.prefixAdmin}/dashboard`);
+    }
+};
+exports.profile = profile;

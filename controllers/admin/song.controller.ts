@@ -50,8 +50,6 @@ export const index = async (req: Request, res: Response): Promise<void> => {
     const key: string | any = req.query.sortKey;
     const value: string | any = req.query.sortValue;
     sort[key] = value;
-  } else {
-    sort.like = "desc";
   }
   //End Sort
 

@@ -44,9 +44,6 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const value = req.query.sortValue;
         sort[key] = value;
     }
-    else {
-        sort.like = "desc";
-    }
     const songs = yield song_model_1.default.find(find)
         .skip(objectPagination.skip)
         .limit(objectPagination.limitItem)

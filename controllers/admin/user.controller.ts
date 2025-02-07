@@ -99,7 +99,6 @@ export const editPatch = async (
   res: Response
 ): Promise<void> => {
   const condition = await validateUser(req.body);
-  console.log(req.body, condition)
   if (condition) {
     if (req.body.password) {
       req.body.password = await argon2.hash(req.body.password);
