@@ -46,7 +46,6 @@ if (aplayer) {
       lrc: dataSong.lyrics
     }],
   });
-  console.log(ap);
 
   //Spin
   const avatar = document.querySelector(".aplayer-pic");
@@ -253,8 +252,7 @@ if (popUpInfo) {
               email.innerHTML = dataPost.email;
             }
             myModal.hide();
-          } else {
-          }
+          } 
         });
     }
   });
@@ -323,7 +321,8 @@ if (uploadImage) {
           .then((data) => {
             if (data.code === 200) {
               const changeAvatar = document.querySelector(".profile__img img");
-              changeAvatar.src = data.data.avatar;
+              const reviewAvatarReload = document.querySelector("#reviewAvatar img")
+              reviewAvatarReload.src = changeAvatar.src = data.data.avatar;
               myModal2.hide();
             } else {
               console.log("error");

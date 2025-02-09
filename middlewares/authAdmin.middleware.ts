@@ -18,6 +18,7 @@ export const requireAuthAdmin = async (req: Request, res: Response, next: NextFu
             const role = await Roles.findOne({
                 _id: admin.role_id
             }).select("title permissions")
+            if(!role) res.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
             
             res.locals.admin = admin; //Trả về user thành biến toàn cục ở mọi trang pug
             res.locals.role = role; //Trả về quyền thành biến toàn cục ở mọi trang pug

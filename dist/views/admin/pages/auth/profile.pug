@@ -15,6 +15,7 @@ block main
                     .profile__info--details
                         p(fullName) #{admin.fullName}
                         p(email) #{admin.email}
+                        p(phone) #{admin.phone}
                 .profile__info--action 
                         a(data-bs-toggle="modal" data-bs-target="#popup") 
                             <i class="fa-solid fa-pen"></i> 
@@ -39,7 +40,7 @@ block main
                         input#email.form-control(type='email' value=admin.email)
                     .mb-3
                         label.text-dark.col-form-label(for='phone-name') Phone:
-                        input#email.form-control(type='email' value=admin.phone)
+                        input#phone.form-control(type='text' value=admin.phone)
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
                     button.btn.btn-primary(type='button' btn-form) Cập nhật

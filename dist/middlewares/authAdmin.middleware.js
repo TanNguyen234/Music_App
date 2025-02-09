@@ -30,6 +30,8 @@ const requireAuthAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             const role = yield role_model_1.default.findOne({
                 _id: admin.role_id
             }).select("title permissions");
+            if (!role)
+                res.redirect(`/${config_1.systemConfig.prefixAdmin}/auth/login`);
             res.locals.admin = admin;
             res.locals.role = role;
             next();

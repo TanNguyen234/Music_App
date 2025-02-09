@@ -384,13 +384,13 @@ audio[upload-audio-play] + span {
   border-radius: 20px;
   padding-top: 10px;
   width: 450px;
-  height: 500px;
+  height: auto;
 }
 
 .profile__header {
   background: var(--light-purple);
   width: 100%;
-  height: 50%;
+  height: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -435,6 +435,7 @@ div[upload-image] {
 
 div[upload-image] label {
   width: 0;
+  display: none;
 }
 
 .profile__info--action {

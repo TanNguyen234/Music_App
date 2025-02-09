@@ -29,6 +29,7 @@ if(navItems.length > 0) {
 }
 if(breadcrumb && pathArray.length > 0) {
     for (let i = 1; i < pathArray.length; i++) {
+        if(pathArray[1] === "auth") break;
         var htmlItem = ''
         var item = null;
         var url = '/' + pathArray[0]
@@ -80,11 +81,13 @@ if(uploadImage) {
     })
     
     const x = uploadImage.children[2].children[1];
-    x.addEventListener('click', (e) => {
-        uploadImagePreview.src = ""
-        uploadImage.children[2].style.display = 'none';
-        uploadImageInput.value = "";
-    })
+    if(x) {
+        x.addEventListener('click', (e) => {
+            uploadImagePreview.src = ""
+            uploadImage.children[2].style.display = 'none';
+            uploadImageInput.value = "";
+        })
+    }
 }
 //End Upload Image
 //Alert Defined
@@ -245,7 +248,6 @@ if(sort) {
 //End Sort
 //Change Status
 const buttonsChangeStatus = document.querySelectorAll('[button-change-status]');
-console.log(buttonsChangeStatus)
 
 if(buttonsChangeStatus.length > 0) {
     const formChangeStatus = document.querySelector("#form-change-status");
@@ -253,7 +255,6 @@ if(buttonsChangeStatus.length > 0) {
 
     buttonsChangeStatus.forEach(button => {
         button.addEventListener('click', () => {
-            console.log("ok")
             const statusCurrent = button.getAttribute('data-status');
             const id = button.getAttribute('data-id');
 
@@ -414,7 +415,6 @@ const dataRoles = document.querySelector('[data-roles]');
 if(dataRoles) {
     const dataRolesValue = dataRoles.getAttribute('data-roles');
     const dataConvert = JSON.parse(dataRolesValue);
-    console.log(dataConvert)
     permissionsFunction(dataConvert);
 }
 //End Permissions Default
@@ -490,10 +490,10 @@ if (popUpInfo) {
     if (fullName) dataPost.fullName = fullName;
     if (email) dataPost.email = email;
     if (phone) dataPost.phone = phone;
-    const path = window.location.pathname.split('/');
+    var path = window.location.pathname.split("/");
     if (dataPost.fullName || dataPost.email || dataPost.phone) {
-      fetch(`/${path[0]}/auth/profile`, {
-        method: "POST",
+      fetch(`/${path[1]}/auth/profile`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -502,6 +502,7 @@ if (popUpInfo) {
         .then((response) => response.json())
         .then((data) => {
           if (data.code === 200) {
+            console.log("info", data, dataPost)
             if (fullName) {
               const fullName = document.querySelector("p[fullName]");
               fullName.innerHTML = dataPost.fullName;
@@ -515,12 +516,94 @@ if (popUpInfo) {
               phone.innerHTML = dataPost.phone;
             }
             myModal.hide();
+            alertFunc("success", data.message);
           } else {
+            alertFunc("error", data.message);
           }
         });
     }
   });
 }
 // End Popup Boostrap
+// Change Avatar
+//Upload Image //Tạo preview ảnh trước khí upload [(google search)]
+const uploadImageAvatar = document.querySelector("[upload-image]");
 
+if (uploadImageAvatar) {
+  const uploadImageInput = uploadImageAvatar.querySelector("[upload-image-input]");
+  const uploadImagePreview = uploadImageAvatar.querySelector(
+    "[upload-image-preview]"
+  );
+
+  uploadImageInput.addEventListener("change", (e) => {
+    if (uploadImageInput.value) {
+      uploadImageAvatar.children[4].style.display = "block";
+      uploadImageAvatar.children[2].style.display = "none";
+    }
+    let file = e.target.files[0];
+
+    if (file) {
+      uploadImagePreview.src = URL.createObjectURL(file); //Hàm tạo đường dẫn ảnh
+    }
+  });
+
+  const x = uploadImageAvatar.children[4].querySelector("span");
+  x.addEventListener("click", (e) => {
+    uploadImagePreview.src = "";
+    uploadImageAvatar.children[4].style.display = "none";
+    uploadImageAvatar.children[2].style.display = "block";
+    uploadImageInput.value = "";
+  });
+  const popUpAvatar = document.getElementById("uploadAvatar");
+  if (popUpInfo) {
+    popUpInfo.addEventListener("show.bs.modal", (event) => {
+      // Button that triggered the modal
+      const button = event.relatedTarget;
+      // Extract info from data-bs-* attributes
+    });
+
+    const myModal2 = new bootstrap.Modal(popUpAvatar);
+
+    const btnSubmit = popUpAvatar.querySelector("[btn-form]");
+    btnSubmit.onclick = function handleClick() {
+      const formData = new FormData();
+      const inputFile = document.querySelector('input[name="avatar"]');
+
+      const file = inputFile.files[0]; // Lấy tệp đầu tiên trong danh sách tệp được chọn
+
+      if (file) {
+        formData.append("avatar", file); // Thêm tệp vào FormData
+        // Xóa sự kiện onclick tạm thời
+        btnSubmit.onclick = null;
+        btnSubmit.textContent = "Đang gửi..."; // Cập nhật trạng thái nút
+        const path = window.location.pathname.split('/');
+        fetch(`/${path[1]}/auth/profile`, {
+          method: "PATCH",
+          body: formData,
+          headers: {
+            // "Content-Type": "multipart/form-data",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.code === 200) {
+              const changeAvatar = document.querySelector(".profile__img img");
+              const reviewAvatarReload = document.querySelector("#reviewAvatar img")
+              reviewAvatarReload.src = changeAvatar.src = data.data.avatar;
+              myModal2.hide();
+            } else {
+              console.log("error");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          })
+          .finally(() => {
+            btnSubmit.onclick = handleClick; // Khôi phục sự kiện onclick
+            btnSubmit.textContent = "Cập nhật"; // Khôi phục trạng thái nút
+          });
+      }
+    };
+  }
+}
 // Change Avatar

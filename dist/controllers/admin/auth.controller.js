@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.profile = exports.logout = exports.loginPost = exports.login = void 0;
+exports.profilePatch = exports.profile = exports.logout = exports.loginPost = exports.login = void 0;
 const user_validate_1 = require("../../validates/user.validate");
 const argon2_1 = __importDefault(require("argon2"));
 const config_1 = require("../../config/config");
@@ -65,15 +65,51 @@ const logout = (req, res) => {
     res.redirect(`/${config_1.systemConfig.prefixAdmin}/dashboard`);
 };
 exports.logout = logout;
-const profile = (req, res) => {
-    try {
-        res.render("admin/pages/auth/profile.pug", {
-            pageTitle: 'Trang thông tin tài khoản'
-        });
-    }
-    catch (error) {
-        req.flash("error", "Id is not a valid");
-        res.redirect(req.get("Referrer") || `/${config_1.systemConfig.prefixAdmin}/dashboard`);
-    }
-};
+const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.render("admin/pages/auth/profile.pug", {
+        pageTitle: 'Trang thông tin tài khoản'
+    });
+});
 exports.profile = profile;
+const profilePatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { fullName, email, phone, avatar } = req.body;
+    let saveData = {};
+    if (fullName) {
+        if (fullName.length < 8 && fullName.length > 30) {
+            res.json({
+                code: 400,
+                message: "Tên phải từ 8 đến 30 kí tự"
+            });
+        }
+        else {
+            saveData.fullName = fullName;
+        }
+    }
+    if (email) {
+        if (!(0, user_validate_1.isValidEmail)(email)) {
+            res.json({
+                code: 400,
+                message: "Email không hợp lệ"
+            });
+        }
+    }
+    if (phone) {
+        if (phone.length !== 10) {
+            res.json({
+                code: 400,
+                message: "Số điện thoại phải có 10 chữ số"
+            });
+        }
+    }
+    if (avatar)
+        saveData.avatar = avatar;
+    yield account_model_1.default.updateOne({
+        token: req.cookies.tokenAdmin
+    }, saveData);
+    res.json({
+        code: 200,
+        message: "Thành công",
+        data: saveData
+    });
+});
+exports.profilePatch = profilePatch;

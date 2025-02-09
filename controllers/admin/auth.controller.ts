@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { validateLogin } from "../../validates/user.validate"
+import { isValidEmail, validateLogin } from "../../validates/user.validate"
 import { CustomRequest } from "../../interface/CustomRequest"
 import argon2 from 'argon2';
 import { systemConfig } from "../../config/config";
@@ -47,20 +47,68 @@ export const loginPost = async (req: CustomRequest, res: Response): Promise<void
     }
 }
 
-//[GET] /user/auth/logout
+//[GET] /admin/auth/logout
 export const logout = (req: Request, res: Response) => {
     res.clearCookie("tokenAdmin");
     res.redirect(`/${systemConfig.prefixAdmin}/dashboard`)
 }
 
-//[GET] /user/auth/profile
-export const profile = (req: CustomRequest, res: Response): any => {
-    try {
-        res.render("admin/pages/auth/profile.pug", {
-            pageTitle: 'Trang thông tin tài khoản'
-        })
-    } catch (error) {
-        req.flash("error", "Id is not a valid")
-        res.redirect(req.get("Referrer") || `/${systemConfig.prefixAdmin}/dashboard`)
+//[GET] /admin/auth/profile
+export const profile = async (req: CustomRequest, res: Response): Promise<void> => {
+    res.render("admin/pages/auth/profile.pug", {
+        pageTitle: 'Trang thông tin tài khoản'
+    })
+}
+
+interface AdminInterface {
+    fullName?: string;
+    email?: string;
+    phone?: string;
+    avatar?: string
+}
+
+//[PATCH] /admin/auth/profile
+export const profilePatch = async (req: Request, res: Response): Promise<void> => {
+    const { fullName, email, phone, avatar } = req.body;
+    let saveData: AdminInterface = {}
+    if(fullName) {
+        if(fullName.length < 8 && fullName.length > 30) {
+            res.json({
+                code: 400,
+                message: "Tên phải từ 8 đến 30 kí tự"
+            })
+        } else {
+            saveData.fullName = fullName
+        }
     }
+
+    if(email) {
+        if(!isValidEmail(email)) {
+            res.json({
+                code: 400,
+                message: "Email không hợp lệ"
+            })
+        }
+    }
+
+    if(phone) {
+        if(phone.length !== 10) {
+            res.json({
+                code: 400,
+                message: "Số điện thoại phải có 10 chữ số"
+            })
+        }
+    }
+
+    if(avatar) saveData.avatar = avatar
+
+    await Account.updateOne({
+        token: req.cookies.tokenAdmin
+    }, saveData);
+
+    res.json({
+        code: 200,
+        message: "Thành công",
+        data: saveData
+    })
 }

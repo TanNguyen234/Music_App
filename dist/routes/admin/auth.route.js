@@ -35,12 +35,16 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authRoutes = void 0;
 const express_1 = require("express");
+const multer = require("multer");
 const router = (0, express_1.Router)();
+const upload = multer();
 const controller = __importStar(require("../../controllers/admin/auth.controller"));
+const middleware = __importStar(require("../../middlewares/uploadToCloud.middleware"));
 const CustomRequest_1 = require("../../interface/CustomRequest");
 const authAdmin_middleware_1 = require("../../middlewares/authAdmin.middleware");
 router.get("/login", controller.login);
 router.post("/login", (0, CustomRequest_1.returnCustomRequest)(controller.loginPost));
-router.get('/logout', controller.logout);
-router.get('/profile', authAdmin_middleware_1.requireAuthAdmin, (0, CustomRequest_1.returnCustomRequest)(controller.profile));
+router.get("/logout", controller.logout);
+router.get("/profile", authAdmin_middleware_1.requireAuthAdmin, (0, CustomRequest_1.returnCustomRequest)(controller.profile));
+router.patch("/profile", authAdmin_middleware_1.requireAuthAdmin, upload.single("avatar"), (0, CustomRequest_1.returnCustomRequest)(middleware.uploadToCloud), (0, CustomRequest_1.returnCustomRequest)(controller.profilePatch));
 exports.authRoutes = router;
