@@ -31,7 +31,7 @@ block main
                 .profile__info--stats
                     p Tổng số lượt thích: #{user.playlist.length || 0}
                     //- p Total Likes: #{favorite}
-                    p Tổng số bài hát trong playlist: #{user.songs.length || 0}
+                    p Tổng số bài hát trong playlist: #{user.playlist.length || 0}
                     //- p Total Song in playlist: #{user.playlist.length || 0}
 
         #popup.modal.fade(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
