@@ -17,31 +17,39 @@ const song_model_1 = __importDefault(require("../../model/song.model"));
 const user_model_1 = __importDefault(require("../../model/user.model"));
 const pagination_1 = __importDefault(require("../../helpers/pagination"));
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.default.findOne({
-        status: "active",
-        deleted: false,
-        token: req.cookies.tokenUser,
-    });
-    var songs = [];
-    songs = yield song_model_1.default.find({
-        _id: { $in: [user === null || user === void 0 ? void 0 : user.playlist] },
-    });
-    const totalSong = (songs === null || songs === void 0 ? void 0 : songs.length) || 0;
-    let objectPagination = (0, pagination_1.default)({
-        currentPage: 1,
-        limitItem: 20,
-    }, req.query, totalSong);
-    songs = yield song_model_1.default.find({
-        status: "active",
-        _id: { $in: [user === null || user === void 0 ? void 0 : user.playlist] },
-        deleted: false,
-    })
-        .limit(objectPagination.limitItem)
-        .skip(objectPagination.skip);
-    res.render("client/pages/playlist/playlist", {
-        pageTitle: "My playlist",
-        songs: songs,
-        pagination: objectPagination
-    });
+    try {
+        const user = yield user_model_1.default.findOne({
+            status: "active",
+            deleted: false,
+            token: req.cookies.tokenUser,
+        });
+        var songs = [];
+        const listIdPlaylist = (user === null || user === void 0 ? void 0 : user.playlist) || [];
+        songs = yield song_model_1.default.find({
+            _id: { $in: listIdPlaylist },
+            status: "active"
+        });
+        const totalSong = (songs === null || songs === void 0 ? void 0 : songs.length) || 0;
+        let objectPagination = (0, pagination_1.default)({
+            currentPage: 1,
+            limitItem: 20,
+        }, req.query, totalSong);
+        songs = yield song_model_1.default.find({
+            status: "active",
+            _id: { $in: listIdPlaylist },
+            deleted: false,
+        })
+            .limit(objectPagination.limitItem)
+            .skip(objectPagination.skip);
+        res.render("client/pages/playlist/playlist", {
+            pageTitle: "My playlist",
+            songs: songs,
+            pagination: objectPagination
+        });
+    }
+    catch (err) {
+        console.log("error: ", err);
+        res.redirect("client/pages/errors/404.pug");
+    }
 });
 exports.index = index;

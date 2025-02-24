@@ -8,7 +8,8 @@ block main
         .row.d-flex.justify-center
             .profile
                 .profile__header
-                    h1 Profile 
+                    h1 Thông tin cá nhân 
+                    //- h1 Profile 
                     .profile__img
                         img(src=(user.avatar ? user.avatar : '/client/images/avatar-user.jpg'), alt='User' data-bs-toggle="modal"  data-bs-target="#reviewAvatar" data-bs-placement="bottom" data-bs-title="")
                         a.add-avatar(type="button" data-bs-toggle="modal" data-bs-target="#uploadAvatar" data-bs-placement="bottom" data-bs-title="Cập nhật ảnh đại diện") +
@@ -18,16 +19,20 @@ block main
                 .profile__info--action 
                         a(data-bs-toggle="modal" data-bs-target="#popup") 
                             <i class="fa-solid fa-pen"></i> 
-                            span Edit Profile
+                            //- span Edit Profile
+                            span Cập nhật thông tin
                         a(href='/user/password/forgot') 
                             <i class="fa-solid fa-user-shield"></i> 
-                            span Change Password
+                            span Đổi mật khẩu
+                            //- span Change Password
                         a(href='/user/logout') 
                             <i class="fa-solid fa-eraser"></i> 
                             span Đăng xuất
                 .profile__info--stats
-                    p Total Likes: #{favorite}
-                    p Total Song in playlist: #{user.playlist.length || 0}
+                    p Tổng số lượt thích: #{user.playlist.length || 0}
+                    //- p Total Likes: #{favorite}
+                    p Tổng số bài hát trong playlist: #{user.songs.length || 0}
+                    //- p Total Song in playlist: #{user.playlist.length || 0}
 
         #popup.modal.fade(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
             .modal-dialog.modal-dialog-centered
@@ -38,13 +43,15 @@ block main
                 .modal-body
                   form
                     .mb-3
-                        label.text-dark.col-form-label(for='email-name') Full Name:
+                        //- label.text-dark.col-form-label(for='email-name') Full Name:
+                        label.text-dark.col-form-label(for='fullName-name') Họ và tên:
                         input#fullName.form-control(type='text' value=user.fullName)
                     .mb-3
                         label.text-dark.col-form-label(for='password-name') Email:
                         input#email.form-control(type='email' value=user.email)
                 .modal-footer
-                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Đóng
+                    //- button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
                     button.btn.btn-primary(type='button' btn-form) Cập nhật
         #uploadAvatar.modal.fade(tabindex='-1' aria-labelledby='avatarLabel' aria-hidden='true')
             .modal-dialog.modal-dialog-centered
@@ -63,7 +70,8 @@ block main
                             img(src="" class="upload-image-preview" upload-image-preview alt="")
                             span x
                 .modal-footer
-                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Đóng    
+                    //- button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
                     button.btn.btn-primary(type='button' btn-form) Cập nhật
         #reviewAvatar.modal.fade(tabindex='-1' aria-labelledby='avatarLabel' aria-hidden='true')
             .modal-dialog.modal-dialog-centered.modal-lg

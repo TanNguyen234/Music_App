@@ -4,7 +4,7 @@ include ../../mixins/alert.pug
 block main 
     +error-alert(5000)
     
-    .container-fluid.d-flex.justify-content-center.align-items-center
+    .container-fluid
        .containerForm
          .ballon-top           
          form(action=`/user/login` method="POST" autocomplete="off" class="form")

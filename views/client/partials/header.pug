@@ -9,16 +9,21 @@ header.header
                 .header__nav
                     ul.dislay-flex.flex-direction-row
                         li
-                            a(href="/topics") Topics
+                            //- a(href="/topics") Topics
+                            a(href="/topics") Chủ Đề
                         li
-                            a(href="/songs") Songs
+                            a(href="/songs") Bài hát
+                            //- a(href="/songs") Songs
                         li
-                            a(href="/playlist") Playlist
+                            a(href="/playlist") Album
+                            //- a(href="/playlist") Playlist
             .col-4.col-lg-4.col-md-4.col-sm-4.col-4.text-top
                 .header__login
                     .header__icon 
                         i(class="fa-solid fa-arrow-right")
                     if(user)
-                        a(href="/user/info") Profile
+                        //- a(href="/user/info") Profile
+                        a(href="/user/info") Thông tin
                     else 
-                        a(href="/user/login") Login
+                        //- a(href="/user/login") Login
+                        a(href="/user/login") Đăng nhập

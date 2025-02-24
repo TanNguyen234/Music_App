@@ -1,3 +1,10 @@
+.container-fluid {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* Alert  */
 .alert-user  {
   background: #ffffc4;
