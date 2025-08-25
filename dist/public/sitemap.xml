@@ -9,7 +9,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://music-app-seven-inky.vercel.app/admin</loc>
-    <priority>0.5</priority>
+    <loc>https://music-app-seven-inky.vercel.app/songs</loc>
+    <priority>0.8</priority>
   </url>
 </urlset>
