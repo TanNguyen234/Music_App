@@ -57,7 +57,7 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin
 app.locals.moment = moment
 
 //Page 404
-app.get('*', (req: Request, res: Response) => {
+app.use('*', (req: Request, res: Response) => {
     res.render('client/pages/errors/404', {
         titlePage: '404 Not Found',
     })
