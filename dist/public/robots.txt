@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://music-app-seven-inky.vercel.app/sitemap.xml
